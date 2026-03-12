@@ -1,0 +1,126 @@
+{
+  "title": "What Matters Most to You?",
+  "description": "These questions will help us understand your preferences so we can highlight which PrEP option might be the best fit for your life. Your answers are private and are not saved or shared.",
+  "reassurance": "There are no wrong answers. Everyone's situation is different, and the best PrEP option is the one that works for you.",
+  "questions": [
+    {
+      "id": "prep_01",
+      "type": "single_choice",
+      "text": "Have you used PrEP before?",
+      "options": [
+        { "value": "yes_oral", "label": "Yes, I've taken PrEP pills" },
+        { "value": "yes_injectable", "label": "Yes, I've had PrEP injections" },
+        { "value": "yes_both", "label": "Yes, I've tried both pills and injections" },
+        { "value": "no", "label": "No, I haven't used PrEP before" },
+        { "value": "not_sure", "label": "I'm not sure" }
+      ]
+    },
+    {
+      "id": "prep_02",
+      "type": "single_choice",
+      "text": "How would you prefer to take your PrEP?",
+      "options": [
+        { "value": "daily_pill", "label": "A daily pill I take at home" },
+        { "value": "injection", "label": "An injection at my provider's office so I don't have to think about it daily" },
+        { "value": "no_preference", "label": "I don't have a preference yet — I'm still deciding" }
+      ]
+    },
+    {
+      "id": "prep_03",
+      "type": "single_choice",
+      "text": "How do you feel about needles and injections?",
+      "options": [
+        { "value": "fine", "label": "I'm comfortable with injections — they don't bother me" },
+        { "value": "tolerable", "label": "I don't love them, but I can handle it if the benefits are worth it" },
+        { "value": "prefer_avoid", "label": "I'd rather avoid injections if possible" },
+        { "value": "no_way", "label": "I really don't want injections — a pill would be much better for me" }
+      ]
+    },
+    {
+      "id": "prep_04",
+      "type": "single_choice",
+      "text": "How often are you comfortable visiting a healthcare provider for your PrEP?",
+      "options": [
+        { "value": "every_2mo", "label": "Every 2 months is fine" },
+        { "value": "every_3mo", "label": "Every 3 months works for me" },
+        { "value": "every_6mo", "label": "I'd prefer as few visits as possible — every 6 months would be ideal" },
+        { "value": "flexible", "label": "I'm flexible — whatever the option requires" }
+      ]
+    },
+    {
+      "id": "prep_05",
+      "type": "single_choice",
+      "text": "How important is privacy to you when it comes to taking PrEP?",
+      "options": [
+        { "value": "very_important", "label": "Very important — I'd prefer no one knows I'm taking PrEP" },
+        { "value": "somewhat", "label": "Somewhat important — I'd like to be discreet but it's not my top concern" },
+        { "value": "not_concerned", "label": "Not a concern — I'm open about taking PrEP" }
+      ]
+    },
+    {
+      "id": "prep_06",
+      "type": "single_choice",
+      "text": "Are you currently pregnant, breastfeeding, or planning a pregnancy in the next year?",
+      "options": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" },
+        { "value": "not_applicable", "label": "This doesn't apply to me" },
+        { "value": "not_sure", "label": "I'm not sure yet" }
+      ]
+    },
+    {
+      "id": "prep_07",
+      "type": "single_choice",
+      "text": "Are you currently taking any other medications, vitamins, or herbal supplements regularly?",
+      "options": [
+        { "value": "yes_prescription", "label": "Yes, I take prescription medications" },
+        { "value": "yes_supplements", "label": "Yes, I take vitamins or herbal supplements" },
+        { "value": "yes_both", "label": "Yes, both prescription medications and supplements" },
+        { "value": "no", "label": "No, I don't take any medications or supplements regularly" },
+        { "value": "not_sure", "label": "I'm not sure" }
+      ]
+    },
+    {
+      "id": "prep_08",
+      "type": "multi_choice",
+      "text": "What concerns you most about taking PrEP? (Select all that apply)",
+      "options": [
+        { "value": "side_effects", "label": "Possible side effects" },
+        { "value": "cost", "label": "Cost and insurance coverage" },
+        { "value": "remembering", "label": "Remembering to take it consistently" },
+        { "value": "privacy", "label": "Other people finding out" },
+        { "value": "needles", "label": "Needles or injections" },
+        { "value": "clinic_visits", "label": "Having to go to the clinic regularly" },
+        { "value": "stopping", "label": "What happens when I want to stop" },
+        { "value": "none", "label": "I don't have major concerns right now" }
+      ]
+    },
+    {
+      "id": "prep_09",
+      "type": "single_choice",
+      "text": "What's most important to you when choosing a PrEP option?",
+      "options": [
+        { "value": "convenience", "label": "Convenience — I want the easiest routine possible" },
+        { "value": "fewest_side_effects", "label": "Fewest side effects" },
+        { "value": "most_effective", "label": "Most effective option available" },
+        { "value": "most_private", "label": "Most private and discreet" },
+        { "value": "easiest_to_stop", "label": "Easiest to stop if I change my mind" },
+        { "value": "fewest_visits", "label": "Fewest clinic visits" },
+        { "value": "lowest_cost", "label": "Lowest cost" }
+      ]
+    },
+    {
+      "id": "prep_10",
+      "type": "single_choice",
+      "text": "What is your current insurance or coverage situation?",
+      "options": [
+        { "value": "private_insurance", "label": "I have private insurance through work or the marketplace" },
+        { "value": "medicaid", "label": "I have Medicaid" },
+        { "value": "medicare", "label": "I have Medicare" },
+        { "value": "no_insurance", "label": "I don't have health insurance right now" },
+        { "value": "not_sure", "label": "I'm not sure about my coverage" },
+        { "value": "prefer_not_say", "label": "I'd rather not say" }
+      ]
+    }
+  ]
+}

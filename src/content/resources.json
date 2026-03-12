@@ -1,0 +1,102 @@
+{
+  "title": "Helpful Resources",
+  "intro": "Here are trusted resources to help you learn more about PrEP, find a provider, and get help paying for your medication. All of these are free to access.",
+  "categories": [
+    {
+      "id": "learn_more",
+      "title": "Learn More About PrEP",
+      "resources": [
+        {
+          "name": "CDC PrEP Information",
+          "description": "Trusted information about PrEP from the Centers for Disease Control and Prevention, including how it works, who it's for, and how to get it.",
+          "url": "https://www.cdc.gov/hiv/basics/prep.html",
+          "type": "information"
+        },
+        {
+          "name": "PrEP Facts",
+          "description": "Easy-to-understand information about PrEP options, including answers to common questions and real stories from people who use PrEP.",
+          "url": "https://prepfacts.org",
+          "type": "information"
+        },
+        {
+          "name": "HIV.gov — PrEP",
+          "description": "The federal government's main resource for HIV information, including a section on PrEP with the latest updates and guidance.",
+          "url": "https://www.hiv.gov/hiv-basics/hiv-prevention/using-hiv-medication-to-reduce-risk/pre-exposure-prophylaxis",
+          "type": "information"
+        }
+      ]
+    },
+    {
+      "id": "find_provider",
+      "title": "Find a Provider Near You",
+      "resources": [
+        {
+          "name": "PrEP Locator",
+          "description": "Search for clinics and providers near you that offer PrEP. You can filter by location, insurance accepted, and services offered.",
+          "url": "https://preplocator.org",
+          "type": "locator"
+        },
+        {
+          "name": "GetYourPrEP",
+          "description": "Find PrEP providers, learn about getting started, and connect with support services in your area.",
+          "url": "https://getyourprep.com",
+          "type": "locator"
+        },
+        {
+          "name": "HRSA Health Center Finder",
+          "description": "Find a federally qualified health center near you. These centers provide care on a sliding fee scale and many offer PrEP services.",
+          "url": "https://findahealthcenter.hrsa.gov",
+          "type": "locator"
+        }
+      ]
+    },
+    {
+      "id": "paying",
+      "title": "Help Paying for PrEP",
+      "resources": [
+        {
+          "name": "Ready, Set, PrEP",
+          "description": "A federal program that provides PrEP medication at no cost to people who don't have insurance coverage for prescription drugs. You can enroll online or by phone.",
+          "url": "https://readysetprep.hiv.gov",
+          "type": "assistance"
+        },
+        {
+          "name": "Gilead Advancing Access",
+          "description": "Gilead Sciences offers copay assistance for people with insurance, as well as free medication for eligible people without insurance. Covers Truvada, Descovy, and Sunlenca.",
+          "url": "https://www.gileadadvancingaccess.com",
+          "type": "assistance"
+        },
+        {
+          "name": "ViiV Patient Assistance",
+          "description": "ViiV Healthcare offers patient assistance programs for people who are prescribed Apretude (cabotegravir). Includes help for both insured and uninsured individuals.",
+          "url": "https://www.viivconnect.com",
+          "type": "assistance"
+        },
+        {
+          "name": "Patient Advocate Foundation",
+          "description": "Provides case management and financial aid to help people access their prescribed medications, including PrEP.",
+          "url": "https://www.patientadvocate.org",
+          "type": "assistance"
+        }
+      ]
+    },
+    {
+      "id": "support",
+      "title": "Support & Questions",
+      "resources": [
+        {
+          "name": "PrEP Hotline (NASTAD)",
+          "description": "Call to speak with someone who can answer your questions about PrEP, help you find a provider, and connect you with assistance programs. Available Monday through Friday.",
+          "phone": "1-855-448-7737",
+          "type": "hotline"
+        },
+        {
+          "name": "HIV Prevention Hotline (CDC INFO)",
+          "description": "Get answers to your questions about HIV prevention, testing, and treatment from trained information specialists.",
+          "phone": "1-800-232-4636",
+          "type": "hotline"
+        }
+      ]
+    }
+  ]
+}

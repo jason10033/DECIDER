@@ -1,0 +1,112 @@
+{
+  "title": "Compare Your PrEP Options",
+  "intro": "Here's a side-by-side look at the three PrEP options available today. Each one is highly effective — the best choice is the one that fits your life.",
+  "options": [
+    { "id": "oral", "name": "Daily Pill", "brandName": "Truvada / Descovy", "colorClass": "oral" },
+    { "id": "injectable_2mo", "name": "2-Month Injection", "brandName": "Apretude", "colorClass": "injectable-2mo" },
+    { "id": "injectable_6mo", "name": "6-Month Injection", "brandName": "Sunlenca", "colorClass": "injectable-6mo" }
+  ],
+  "categories": [
+    {
+      "label": "How You Take It",
+      "oral": "Swallow one pill by mouth",
+      "injectable_2mo": "Injection into the buttock muscle by your provider",
+      "injectable_6mo": "Small injection under the skin in the belly area by your provider"
+    },
+    {
+      "label": "How Often",
+      "oral": "Every day",
+      "injectable_2mo": "Every 2 months (after getting started)",
+      "injectable_6mo": "Every 6 months (after getting started)"
+    },
+    {
+      "label": "Where",
+      "oral": "At home — wherever you are",
+      "injectable_2mo": "At your provider's office or clinic",
+      "injectable_6mo": "At your provider's office or clinic"
+    },
+    {
+      "label": "Effectiveness",
+      "oral": "Over 99% when taken daily as directed",
+      "injectable_2mo": "Shown to be more effective than daily pills in clinical studies",
+      "injectable_6mo": "96% reduction in HIV risk in clinical trials — highly effective"
+    },
+    {
+      "label": "Common Side Effects",
+      "oral": "Mild nausea, headache, or stomach upset when starting — usually goes away in a few weeks",
+      "injectable_2mo": "Soreness, swelling, or tenderness at the injection site — usually mild and temporary",
+      "injectable_6mo": "Small bump or nodule under the skin at the injection site — usually painless and temporary"
+    },
+    {
+      "label": "Getting Started",
+      "oral": "HIV test, kidney labs, prescription from provider. Protection builds up in about 7-21 days depending on type of exposure.",
+      "injectable_2mo": "HIV test, 1 month of daily oral lead-in tablets, then first injection. Second injection 1 month later, then every 2 months.",
+      "injectable_6mo": "HIV test, 2 oral loading tablets on Day 1, 1 tablet on Day 2, then first injection at Day 28. Next injection in 6 months."
+    },
+    {
+      "label": "Stopping",
+      "oral": "Easy to stop — protection fades within days. Simple to restart later.",
+      "injectable_2mo": "Medicine stays in your body 12+ months after last injection. Must use other protection during this tail period.",
+      "injectable_6mo": "Medicine stays in your body for an extended period. Must work with your provider on a transition plan for continued protection."
+    },
+    {
+      "label": "Privacy",
+      "oral": "Requires having pills at home. Could be seen by others in your household.",
+      "injectable_2mo": "No pills at home. Only your provider's office knows about your visits.",
+      "injectable_6mo": "No pills at home (after the brief oral loading). Only your provider's office knows about your visits."
+    },
+    {
+      "label": "Clinic Visits",
+      "oral": "Every 3 months for HIV testing and prescription refills",
+      "injectable_2mo": "Every 2 months for your injection (includes HIV testing)",
+      "injectable_6mo": "Every 6 months for your injection (includes HIV testing)"
+    },
+    {
+      "label": "Drug Interactions",
+      "oral": "Few drug interactions. Tell your provider about all medications.",
+      "injectable_2mo": "Few drug interactions. Tell your provider about all medications.",
+      "injectable_6mo": "Some important interactions — certain seizure medications and St. John's wort can reduce effectiveness. Tell your provider about everything you take."
+    }
+  ],
+  "bestFor": [
+    {
+      "id": "oral",
+      "colorClass": "oral",
+      "title": "The daily pill might be best if...",
+      "points": [
+        "You're comfortable taking a pill every day",
+        "You like being in control of your prevention at home",
+        "You want the flexibility to easily start and stop PrEP",
+        "You prefer not to get injections",
+        "You want the option with the longest track record",
+        "You'd like access to a generic or lower-cost version"
+      ]
+    },
+    {
+      "id": "injectable_2mo",
+      "colorClass": "injectable-2mo",
+      "title": "The 2-month injection might be best if...",
+      "points": [
+        "You don't want to remember a daily pill",
+        "You're okay with getting a shot in the buttock every 2 months",
+        "You're comfortable with regular clinic visits",
+        "You want the option that was shown to be more effective than pills in studies",
+        "Privacy is important to you — no pills at home",
+        "You're okay with the commitment and understand the long tail when stopping"
+      ]
+    },
+    {
+      "id": "injectable_6mo",
+      "colorClass": "injectable-6mo",
+      "title": "The 6-month injection might be best if...",
+      "points": [
+        "You want the fewest possible appointments and doses",
+        "You're okay with a small shot under the skin in the belly area",
+        "You prefer not to think about HIV prevention on a daily or even monthly basis",
+        "You want a highly effective newer option",
+        "Privacy matters — no pills at home after the initial loading phase",
+        "You don't take medications that interact with lenacapavir (like St. John's wort or certain seizure medications)"
+      ]
+    }
+  ]
+}

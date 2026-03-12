@@ -1,0 +1,90 @@
+{
+  "title": "Your Personalized Results",
+  "intro": "Based on what you've shared about your preferences, here's how each PrEP option lines up with what matters most to you. Remember — all three options are highly effective. The best one is the one you'll use consistently.",
+  "options": {
+    "oral": {
+      "name": "Daily Pill (Truvada / Descovy)",
+      "heading": "Oral PrEP might be a great fit for you",
+      "reasons": [
+        "You can take it at home on your own schedule — no clinic visits for each dose",
+        "It's easy to start and easy to stop whenever your needs change",
+        "It has the longest track record of safe use",
+        "Generic versions are available, which may lower your cost",
+        "No injections required"
+      ],
+      "considerations": [
+        "You'll need to remember to take a pill every day for full protection",
+        "Having pills at home means others might see them",
+        "You'll need lab work and check-ins every 3 months",
+        "Mild start-up side effects like nausea are possible but usually pass quickly"
+      ],
+      "providerQuestions": [
+        "Which oral PrEP medication — Truvada or Descovy — would you recommend for me?",
+        "Are there any reasons one oral PrEP option might be better for my health than the other?",
+        "What should I do if I miss a dose?",
+        "How often will I need to come in for check-ups and lab work?",
+        "Are there programs to help me pay for oral PrEP?"
+      ]
+    },
+    "injectable_2mo": {
+      "name": "2-Month Injection (Apretude)",
+      "heading": "The every-2-month injection might be a great fit for you",
+      "reasons": [
+        "No daily pill to remember — your protection is built in at each appointment",
+        "Clinical studies showed it was even more effective than daily pills",
+        "More private — no medication to keep at home",
+        "You only need to think about your PrEP every 2 months"
+      ],
+      "considerations": [
+        "You'll start with a month of daily pills to make sure you tolerate the medication",
+        "Requires a clinic visit every 2 months for the injection",
+        "You'll get a shot in the buttock, which may cause temporary soreness",
+        "If you stop, the medicine stays in your body for 12+ months — you'll need a plan for continued protection during that time",
+        "Not all clinics offer this option yet"
+      ],
+      "providerQuestions": [
+        "Do you offer the cabotegravir (Apretude) injection at this clinic?",
+        "What should I expect during the oral lead-in period?",
+        "What happens if I'm late for an injection appointment?",
+        "If I decide to stop, what's the plan for staying protected during the tail period?",
+        "How is the injection given, and how long does the appointment take?"
+      ]
+    },
+    "injectable_6mo": {
+      "name": "6-Month Injection (Sunlenca)",
+      "heading": "The twice-yearly injection might be a great fit for you",
+      "reasons": [
+        "Only two clinic visits per year — the most convenient dosing schedule available",
+        "No daily pills to remember between appointments",
+        "Highly effective — 96% reduction in HIV risk in clinical trials",
+        "Very private — no medication at home after the initial loading phase",
+        "Minimal time spent thinking about HIV prevention"
+      ],
+      "considerations": [
+        "It's a newer option and may not be available at all clinics yet",
+        "Some medications and supplements (like St. John's wort) can interact with it — tell your provider about everything you take",
+        "You'll get a small injection under the skin in the belly area",
+        "If you stop, the medicine stays in your body for an extended period — work with your provider on a transition plan",
+        "Insurance coverage may vary since it's a newer medication"
+      ],
+      "providerQuestions": [
+        "Do you offer lenacapavir (Sunlenca) for PrEP at this clinic?",
+        "Will any of my current medications or supplements interact with lenacapavir?",
+        "What does the oral loading phase involve?",
+        "If I decide to stop, how do we plan for continued protection?",
+        "What are my options if my insurance doesn't cover this yet?"
+      ]
+    }
+  },
+  "providerSection": {
+    "heading": "Ways to Start the Conversation with Your Provider",
+    "intro": "Talking to your provider about PrEP doesn't have to be complicated. Here are some conversation starters you can use:",
+    "tips": [
+      "\"I've been learning about PrEP and I'm interested in starting. Can we talk about which option might be right for me?\"",
+      "\"I'd like to know more about the different ways to take PrEP — the daily pill, the 2-month shot, and the 6-month shot.\"",
+      "\"I've been thinking about HIV prevention and I'd like to explore PrEP. What would the next steps be?\"",
+      "\"I used a decision tool that helped me think about my PrEP options. Can I share what I learned with you?\"",
+      "\"I have some questions about PrEP side effects and what to expect. Can we go through them together?\""
+    ]
+  }
+}
