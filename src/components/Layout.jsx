@@ -11,6 +11,7 @@ const routeToStep = {
   '/recommendations': 4,
   '/resources': 5,
   '/summary': 6,
+  '/additional-resources': 7,
 };
 
 export default function Layout({ children }) {

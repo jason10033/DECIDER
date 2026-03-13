@@ -41,7 +41,8 @@
     { "name": "Compare", "path": "/compare" },
     { "name": "Assess", "path": "/assessment" },
     { "name": "Results", "path": "/recommendations" },
-    { "name": "Resources", "path": "/resources" },
-    { "name": "Summary", "path": "/summary" }
+    { "name": "Prepare", "path": "/resources" },
+    { "name": "Summary", "path": "/summary" },
+    { "name": "Resources", "path": "/additional-resources" }
   ]
 }

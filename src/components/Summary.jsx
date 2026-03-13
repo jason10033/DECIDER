@@ -337,7 +337,7 @@ export default function Summary({
       {/* 4. Questions - Patient view includes starters, Physician view does not */}
       {isPhysician ? (
         // Physician view: questions only, no conversation starters
-        (selectedQuestions.length > 0 || (customQuestions && customQuestions.length > 0)) ? (
+        (selectedQuestions.length > 0 || (customQuestions && customQuestions.length > 0)) && (
           <div className="summary-card">
             <h2>Questions {displayName} Wants to Ask</h2>
             <ul className="checklist">
@@ -348,21 +348,11 @@ export default function Summary({
                 <li key={`custom-${i}`}>{q}</li>
               ))}
             </ul>
-            <div className="notes-section">
-              <p>Additional notes:</p>
-            </div>
-          </div>
-        ) : (
-          <div className="summary-card">
-            <h2>Questions {displayName} Wants to Ask</h2>
-            <div className="notes-section">
-              <p>Notes:</p>
-            </div>
           </div>
         )
       ) : (
         // Patient view: includes starters and questions
-        (selectedQuestions.length > 0 || selectedStarters.length > 0 || (customQuestions && customQuestions.length > 0)) ? (
+        (selectedQuestions.length > 0 || selectedStarters.length > 0 || (customQuestions && customQuestions.length > 0)) && (
           <div className="summary-card">
             <h2>Questions I Want to Ask</h2>
             {selectedStarters.length > 0 && (
@@ -388,16 +378,6 @@ export default function Summary({
                 </ul>
               </>
             )}
-            <div className="notes-section">
-              <p>Write additional questions or notes here:</p>
-            </div>
-          </div>
-        ) : (
-          <div className="summary-card">
-            <h2>Questions I Want to Ask</h2>
-            <div className="notes-section">
-              <p>Write your questions or notes here:</p>
-            </div>
           </div>
         )
       )}
@@ -497,8 +477,8 @@ export default function Summary({
       </div>
 
       <div className="btn-group" style={{ justifyContent: 'center' }}>
-        <Link to="/resources" className="btn btn-secondary">&larr; Back to Resources</Link>
-        <Link to="/" className="btn btn-secondary">Start Over</Link>
+        <Link to="/resources" className="btn btn-secondary">&larr; Back</Link>
+        <Link to="/additional-resources" className="btn btn-primary">Additional Resources &rarr;</Link>
       </div>
     </div>
   );

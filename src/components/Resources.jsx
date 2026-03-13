@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import resourcesContent from '../content/resources.json';
 
 export default function Resources({
   recommendation, selectedQuestionIds, onToggleQuestion,
@@ -8,7 +7,6 @@ export default function Resources({
   customQuestions, onAddCustomQuestion, onRemoveCustomQuestion
 }) {
   const [customInput, setCustomInput] = useState('');
-  const { title, intro, categories } = resourcesContent;
 
   const dynamicQuestions = recommendation?.dynamicQuestions || [];
   const dynamicStarters = recommendation?.dynamicConversationStarters || [];
@@ -22,8 +20,10 @@ export default function Resources({
 
   return (
     <div className="resources-page">
-      <h1>{title}</h1>
-      <p className="resources-intro">{intro}</p>
+      <h1>Preparing to Meet with Your Provider</h1>
+      <p className="resources-intro">
+        You're almost ready! Select the questions and conversation starters you'd like to bring to your next appointment. These will appear on your printable summary.
+      </p>
 
       {/* Dynamic Questions to Ask Your Provider */}
       {dynamicQuestions.length > 0 && (
@@ -111,32 +111,6 @@ export default function Resources({
           </div>
         </div>
       )}
-
-      {categories.map((category, idx) => (
-        <div key={idx} className="resource-category">
-          <h2>{category.title}</h2>
-          <div className="resources-list">
-            {category.resources.map((resource, i) => (
-              <div key={i} className="resource-item">
-                <div>
-                  <div className="name">{resource.name}</div>
-                  <div className="description">{resource.description}</div>
-                  {resource.url && (
-                    <a href={resource.url} target="_blank" rel="noopener noreferrer">
-                      Visit Website &rarr;
-                    </a>
-                  )}
-                  {resource.phone && (
-                    <a href={`tel:${resource.phone}`}>
-                      Call: {resource.phone}
-                    </a>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
 
       <div className="btn-group">
         <Link to="/recommendations" className="btn btn-secondary">&larr; Back</Link>

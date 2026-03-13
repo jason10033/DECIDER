@@ -10,6 +10,7 @@ import Recommendations from './components/Recommendations';
 import Resources from './components/Resources';
 import Summary from './components/Summary';
 import About from './components/About';
+import AdditionalResources from './components/AdditionalResources';
 import useAssessment from './hooks/useAssessment';
 import { generateRecommendation } from './services/recommendations';
 import qualtricsService from './services/qualtrics';
@@ -207,6 +208,7 @@ export default function App() {
             />
           }
         />
+        <Route path="/additional-resources" element={<AdditionalResources />} />
         <Route path="/about" element={<About />} />
       </Routes>
     </Layout>
