@@ -170,13 +170,55 @@ export function generateRecommendation(responses) {
   // Generate personalized rationale based on responses
   const rationale = generateRationale(primaryId, responses);
 
+  // Generate a plain-language summary sentence
+  const summarySentence = generateSummarySentence(primaryId, responses, templates[primaryId]?.name);
+
   return {
     primary,
     alternatives,
     rationale,
+    summarySentence,
     providerTips: recommendationTemplates.providerSection.tips,
     providerHeading: recommendationTemplates.providerSection.heading
   };
+}
+
+function generateSummarySentence(primaryId, responses, primaryName) {
+  const factors = [];
+
+  // Collect the key factors that drove the decision
+  if (responses.prep_02 === 'daily_pill') factors.push('your preference for a daily pill');
+  else if (responses.prep_02 === 'injection') factors.push('your preference for injections over daily pills');
+
+  if (responses.prep_03 === 'no_way' || responses.prep_03 === 'prefer_avoid') factors.push('your preference to avoid needles');
+  else if (responses.prep_03 === 'fine') factors.push('your comfort with injections');
+
+  if (responses.prep_05 === 'very_important') factors.push('the importance of privacy to you');
+
+  if (responses.prep_06 === 'yes') factors.push('your pregnancy plans');
+
+  if (responses.prep_09 === 'convenience') factors.push('your priority for convenience');
+  else if (responses.prep_09 === 'most_effective') factors.push('your priority for effectiveness');
+  else if (responses.prep_09 === 'easiest_to_stop') factors.push('your desire for flexibility to stop easily');
+  else if (responses.prep_09 === 'fewest_visits') factors.push('your preference for fewer clinic visits');
+  else if (responses.prep_09 === 'lowest_cost') factors.push('your focus on keeping costs low');
+  else if (responses.prep_09 === 'most_private') factors.push('your priority for privacy');
+
+  if (responses.prep_04 === 'every_6mo') factors.push('your preference for infrequent appointments');
+
+  const concerns = responses.prep_08 || [];
+  if (concerns.includes('remembering') && !factors.some(f => f.includes('daily'))) factors.push('your concern about remembering daily doses');
+
+  // Build the sentence
+  if (factors.length === 0) {
+    return `Based on your overall preferences, ${primaryName} was the closest match to what matters most to you. Discuss this option with your provider to see if it's right for your situation.`;
+  }
+
+  const factorText = factors.length === 1
+    ? factors[0]
+    : factors.slice(0, -1).join(', ') + ' and ' + factors[factors.length - 1];
+
+  return `Based on ${factorText}, ${primaryName} was the closest match to what matters most to you. This is a starting point for your conversation with your provider, who can help you make the final decision together.`;
 }
 
 function generateRationale(primaryId, responses) {

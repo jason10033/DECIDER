@@ -11,22 +11,26 @@
       {
         "number": 1,
         "title": "Learn",
-        "description": "Get the facts about each PrEP option: how it works, what to expect, and what's involved."
+        "description": "Get the facts about each PrEP option: how it works, what to expect, and what's involved.",
+        "route": "/education"
       },
       {
         "number": 2,
         "title": "Compare",
-        "description": "See your options side by side so you can easily spot the differences that matter to you."
+        "description": "See your options side by side so you can easily spot the differences that matter to you.",
+        "route": "/compare"
       },
       {
         "number": 3,
         "title": "Reflect",
-        "description": "Answer a few simple questions about your preferences, lifestyle, and what's important to you."
+        "description": "Answer a few simple questions about your preferences, lifestyle, and what's important to you.",
+        "route": "/assessment"
       },
       {
         "number": 4,
         "title": "Decide",
-        "description": "Get a personalized summary to help guide your conversation with your healthcare provider."
+        "description": "Get a personalized summary to help guide your conversation with your healthcare provider.",
+        "route": "/recommendations"
       }
     ],
     "disclaimer": "This tool does not collect or store any personal health information. Your answers are used only during this session to generate your personalized results and are not saved or shared.",

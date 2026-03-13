@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-export default function Recommendations({ recommendation, assessmentResponses }) {
+export default function Recommendations({ recommendation, assessmentResponses, selectedAlternativeIds, onToggleAlternative }) {
   if (!recommendation || !recommendation.primary) {
     return (
       <div className="recommendations-page">
@@ -15,7 +15,7 @@ export default function Recommendations({ recommendation, assessmentResponses })
     );
   }
 
-  const { primary, alternatives, rationale } = recommendation;
+  const { primary, alternatives, rationale, summarySentence } = recommendation;
 
   return (
     <div className="recommendations-page">
@@ -24,6 +24,13 @@ export default function Recommendations({ recommendation, assessmentResponses })
         Based on your answers, here is a personalized overview of which PrEP option may be the best fit for you.
         Remember, this is a starting point for your conversation with your healthcare provider.
       </p>
+
+      {/* Summary Sentence */}
+      {summarySentence && (
+        <div className="summary-sentence" style={{ marginBottom: 'var(--space-lg)' }}>
+          <p>{summarySentence}</p>
+        </div>
+      )}
 
       {/* Primary Recommendation */}
       <div className={`recommendation-card primary-rec ${primary.colorClass}`}>
@@ -68,24 +75,39 @@ export default function Recommendations({ recommendation, assessmentResponses })
         )}
       </div>
 
-      {/* Alternative Options */}
+      {/* Other Options - Opt-in for Summary */}
       {alternatives && alternatives.length > 0 && (
-        <>
-          {alternatives.map((alt, idx) => (
-            <div key={idx} className={`recommendation-card ${alt.colorClass}`}>
-              <span className="recommendation-label also-consider">Also Consider</span>
-              <h2>{alt.name}</h2>
-              <p>{alt.heading}</p>
-              {alt.reasons && (
-                <ul className="action-items">
-                  {alt.reasons.map((reason, i) => (
-                    <li key={i}>{reason}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
-        </>
+        <div className="alternatives-section">
+          <h2>Other Options to Explore</h2>
+          <p className="alternatives-intro">
+            Check any options you'd also like to discuss with your provider. They'll appear on your printable summary.
+          </p>
+          {alternatives.map((alt, idx) => {
+            const isSelected = selectedAlternativeIds?.includes(alt.id);
+            return (
+              <div key={idx} className={`recommendation-card alternative-selectable ${alt.colorClass} ${isSelected ? 'alt-selected' : ''}`}>
+                <label className="alt-checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={isSelected || false}
+                    onChange={() => onToggleAlternative?.(alt.id)}
+                  />
+                  <span className="alt-checkbox-text">Include in my summary</span>
+                </label>
+                <span className="recommendation-label also-consider">Also Consider</span>
+                <h2>{alt.name}</h2>
+                <p>{alt.heading}</p>
+                {alt.reasons && (
+                  <ul className="action-items">
+                    {alt.reasons.map((reason, i) => (
+                      <li key={i}>{reason}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            );
+          })}
+        </div>
       )}
 
       <div className="btn-group">

@@ -75,7 +75,7 @@ export default function Assessment({ content, responses, onAnswer, onToggleMulti
           }}
           style={!allAnswered ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
         >
-          See My Results &rarr;
+          See What Fits &rarr;
         </Link>
       </div>
     </div>

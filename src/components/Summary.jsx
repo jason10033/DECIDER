@@ -13,7 +13,23 @@ function getAnswerLabel(questionId, value, questions) {
   return option ? option.label : value;
 }
 
-export default function Summary({ recommendation, assessmentResponses, assessmentContent }) {
+// Group questions into logical categories for a cleaner layout
+const questionGroups = [
+  {
+    label: 'My Preferences',
+    ids: ['prep_02', 'prep_03', 'prep_04', 'prep_09']
+  },
+  {
+    label: 'My Situation',
+    ids: ['prep_01', 'prep_05', 'prep_06', 'prep_07', 'prep_10']
+  },
+  {
+    label: 'My Concerns',
+    ids: ['prep_08']
+  }
+];
+
+export default function Summary({ recommendation, assessmentResponses, assessmentContent, selectedAlternatives }) {
   const questions = assessmentContent?.questions || [];
 
   const handlePrint = () => {
@@ -27,18 +43,46 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
         Take this summary to your next healthcare visit to help guide your conversation about PrEP.
       </p>
 
-      {/* About Me Section */}
+      {/* About Me Section - Organized by groups */}
       <div className="summary-card">
         <h2>About Me</h2>
-        {questions.map(q => {
-          const answer = assessmentResponses?.[q.id];
-          if (answer === undefined || answer === null) return null;
+
+        {/* Summary sentence at top */}
+        {recommendation?.summarySentence && (
+          <div className="summary-sentence">
+            <p>{recommendation.summarySentence}</p>
+          </div>
+        )}
+
+        {questionGroups.map(group => {
+          const groupQuestions = group.ids
+            .map(id => questions.find(q => q.id === id))
+            .filter(Boolean);
+
+          const hasAnswers = groupQuestions.some(q => {
+            const answer = assessmentResponses?.[q.id];
+            return answer !== undefined && answer !== null;
+          });
+
+          if (!hasAnswers) return null;
+
           return (
-            <div key={q.id} className="response-item">
-              <span className="response-label">{q.text}</span>
-              <span className="response-value">
-                {getAnswerLabel(q.id, answer, questions)}
-              </span>
+            <div key={group.label} className="about-me-group">
+              <h3 className="about-me-group-label">{group.label}</h3>
+              <div className="about-me-items">
+                {groupQuestions.map(q => {
+                  const answer = assessmentResponses?.[q.id];
+                  if (answer === undefined || answer === null) return null;
+                  return (
+                    <div key={q.id} className="about-me-item">
+                      <span className="about-me-question">{q.text}</span>
+                      <span className="about-me-answer">
+                        {getAnswerLabel(q.id, answer, questions)}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           );
         })}
@@ -102,11 +146,11 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
         </div>
       )}
 
-      {/* I'd Also Like to Learn About */}
-      {recommendation?.alternatives && recommendation.alternatives.length > 0 && (
+      {/* I'd Also Like to Learn About - only user-selected alternatives */}
+      {selectedAlternatives && selectedAlternatives.length > 0 && (
         <div className="summary-card">
           <h2>I'd Also Like to Learn About</h2>
-          {recommendation.alternatives.map((alt, idx) => (
+          {selectedAlternatives.map((alt, idx) => (
             <div key={idx} className={`recommendation-card ${alt.colorClass}`}>
               <span className="recommendation-label also-consider">Also Consider</span>
               <h3>{alt.name}</h3>

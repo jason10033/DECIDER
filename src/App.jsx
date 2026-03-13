@@ -21,12 +21,22 @@ import onDemandContent from './content/modality-on-demand.json';
 export default function App() {
   const { responses, setAnswer, toggleMultiAnswer, getAnswer, isComplete, reset } = useAssessment();
   const [visitedModalities, setVisitedModalities] = useState([]);
+  const [selectedAlternativeIds, setSelectedAlternativeIds] = useState([]);
   const navigate = useNavigate();
 
   const handleVisitModality = (modalityId) => {
     setVisitedModalities(prev => {
       if (prev.includes(modalityId)) return prev;
       return [...prev, modalityId];
+    });
+  };
+
+  const handleToggleAlternative = (altId) => {
+    setSelectedAlternativeIds(prev => {
+      if (prev.includes(altId)) {
+        return prev.filter(id => id !== altId);
+      }
+      return [...prev, altId];
     });
   };
 
@@ -37,13 +47,19 @@ export default function App() {
     return generateRecommendation(responses);
   }, [responses]);
 
-  // Handle assessment completion  - submit to Qualtrics
+  // Resolve selected alternative objects from IDs
+  const selectedAlternatives = useMemo(() => {
+    if (!recommendation?.alternatives) return [];
+    return recommendation.alternatives.filter(alt => selectedAlternativeIds.includes(alt.id));
+  }, [recommendation, selectedAlternativeIds]);
+
+  // Handle assessment completion - submit to Qualtrics
   const handleContinueToResults = () => {
     if (assessmentContent?.questions && isComplete(assessmentContent.questions)) {
       try {
         qualtricsService.submit(responses);
       } catch (e) {
-        // Silently handle submission errors  - don't block the user
+        // Silently handle submission errors - don't block the user
         console.warn('Qualtrics submission error:', e);
       }
     }
@@ -124,6 +140,8 @@ export default function App() {
             <Recommendations
               recommendation={recommendation}
               assessmentResponses={responses}
+              selectedAlternativeIds={selectedAlternativeIds}
+              onToggleAlternative={handleToggleAlternative}
             />
           }
         />
@@ -137,6 +155,7 @@ export default function App() {
               recommendation={recommendation}
               assessmentResponses={responses}
               assessmentContent={assessmentContent}
+              selectedAlternatives={selectedAlternatives}
             />
           }
         />

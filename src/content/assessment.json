@@ -1,7 +1,7 @@
 {
-  "title": "What Matters Most to You?",
-  "description": "These questions will help us understand your preferences so we can highlight which PrEP option might be the best fit for your life. Your answers are private and are not saved or shared.",
-  "reassurance": "There are no wrong answers. Everyone's situation is different, and the best PrEP option is the one that works for you.",
+  "title": "Let's Find Your Best Fit Together",
+  "description": "Choosing the right PrEP option is a decision you and your healthcare provider make together. These questions help us understand what matters most to you so you can have a more informed conversation with your provider. Your answers are private and are not saved or shared.",
+  "reassurance": "There are no right or wrong answers. Every person's needs, preferences, and circumstances are different. This tool helps you reflect on what's important to you so you and your provider can make the best decision together.",
   "questions": [
     {
       "id": "prep_01",
