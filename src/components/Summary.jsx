@@ -49,52 +49,17 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
         Take this summary to your next healthcare visit to help guide your conversation about PrEP.
       </p>
 
-      {/* About Me Section - Organized by groups */}
-      <div className="summary-card">
-        <h2>About Me</h2>
-
-        {questionGroups.map(group => {
-          const groupQuestions = group.ids
-            .map(id => questions.find(q => q.id === id))
-            .filter(Boolean);
-
-          const hasAnswers = groupQuestions.some(q => {
-            const answer = assessmentResponses?.[q.id];
-            return answer !== undefined && answer !== null;
-          });
-
-          if (!hasAnswers) return null;
-
-          return (
-            <div key={group.label} className="about-me-group">
-              <h3 className="about-me-group-label">{group.label}</h3>
-              <div className="about-me-items">
-                {groupQuestions.map(q => {
-                  const answer = assessmentResponses?.[q.id];
-                  if (answer === undefined || answer === null) return null;
-                  return (
-                    <div key={q.id} className="about-me-item">
-                      <span className="about-me-question">{q.text}</span>
-                      <span className="about-me-answer">
-                        {getAnswerLabel(q.id, answer, questions)}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
-
-        {/* Summary sentence at bottom */}
-        {recommendation?.summarySentence && (
-          <div className="summary-sentence" style={{ marginTop: 'var(--space-lg)' }}>
+      {/* 1. Summary - AI generated sentence */}
+      {recommendation?.summarySentence && (
+        <div className="summary-card">
+          <h2>Summary</h2>
+          <div className="summary-sentence">
             <p>{recommendation.summarySentence}</p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* I'm Interested In */}
+      {/* 2. I'm Interested In */}
       {recommendation?.primary && (
         <div className="summary-card">
           <h2>I'm Interested In</h2>
@@ -103,7 +68,6 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
             <h3>{recommendation.primary.name}</h3>
             <p>{recommendation.primary.heading}</p>
 
-            {/* WHY this was chosen - personalized rationale */}
             {recommendation.rationale && recommendation.rationale.length > 0 && (
               <>
                 <h4 style={{ marginTop: 'var(--space-md)', marginBottom: 'var(--space-sm)', fontSize: 'var(--font-size-base)' }}>
@@ -152,7 +116,7 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
         </div>
       )}
 
-      {/* I'd Also Like to Learn About - only user-selected alternatives */}
+      {/* 3. I'd Also Like to Learn About */}
       {selectedAlternatives && selectedAlternatives.length > 0 && (
         <div className="summary-card">
           <h2>I'd Also Like to Learn About</h2>
@@ -166,7 +130,7 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
         </div>
       )}
 
-      {/* Questions I Want to Ask - user-selected from Resources */}
+      {/* 4. Questions I Want to Ask */}
       {(selectedQuestions.length > 0 || selectedStarters.length > 0) && (
         <div className="summary-card">
           <h2>Questions I Want to Ask</h2>
@@ -196,7 +160,6 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
         </div>
       )}
 
-      {/* Fallback if no questions selected */}
       {selectedQuestions.length === 0 && selectedStarters.length === 0 && (
         <div className="summary-card">
           <h2>Questions I Want to Ask</h2>
@@ -206,7 +169,7 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
         </div>
       )}
 
-      {/* My Next Steps */}
+      {/* 5. My Next Steps */}
       <div className="summary-card">
         <h2>My Next Steps</h2>
         <ul className="checklist">
@@ -214,6 +177,43 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
           <li>Get tested for HIV and STIs before starting PrEP</li>
           <li>Decide together with my provider which PrEP option is right for me</li>
         </ul>
+      </div>
+
+      {/* 6. About Me */}
+      <div className="summary-card">
+        <h2>About Me</h2>
+        {questionGroups.map(group => {
+          const groupQuestions = group.ids
+            .map(id => questions.find(q => q.id === id))
+            .filter(Boolean);
+
+          const hasAnswers = groupQuestions.some(q => {
+            const answer = assessmentResponses?.[q.id];
+            return answer !== undefined && answer !== null;
+          });
+
+          if (!hasAnswers) return null;
+
+          return (
+            <div key={group.label} className="about-me-group">
+              <h3 className="about-me-group-label">{group.label}</h3>
+              <div className="about-me-items">
+                {groupQuestions.map(q => {
+                  const answer = assessmentResponses?.[q.id];
+                  if (answer === undefined || answer === null) return null;
+                  return (
+                    <div key={q.id} className="about-me-item">
+                      <span className="about-me-question">{q.text}</span>
+                      <span className="about-me-answer">
+                        {getAnswerLabel(q.id, answer, questions)}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Print Button */}
