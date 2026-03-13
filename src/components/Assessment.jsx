@@ -70,7 +70,16 @@ export default function Assessment({ content, responses, onAnswer, onToggleMulti
       <p className="assessment-description">{description}</p>
       {reassurance && <p className="assessment-reassurance">{reassurance}</p>}
 
-      {visibleQuestions.map((q, i) => renderQuestion(q, i))}
+      {visibleQuestions.map((q, i) => {
+        const prevGroup = i > 0 ? visibleQuestions[i - 1].group : null;
+        const showDivider = prevGroup && q.group !== prevGroup;
+        return (
+          <div key={q.id}>
+            {showDivider && <div className="assessment-group-divider" />}
+            {renderQuestion(q, i)}
+          </div>
+        );
+      })}
 
       <div className="btn-group">
         <Link to={backPath || '/compare'} className="btn btn-secondary">&larr; Back</Link>

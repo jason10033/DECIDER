@@ -1003,6 +1003,12 @@ body {
   margin-bottom: var(--space-2xl);
 }
 
+.assessment-group-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--space-xl) 0;
+}
+
 .question-card {
   background: var(--color-surface);
   border-radius: var(--radius-lg);
