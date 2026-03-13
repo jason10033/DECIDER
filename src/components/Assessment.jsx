@@ -5,7 +5,16 @@ export default function Assessment({ content, responses, onAnswer, onToggleMulti
 
   const { title, description, reassurance, questions } = content;
 
-  const allAnswered = questions.every(q => {
+  // Filter questions based on conditional logic
+  const visibleQuestions = questions.filter(q => {
+    // prep_06 (pregnancy) only shows if sex assigned at birth is female
+    if (q.id === 'prep_06') {
+      return responses.prep_00 === 'female';
+    }
+    return true;
+  });
+
+  const allAnswered = visibleQuestions.every(q => {
     const answer = responses[q.id];
     if (q.type === 'multi_choice') return answer && answer.length > 0;
     return answer !== undefined && answer !== null;
@@ -17,7 +26,7 @@ export default function Assessment({ content, responses, onAnswer, onToggleMulti
 
     return (
       <div key={question.id} className="question-card">
-        <div className="question-number">Question {index + 1} of {questions.length}</div>
+        <div className="question-number">Question {index + 1} of {visibleQuestions.length}</div>
         <div className="question-text">{question.text}</div>
         <div className="options-list">
           {question.options.map(option => {
@@ -61,7 +70,7 @@ export default function Assessment({ content, responses, onAnswer, onToggleMulti
       <p className="assessment-description">{description}</p>
       {reassurance && <p className="assessment-reassurance">{reassurance}</p>}
 
-      {questions.map((q, i) => renderQuestion(q, i))}
+      {visibleQuestions.map((q, i) => renderQuestion(q, i))}
 
       <div className="btn-group">
         <Link to={backPath || '/compare'} className="btn btn-secondary">&larr; Back</Link>

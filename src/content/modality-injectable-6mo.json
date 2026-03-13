@@ -7,17 +7,17 @@
   "icon": "🛡️",
   "tagline": "A shot just twice a year for year-round HIV protection",
   "keyTakeaways": [
-    "Get an injection just twice a year  - the least frequent dosing of any PrEP option",
+    "Get an injection just twice a year - the least frequent dosing of any PrEP option",
     "Shown to be highly effective in clinical trials, with a 96% reduction in HIV risk",
     "Given as a small injection under the skin in the belly area",
     "A newer option that offers maximum convenience for people who want minimal visits",
-    "If you stop, the medicine stays in your body for an extended period  - plan ahead with your provider"
+    "If you stop, the medicine stays in your body for an extended period - plan ahead with your provider"
   ],
   "sections": [
     {
       "id": "overview",
       "title": "Overview",
-      "content": "Lenacapavir (brand name Sunlenca) is the newest form of PrEP and offers the longest gap between doses  - just one injection every 6 months. That means only two clinic visits a year for your PrEP. This option was developed for people who want highly effective HIV prevention with as little effort as possible between appointments. It was approved for PrEP use based on impressive results from large clinical trials.",
+      "content": "Lenacapavir (brand name Sunlenca) is the newest form of PrEP and offers the longest gap between doses - just one injection every 6 months. That means only two clinic visits a year for your PrEP. This option was developed for people who want highly effective HIV prevention with as little effort as possible between appointments. It was approved for PrEP use based on impressive results from large clinical trials.",
       "keyPoints": [
         "One injection every 6 months (twice a year)",
         "The newest and longest-acting PrEP option available",
@@ -28,7 +28,7 @@
     {
       "id": "how_it_works",
       "title": "How It Works",
-      "content": "Lenacapavir belongs to a new class of HIV medications called capsid inhibitors. The capsid is the protective shell around HIV's genetic material  - think of it as the virus's armor. Lenacapavir targets this shell at multiple stages of the virus's life cycle, disrupting HIV's ability to infect cells and make copies of itself. Because it works differently from other PrEP medications, it's effective even against some HIV strains that are resistant to older drugs.",
+      "content": "Lenacapavir belongs to a new class of HIV medications called capsid inhibitors. The capsid is the protective shell around HIV's genetic material - think of it as the virus's armor. Lenacapavir targets this shell at multiple stages of the virus's life cycle, disrupting HIV's ability to infect cells and make copies of itself. Because it works differently from other PrEP medications, it's effective even against some HIV strains that are resistant to older drugs.",
       "keyPoints": [
         "Targets the HIV capsid (the virus's protective outer shell)",
         "Works at multiple stages of the virus's life cycle",
@@ -51,7 +51,7 @@
         {
           "type": "note",
           "title": "Why the oral loading?",
-          "text": "The oral loading tablets help get the medicine into your system quickly while you wait for your first injection. It's just a few pills on two days  - much simpler than a month-long oral lead-in period."
+          "text": "The oral loading tablets help get the medicine into your system quickly while you wait for your first injection. It's just a few pills on two days - much simpler than a month-long oral lead-in period."
         },
         {
           "type": "tip",
@@ -63,7 +63,7 @@
     {
       "id": "effectiveness",
       "title": "Effectiveness",
-      "content": "Lenacapavir for PrEP was studied in two large clinical trials called PURPOSE 1 and PURPOSE 2. These trials showed that the twice-yearly injection was highly effective at preventing HIV. In the trials, lenacapavir reduced the risk of HIV by 96% compared to a background rate of infection  - meaning it prevented nearly all infections among participants who received it.",
+      "content": "Lenacapavir for PrEP was studied in two large clinical trials called PURPOSE 1 and PURPOSE 2. These trials showed that the twice-yearly injection was highly effective at preventing HIV. In the trials, lenacapavir reduced the risk of HIV by 96% compared to a background rate of infection - meaning it prevented nearly all infections among participants who received it.",
       "keyPoints": [
         "Reduced HIV risk by 96% in large clinical trials",
         "Highly effective across diverse populations studied",
@@ -83,7 +83,7 @@
       "title": "Side Effects",
       "content": "The most common side effects are reactions at the injection site. Because the injection goes under the skin (rather than deep into muscle), you may notice a small bump or nodule at the injection site. For most people, these are mild and go away on their own.",
       "keyPoints": [
-        "Injection site reactions are the most common side effect  - small bumps, hardness, or tenderness at the injection site",
+        "Injection site reactions are the most common side effect - small bumps, hardness, or tenderness at the injection site",
         "These nodules are usually painless or mildly tender and typically resolve within weeks",
         "Some people experience mild nausea or discomfort with the initial oral loading tablets",
         "Serious side effects are uncommon",
@@ -103,10 +103,10 @@
       "content": "Because lenacapavir for PrEP is newer, it may not be available at every clinic yet. Here's what to expect when getting started:",
       "keyPoints": [
         "You'll get an HIV test to confirm you're HIV-negative",
-        "Your provider will review your health history and current medications (this is especially important for lenacapavir  - see Drug Interactions section)",
+        "Your provider will review your health history and current medications (this is especially important for lenacapavir - see Drug Interactions section)",
         "You'll start the oral loading phase with tablets on Day 1 and Day 2",
         "Your first injection will be scheduled for about 4 weeks later (Day 28)",
-        "The injection is given in the belly area (abdomen)  - it's a small subcutaneous shot",
+        "The injection is given in the belly area (abdomen) - it's a small subcutaneous shot",
         "Your provider may have you stay briefly after the injection for observation"
       ],
       "callouts": [
@@ -125,7 +125,7 @@
         "Target: every 6 months (about 26 weeks) between injections",
         "Your provider will give you guidance on the acceptable window around your scheduled date",
         "If you think you'll miss your appointment, call your provider as soon as possible to reschedule",
-        "Don't wait until you've missed your window  - reach out early if scheduling is tricky"
+        "Don't wait until you've missed your window - reach out early if scheduling is tricky"
       ],
       "callouts": [
         {
@@ -143,7 +143,7 @@
         "Lenacapavir remains in your body for a prolonged period after your last injection",
         "During this tail period, drug levels may not be high enough for full protection",
         "You'll need to use another form of HIV prevention during this transition",
-        "Your provider will help you create a plan for continued protection  - this might include switching to oral PrEP or using condoms consistently",
+        "Your provider will help you create a plan for continued protection - this might include switching to oral PrEP or using condoms consistently",
         "Never stop without first talking to your provider"
       ],
       "callouts": [
@@ -157,11 +157,11 @@
     {
       "id": "drug_interactions",
       "title": "Drug Interactions",
-      "content": "Lenacapavir can interact with certain other medications, which may affect how well it works. It's very important to tell your provider about everything you take  - including prescription medications, over-the-counter drugs, vitamins, and herbal supplements.",
+      "content": "Lenacapavir can interact with certain other medications, which may affect how well it works. It's very important to tell your provider about everything you take - including prescription medications, over-the-counter drugs, vitamins, and herbal supplements.",
       "keyPoints": [
         "Some seizure/epilepsy medications may lower lenacapavir levels and reduce its effectiveness",
         "Certain antibiotics used for tuberculosis can also interact with lenacapavir",
-        "The herbal supplement St. John's wort can reduce lenacapavir levels  - avoid using it while on this PrEP",
+        "The herbal supplement St. John's wort can reduce lenacapavir levels - avoid using it while on this PrEP",
         "Some supplements and herbal remedies may interact in ways that aren't fully known yet",
         "Always tell your provider and pharmacist about everything you take before starting lenacapavir"
       ],
@@ -169,7 +169,7 @@
         {
           "type": "important",
           "title": "Tell your provider about all your medications",
-          "text": "Before starting lenacapavir, make a complete list of everything you take  - prescriptions, over-the-counter medications, vitamins, and any herbal or natural supplements like St. John's wort. Some of these can interfere with how well lenacapavir works."
+          "text": "Before starting lenacapavir, make a complete list of everything you take - prescriptions, over-the-counter medications, vitamins, and any herbal or natural supplements like St. John's wort. Some of these can interfere with how well lenacapavir works."
         }
       ]
     },
@@ -178,7 +178,7 @@
       "title": "Cost & Access",
       "content": "As a newer medication, lenacapavir's insurance coverage is still expanding. However, there are programs available to help with costs, and coverage is expected to grow as more providers begin offering it.",
       "keyPoints": [
-        "Insurance coverage varies  - check with your plan to see if lenacapavir for PrEP is covered",
+        "Insurance coverage varies - check with your plan to see if lenacapavir for PrEP is covered",
         "Gilead Sciences (the manufacturer) offers a patient assistance program for eligible individuals",
         "Copay assistance programs may be available for those with insurance",
         "Coverage is expected to expand as this option becomes more widely available",
@@ -197,12 +197,12 @@
       "title": "Common Questions",
       "content": "Here are answers to some of the questions people ask most often about the twice-yearly lenacapavir injection.",
       "keyPoints": [
-        "Q: Does the injection hurt?  - A: It's a small subcutaneous injection in the belly area, similar to other shots given under the skin. Most people describe it as a quick pinch.",
-        "Q: Where exactly is the injection given?  - A: In the abdomen (belly area), just under the skin. Your provider will choose the best spot and alternate locations.",
-        "Q: Is this the same as the 2-month injection?  - A: No, lenacapavir (Sunlenca) is a different medication from cabotegravir (Apretude). They work differently and have different dosing schedules.",
-        "Q: Can I get this if I'm pregnant or planning pregnancy?  - A: Talk to your provider. They will help you weigh the benefits and considerations based on the latest available information.",
-        "Q: What if I want to switch to a different PrEP option later?  - A: You can switch, but because of the long-acting nature of this medication, work with your provider to plan the timing of your transition.",
-        "Q: Is this option available everywhere?  - A: Not yet  - it's newer and still becoming available at more clinics. Ask your provider or check PrEP locator tools to find a provider near you who offers it."
+        "Q: Does the injection hurt? - A: It's a small subcutaneous injection in the belly area, similar to other shots given under the skin. Most people describe it as a quick pinch.",
+        "Q: Where exactly is the injection given? - A: In the abdomen (belly area), just under the skin. Your provider will choose the best spot and alternate locations.",
+        "Q: Is this the same as the 2-month injection? - A: No, lenacapavir (Sunlenca) is a different medication from cabotegravir (Apretude). They work differently and have different dosing schedules.",
+        "Q: Can I get this if I'm pregnant or planning pregnancy? - A: Talk to your provider. They will help you weigh the benefits and considerations based on the latest available information.",
+        "Q: What if I want to switch to a different PrEP option later? - A: You can switch, but because of the long-acting nature of this medication, work with your provider to plan the timing of your transition.",
+        "Q: Is this option available everywhere? - A: Not yet - it's newer and still becoming available at more clinics. Ask your provider or check PrEP locator tools to find a provider near you who offers it."
       ]
     }
   ]

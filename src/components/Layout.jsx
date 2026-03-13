@@ -1,4 +1,5 @@
 import { useLocation, Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import siteConfig from '../content/site.json';
 
 const modules = siteConfig.modules; // [{name, path}, ...]
@@ -15,6 +16,11 @@ const routeToStep = {
 export default function Layout({ children }) {
   const location = useLocation();
   const path = location.pathname;
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [path]);
 
   // Determine active step from current route
   const activeStep = routeToStep[path] || null;

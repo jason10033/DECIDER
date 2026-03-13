@@ -7,20 +7,20 @@
   "icon": "💊",
   "tagline": "A pill you take once a day to stay protected",
   "keyTakeaways": [
-    "Take one pill every day  - you can do it at home on your own schedule",
+    "Take one pill every day - you can do it at home on your own schedule",
     "Over 99% effective at preventing HIV when taken daily as directed",
     "Two medication options available: Truvada and Descovy",
     "Most side effects are mild and usually go away within a few weeks",
-    "Easy to start and easy to stop  - you're in control"
+    "Easy to start and easy to stop - you're in control"
   ],
   "sections": [
     {
       "id": "overview",
       "title": "Overview",
-      "content": "Oral PrEP is the original form of PrEP and has been available since 2012. It's a single pill you take once a day to protect yourself from HIV. Because you take it at home, you have full control over your prevention  - no clinic visits needed for each dose. Millions of people around the world use oral PrEP safely and successfully.",
+      "content": "Oral PrEP is the original form of PrEP and has been available since 2012. It's a single pill you take once a day to protect yourself from HIV. Because you take it at home, you have full control over your prevention - no clinic visits needed for each dose. Millions of people around the world use oral PrEP safely and successfully.",
       "keyPoints": [
         "One pill, once a day",
-        "Take it at home  - no injections needed",
+        "Take it at home - no injections needed",
         "Available as a generic, which can lower costs",
         "The longest track record of any PrEP option"
       ]
@@ -28,7 +28,7 @@
     {
       "id": "how_it_works",
       "title": "How It Works",
-      "content": "Oral PrEP contains two medications that work together to block HIV from making copies of itself in your body. When you take the pill daily, the medicine builds up in the tissues where HIV would try to enter  - like the lining of the rectum and vaginal tissue. With enough medicine present, HIV can't get a foothold, even if you're exposed to the virus.",
+      "content": "Oral PrEP contains two medications that work together to block HIV from making copies of itself in your body. When you take the pill daily, the medicine builds up in the tissues where HIV would try to enter - like the lining of the rectum and vaginal tissue. With enough medicine present, HIV can't get a foothold, even if you're exposed to the virus.",
       "keyPoints": [
         "The two medicines block a key step HIV needs to reproduce",
         "Protection builds up over the first several days of use",
@@ -40,8 +40,8 @@
       "title": "Medications Available",
       "content": "There are two brand-name medications approved for oral PrEP, and generic versions are also available. Both work very well, but they have some differences worth knowing about.",
       "keyPoints": [
-        "Truvada (tenofovir disoproxil fumarate + emtricitabine)  - approved for all adults and adolescents at risk for HIV, regardless of the type of sex they have. Also available as a lower-cost generic.",
-        "Descovy (tenofovir alafenamide + emtricitabine)  - approved for people at risk through sex, except it has not been studied in people at risk through receptive vaginal sex. May have fewer effects on kidneys and bones compared to Truvada.",
+        "Truvada (tenofovir disoproxil fumarate + emtricitabine) - approved for all adults and adolescents at risk for HIV, regardless of the type of sex they have. Also available as a lower-cost generic.",
+        "Descovy (tenofovir alafenamide + emtricitabine) - approved for people at risk through sex, except it has not been studied in people at risk through receptive vaginal sex. May have fewer effects on kidneys and bones compared to Truvada.",
         "Your provider can help you decide which one is the best choice for you based on your health and situation."
       ],
       "callouts": [
@@ -55,7 +55,7 @@
     {
       "id": "dosing_schedule",
       "title": "Dosing Schedule",
-      "content": "The standard approach is to take one pill every day, ideally around the same time each day. Many people find it helpful to tie it to a daily routine  - like brushing your teeth, eating breakfast, or taking other vitamins. If you miss a dose, take it as soon as you remember. If it's almost time for your next dose, just take one pill  - don't double up.",
+      "content": "The standard approach is to take one pill every day, ideally around the same time each day. Many people find it helpful to tie it to a daily routine - like brushing your teeth, eating breakfast, or taking other vitamins. If you miss a dose, take it as soon as you remember. If it's almost time for your next dose, just take one pill - don't double up.",
       "keyPoints": [
         "One pill, once a day, every day",
         "Try to take it around the same time each day",
@@ -71,14 +71,14 @@
         {
           "type": "note",
           "title": "On-demand dosing (2-1-1)",
-          "text": "For cisgender men who have sex with men, there is an alternative called on-demand or event-driven PrEP (sometimes called 2-1-1). This means taking 2 pills 2-24 hours before sex, then 1 pill 24 hours after the first dose, and 1 more pill 24 hours after that. This approach is not recommended for everyone  - talk to your provider to see if it's an option for you."
+          "text": "For cisgender men who have sex with men, there is an alternative called on-demand or event-driven PrEP (sometimes called 2-1-1). This means taking 2 pills 2-24 hours before sex, then 1 pill 24 hours after the first dose, and 1 more pill 24 hours after that. This approach is not recommended for everyone - talk to your provider to see if it's an option for you."
         }
       ]
     },
     {
       "id": "effectiveness",
       "title": "Effectiveness",
-      "content": "When taken every day as directed, oral PrEP reduces the risk of getting HIV from sex by more than 99%. That makes it one of the most effective prevention tools available. However, effectiveness depends on consistency  - missing doses can lower your protection. Studies show that the more consistently you take it, the better it works.",
+      "content": "When taken every day as directed, oral PrEP reduces the risk of getting HIV from sex by more than 99%. That makes it one of the most effective prevention tools available. However, effectiveness depends on consistency - missing doses can lower your protection. Studies show that the more consistently you take it, the better it works.",
       "keyPoints": [
         "More than 99% effective when taken daily",
         "Even imperfect use still provides significant protection",
@@ -89,7 +89,7 @@
         {
           "type": "important",
           "title": "Consistency matters",
-          "text": "PrEP works best when you take it every day. If you find it hard to remember a daily pill, that's completely okay  - it might mean one of the injectable options could be a better fit for you."
+          "text": "PrEP works best when you take it every day. If you find it hard to remember a daily pill, that's completely okay - it might mean one of the injectable options could be a better fit for you."
         }
       ]
     },
@@ -100,7 +100,7 @@
       "keyPoints": [
         "Common early side effects: mild nausea, headache, fatigue, or stomach upset",
         "These 'start-up' side effects usually go away within 2-4 weeks",
-        "Truvada may affect kidney function or bone density in some people over time  - your provider will monitor this with regular lab tests",
+        "Truvada may affect kidney function or bone density in some people over time - your provider will monitor this with regular lab tests",
         "Descovy generally has fewer effects on kidneys and bones",
         "Serious side effects are uncommon"
       ],
@@ -121,7 +121,7 @@
         "Your provider will check your kidney function with a simple blood test",
         "You may be tested for other STIs and hepatitis B",
         "Once prescribed, you can pick up your medication at a pharmacy",
-        "Protection builds up over the first several days  - about 7 days for receptive anal sex and about 21 days for receptive vaginal sex",
+        "Protection builds up over the first several days - about 7 days for receptive anal sex and about 21 days for receptive vaginal sex",
         "Follow-up visits are typically every 3 months for HIV testing and check-ins"
       ],
       "callouts": [
@@ -140,21 +140,21 @@
         "You can stop taking oral PrEP at any time",
         "Protection fades within a few days after stopping",
         "If you might be exposed to HIV after stopping, use other protection like condoms",
-        "You can restart oral PrEP whenever you want  - just see your provider for updated testing",
+        "You can restart oral PrEP whenever you want - just see your provider for updated testing",
         "Talk to your provider before stopping, especially if you have hepatitis B"
       ],
       "callouts": [
         {
           "type": "important",
           "title": "Short tail period",
-          "text": "Unlike injectable PrEP, oral PrEP leaves your system relatively quickly  - within days after stopping. This means your protection fades fast, so be sure to use other prevention methods if you're still at risk."
+          "text": "Unlike injectable PrEP, oral PrEP leaves your system relatively quickly - within days after stopping. This means your protection fades fast, so be sure to use other prevention methods if you're still at risk."
         }
       ]
     },
     {
       "id": "cost_access",
       "title": "Cost & Access",
-      "content": "There are many programs to help make oral PrEP affordable  - and for many people, it's available at no cost. Don't let worries about cost stop you from exploring PrEP.",
+      "content": "There are many programs to help make oral PrEP affordable - and for many people, it's available at no cost. Don't let worries about cost stop you from exploring PrEP.",
       "keyPoints": [
         "Most insurance plans (including Medicaid) cover PrEP with no out-of-pocket cost",
         "The Ready, Set, PrEP program provides free PrEP medication to people without prescription drug coverage",
@@ -175,12 +175,12 @@
       "title": "Common Questions",
       "content": "Here are answers to some of the questions people ask most often about oral PrEP.",
       "keyPoints": [
-        "Q: Will PrEP protect me from other STIs?  - A: No, PrEP only prevents HIV. You can still use condoms and get tested regularly for other STIs.",
-        "Q: Can I drink alcohol while taking PrEP?  - A: Yes. Alcohol does not affect how well PrEP works. However, be mindful that heavy drinking might make it harder to remember your daily pill.",
-        "Q: Will PrEP show up on a drug test?  - A: No. PrEP will not show up on standard drug tests.",
-        "Q: Can I take PrEP if I'm pregnant or planning to become pregnant?  - A: Truvada is considered safe during pregnancy and breastfeeding. Talk with your provider about the best choice for your situation.",
-        "Q: What if I want to switch to an injectable option later?  - A: Absolutely! You can switch between PrEP options. Your provider will help you make a smooth transition.",
-        "Q: Do I still need to use condoms if I'm on PrEP?  - A: PrEP is highly effective against HIV on its own. Condoms add extra protection against HIV and also protect against other STIs and pregnancy. It's your choice."
+        "Q: Will PrEP protect me from other STIs? - A: No, PrEP only prevents HIV. You can still use condoms and get tested regularly for other STIs.",
+        "Q: Can I drink alcohol while taking PrEP? - A: Yes. Alcohol does not affect how well PrEP works. However, be mindful that heavy drinking might make it harder to remember your daily pill.",
+        "Q: Will PrEP show up on a drug test? - A: No. PrEP will not show up on standard drug tests.",
+        "Q: Can I take PrEP if I'm pregnant or planning to become pregnant? - A: Truvada is considered safe during pregnancy and breastfeeding. Talk with your provider about the best choice for your situation.",
+        "Q: What if I want to switch to an injectable option later? - A: Absolutely! You can switch between PrEP options. Your provider will help you make a smooth transition.",
+        "Q: Do I still need to use condoms if I'm on PrEP? - A: PrEP is highly effective against HIV on its own. Condoms add extra protection against HIV and also protect against other STIs and pregnancy. It's your choice."
       ]
     }
   ]

@@ -199,29 +199,62 @@ export function generateRecommendation(responses) {
 
 function generateSummarySentence(primaryId, responses, primaryName) {
   const factors = [];
+  const isOralType = primaryId === 'oral' || primaryId === 'on_demand';
+  const isInjectable = primaryId === 'injectable_2mo' || primaryId === 'injectable_6mo';
 
-  // Collect the key factors that drove the decision
-  if (responses.prep_02 === 'daily_pill') factors.push('your preference for a daily pill');
-  else if (responses.prep_02 === 'injection') factors.push('your preference for injections over daily pills');
+  // Only include factors that actually SUPPORT the chosen option
+  // Dosing preference - only if it matches the result
+  if (responses.prep_02 === 'daily_pill' && primaryId === 'oral') {
+    factors.push('your preference for a daily pill');
+  } else if (responses.prep_02 === 'injection' && isInjectable) {
+    factors.push('your preference for injections over daily pills');
+  }
 
-  if (responses.prep_03 === 'no_way' || responses.prep_03 === 'prefer_avoid') factors.push('your preference to avoid needles');
-  else if (responses.prep_03 === 'fine') factors.push('your comfort with injections');
+  // Needle comfort - only if congruent with result
+  if ((responses.prep_03 === 'no_way' || responses.prep_03 === 'prefer_avoid') && isOralType) {
+    factors.push('your preference to avoid needles');
+  } else if ((responses.prep_03 === 'fine' || responses.prep_03 === 'tolerable') && isInjectable) {
+    factors.push('your comfort with injections');
+  }
 
-  if (responses.prep_05 === 'very_important') factors.push('the importance of privacy to you');
+  // Privacy - relevant for injectables (no pills at home)
+  if (responses.prep_05 === 'very_important' && isInjectable) {
+    factors.push('the importance of privacy to you');
+  }
 
-  if (responses.prep_06 === 'yes') factors.push('your pregnancy plans');
+  // Pregnancy - relevant for oral
+  if (responses.prep_06 === 'yes' && primaryId === 'oral') {
+    factors.push('your pregnancy plans');
+  }
 
-  if (responses.prep_09 === 'convenience') factors.push('your priority for convenience');
-  else if (responses.prep_09 === 'most_effective') factors.push('your priority for effectiveness');
-  else if (responses.prep_09 === 'easiest_to_stop') factors.push('your desire for flexibility to stop easily');
-  else if (responses.prep_09 === 'fewest_visits') factors.push('your preference for fewer clinic visits');
-  else if (responses.prep_09 === 'lowest_cost') factors.push('your focus on keeping costs low');
-  else if (responses.prep_09 === 'most_private') factors.push('your priority for privacy');
+  // Top priority - only if it aligns with the result
+  if (responses.prep_09 === 'convenience' && primaryId === 'injectable_6mo') {
+    factors.push('your priority for convenience');
+  } else if (responses.prep_09 === 'most_effective' && isInjectable) {
+    factors.push('your priority for effectiveness');
+  } else if (responses.prep_09 === 'easiest_to_stop' && isOralType) {
+    factors.push('your desire for flexibility to stop easily');
+  } else if (responses.prep_09 === 'fewest_visits' && (primaryId === 'injectable_6mo' || isOralType)) {
+    factors.push('your preference for fewer clinic visits');
+  } else if (responses.prep_09 === 'lowest_cost' && isOralType) {
+    factors.push('your focus on keeping costs low');
+  } else if (responses.prep_09 === 'most_private' && isInjectable) {
+    factors.push('your priority for privacy');
+  }
 
-  if (responses.prep_04 === 'every_6mo') factors.push('your preference for infrequent appointments');
+  // Visit frequency - only if it matches
+  if (responses.prep_04 === 'every_6mo' && primaryId === 'injectable_6mo') {
+    factors.push('your preference for infrequent appointments');
+  }
 
-  const concerns = responses.prep_08 || [];
-  if (concerns.includes('remembering') && !factors.some(f => f.includes('daily'))) factors.push('your concern about remembering daily doses');
+  // Concerns - only if relevant to the result
+  const userConcerns = responses.prep_08 || [];
+  if (userConcerns.includes('remembering') && isInjectable) {
+    factors.push('your concern about remembering daily doses');
+  }
+  if (userConcerns.includes('needles') && isOralType) {
+    factors.push('your concern about needles');
+  }
 
   // Build the sentence
   if (factors.length === 0) {

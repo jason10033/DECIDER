@@ -33,7 +33,7 @@
       "options": [
         { "value": "daily_pill", "label": "A daily pill I take at home" },
         { "value": "injection", "label": "An injection at my provider's office so I don't have to think about it daily" },
-        { "value": "no_preference", "label": "I don't have a preference yet  - I'm still deciding" }
+        { "value": "no_preference", "label": "I don't have a preference yet - I'm still deciding" }
       ]
     },
     {
@@ -41,10 +41,10 @@
       "type": "single_choice",
       "text": "How do you feel about needles and injections?",
       "options": [
-        { "value": "fine", "label": "I'm comfortable with injections  - they don't bother me" },
+        { "value": "fine", "label": "I'm comfortable with injections - they don't bother me" },
         { "value": "tolerable", "label": "I don't love them, but I can handle it if the benefits are worth it" },
         { "value": "prefer_avoid", "label": "I'd rather avoid injections if possible" },
-        { "value": "no_way", "label": "I really don't want injections  - a pill would be much better for me" }
+        { "value": "no_way", "label": "I really don't want injections - a pill would be much better for me" }
       ]
     },
     {
@@ -54,8 +54,8 @@
       "options": [
         { "value": "every_2mo", "label": "Every 2 months is fine" },
         { "value": "every_3mo", "label": "Every 3 months works for me" },
-        { "value": "every_6mo", "label": "I'd prefer as few visits as possible  - every 6 months would be ideal" },
-        { "value": "flexible", "label": "I'm flexible  - whatever the option requires" }
+        { "value": "every_6mo", "label": "I'd prefer as few visits as possible - every 6 months would be ideal" },
+        { "value": "flexible", "label": "I'm flexible - whatever the option requires" }
       ]
     },
     {
@@ -63,9 +63,9 @@
       "type": "single_choice",
       "text": "How important is privacy to you when it comes to taking PrEP?",
       "options": [
-        { "value": "very_important", "label": "Very important  - I'd prefer no one knows I'm taking PrEP" },
-        { "value": "somewhat", "label": "Somewhat important  - I'd like to be discreet but it's not my top concern" },
-        { "value": "not_concerned", "label": "Not a concern  - I'm open about taking PrEP" }
+        { "value": "very_important", "label": "Very important - I'd prefer no one knows I'm taking PrEP" },
+        { "value": "somewhat", "label": "Somewhat important - I'd like to be discreet but it's not my top concern" },
+        { "value": "not_concerned", "label": "Not a concern - I'm open about taking PrEP" }
       ]
     },
     {
@@ -111,7 +111,7 @@
       "type": "single_choice",
       "text": "What's most important to you when choosing a PrEP option?",
       "options": [
-        { "value": "convenience", "label": "Convenience  - I want the easiest routine possible" },
+        { "value": "convenience", "label": "Convenience - I want the easiest routine possible" },
         { "value": "fewest_side_effects", "label": "Fewest side effects" },
         { "value": "most_effective", "label": "Most effective option available" },
         { "value": "most_private", "label": "Most private and discreet" },
