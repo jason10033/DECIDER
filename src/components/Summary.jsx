@@ -136,6 +136,100 @@ function generatePhysicianEmailBody(name, pronouns, recommendation, assessmentRe
   return body;
 }
 
+// Generate text version of patient summary for email
+function generatePatientEmailBody(recommendation, assessmentResponses, assessmentContent, selectedAlternatives, selectedQuestionIds, selectedStarterIds, customQuestions) {
+  const questions = assessmentContent?.questions || [];
+  const dynamicQuestions = recommendation?.dynamicQuestions || [];
+  const dynamicStarters = recommendation?.dynamicConversationStarters || [];
+  const selectedQuestions = (selectedQuestionIds || []).map(i => dynamicQuestions[i]).filter(Boolean);
+  const selectedStarters = (selectedStarterIds || []).map(i => dynamicStarters[i]).filter(Boolean);
+
+  let body = 'Your PrEP Conversation Guide\n';
+  body += '========================================\n\n';
+
+  // Summary
+  if (recommendation?.summarySentence) {
+    body += `SUMMARY\n${recommendation.summarySentence}\n\n`;
+  }
+
+  // Primary recommendation
+  if (recommendation?.primary) {
+    body += "I'M INTERESTED IN\n";
+    body += `Top Match: ${recommendation.primary.name}\n`;
+    body += `${recommendation.primary.heading}\n\n`;
+
+    if (recommendation.rationale?.length > 0) {
+      body += 'Why this option matched my preferences:\n';
+      recommendation.rationale.forEach(r => { body += `  - ${r}\n`; });
+      body += '\n';
+    }
+
+    if (recommendation.primary.reasons?.length > 0) {
+      body += 'Key benefits of this option:\n';
+      recommendation.primary.reasons.forEach(r => { body += `  - ${r}\n`; });
+      body += '\n';
+    }
+
+    if (recommendation.primary.considerations?.length > 0) {
+      body += 'Things to discuss with my provider:\n';
+      recommendation.primary.considerations.forEach(c => { body += `  - ${c}\n`; });
+      body += '\n';
+    }
+  }
+
+  // Alternatives
+  if (selectedAlternatives?.length > 0) {
+    body += "I'D ALSO LIKE TO LEARN ABOUT\n";
+    selectedAlternatives.forEach(alt => {
+      body += `  - ${alt.name}: ${alt.heading}\n`;
+    });
+    body += '\n';
+  }
+
+  // Questions
+  if (selectedStarters.length > 0 || selectedQuestions.length > 0 || (customQuestions && customQuestions.length > 0)) {
+    body += 'QUESTIONS I WANT TO ASK\n';
+    if (selectedStarters.length > 0) {
+      body += '\nHow I want to start the conversation:\n';
+      selectedStarters.forEach(s => { body += `  - ${s}\n`; });
+    }
+    if (selectedQuestions.length > 0 || (customQuestions && customQuestions.length > 0)) {
+      body += '\nQuestions for my provider:\n';
+      selectedQuestions.forEach(q => { body += `  - ${q}\n`; });
+      if (customQuestions) {
+        customQuestions.forEach(q => { body += `  - ${q}\n`; });
+      }
+    }
+    body += '\n';
+  }
+
+  // Next steps
+  body += 'MY NEXT STEPS\n';
+  body += '  - Schedule an appointment with my healthcare provider\n';
+  body += '  - Get tested for HIV and STIs before starting PrEP\n';
+  body += '  - Decide together with my provider which PrEP option is right for me\n\n';
+
+  // About me
+  body += 'ABOUT ME\n';
+  questionGroups.forEach(group => {
+    const groupQuestions = group.ids.map(id => questions.find(q => q.id === id)).filter(Boolean);
+    const hasAnswers = groupQuestions.some(q => {
+      const answer = assessmentResponses?.[q.id];
+      return answer !== undefined && answer !== null;
+    });
+    if (!hasAnswers) return;
+
+    body += `\n${group.label}:\n`;
+    groupQuestions.forEach(q => {
+      const answer = assessmentResponses?.[q.id];
+      if (answer === undefined || answer === null) return;
+      body += `  ${q.text}: ${getAnswerLabel(q.id, answer, questions)}\n`;
+    });
+  });
+
+  return body;
+}
+
 export default function Summary({
   recommendation, assessmentResponses, assessmentContent,
   selectedAlternatives, selectedQuestionIds, selectedStarterIds,
@@ -145,6 +239,8 @@ export default function Summary({
   const [viewMode, setViewMode] = useState('patient'); // 'patient' or 'physician'
   const [emailAddress, setEmailAddress] = useState('');
   const [showEmailForm, setShowEmailForm] = useState(false);
+  const [patientEmailAddress, setPatientEmailAddress] = useState('');
+  const [showPatientEmailForm, setShowPatientEmailForm] = useState(false);
   const questions = assessmentContent?.questions || [];
 
   const isPhysician = viewMode === 'physician';
@@ -164,6 +260,17 @@ export default function Summary({
     ));
     window.open(`mailto:${emailAddress}?subject=${subject}&body=${body}`, '_self');
     setShowEmailForm(false);
+  };
+
+  const handlePatientEmail = () => {
+    if (!patientEmailAddress) return;
+    const subject = encodeURIComponent('My PrEP Conversation Guide');
+    const body = encodeURIComponent(generatePatientEmailBody(
+      recommendation, assessmentResponses, assessmentContent,
+      selectedAlternatives, selectedQuestionIds, selectedStarterIds, customQuestions
+    ));
+    window.open(`mailto:${patientEmailAddress}?subject=${subject}&body=${body}`, '_self');
+    setShowPatientEmailForm(false);
   };
 
   // Get selected questions and starters
@@ -445,7 +552,7 @@ export default function Summary({
           Print This Guide
         </button>
 
-        {isPhysician && (
+        {isPhysician ? (
           <div className="email-cta">
             {!showEmailForm ? (
               <button onClick={() => setShowEmailForm(true)} className="btn btn-secondary btn-lg" style={{ marginTop: 'var(--space-md)' }}>
@@ -467,6 +574,34 @@ export default function Summary({
                     Send
                   </button>
                   <button onClick={() => setShowEmailForm(false)} className="btn btn-secondary">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="email-cta">
+            {!showPatientEmailForm ? (
+              <button onClick={() => setShowPatientEmailForm(true)} className="btn btn-secondary btn-lg" style={{ marginTop: 'var(--space-md)' }}>
+                Email to Myself
+              </button>
+            ) : (
+              <div className="email-form">
+                <p style={{ marginBottom: 'var(--space-sm)', fontWeight: 600 }}>Send this guide to your email:</p>
+                <div className="email-form-row">
+                  <input
+                    type="email"
+                    placeholder="Your email address"
+                    value={patientEmailAddress}
+                    onChange={(e) => setPatientEmailAddress(e.target.value)}
+                    className="identity-input email-input"
+                    onKeyDown={(e) => { if (e.key === 'Enter') handlePatientEmail(); }}
+                  />
+                  <button onClick={handlePatientEmail} className="btn btn-primary" disabled={!patientEmailAddress}>
+                    Send
+                  </button>
+                  <button onClick={() => setShowPatientEmailForm(false)} className="btn btn-secondary">
                     Cancel
                   </button>
                 </div>
