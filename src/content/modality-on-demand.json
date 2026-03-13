@@ -1,0 +1,137 @@
+{
+  "id": "on_demand",
+  "title": "On-Demand PrEP (2-1-1)",
+  "brandName": "Truvada",
+  "genericName": "tenofovir/emtricitabine",
+  "colorClass": "on-demand",
+  "icon": "⏱️",
+  "tagline": "Pills taken before and after sex, only when you need them",
+  "keyTakeaways": [
+    "Take pills only around the time you have sex, not every day",
+    "Also called event-driven PrEP or 2-1-1 dosing",
+    "Highly effective when used correctly",
+    "Currently recommended for cisgender men who have sex with men",
+    "Uses the same medication as daily oral PrEP (Truvada)"
+  ],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "content": "On-demand PrEP, also called event-driven PrEP or 2-1-1 dosing, is a way to take PrEP only when you need it, rather than every day. Instead of a daily pill, you take pills before and after sex. This approach uses the same medication as daily oral PrEP (Truvada) but on a different schedule. It was studied in the IPERGAY trial and found to be highly effective at preventing HIV.",
+      "keyPoints": [
+        "Take pills only around the time you have sex",
+        "Uses the same medication as daily oral PrEP (Truvada)",
+        "Studied and shown to be highly effective in clinical research",
+        "A good option if you don't want to take a pill every day"
+      ]
+    },
+    {
+      "id": "how_it_works",
+      "title": "How It Works",
+      "content": "On-demand PrEP works the same way as daily oral PrEP by building up protective levels of medication in the tissues where HIV would try to enter your body. The difference is in the timing: instead of maintaining constant levels with a daily pill, you take a larger dose before sex and follow-up doses afterward to ensure protection during and after exposure.",
+      "keyPoints": [
+        "The medicine blocks HIV from establishing an infection",
+        "The double dose before sex builds up protective levels quickly",
+        "Follow-up doses maintain protection while any potential exposure clears"
+      ]
+    },
+    {
+      "id": "dosing_schedule",
+      "title": "The 2-1-1 Dosing Schedule",
+      "content": "The schedule is straightforward: take 2 pills 2 to 24 hours before sex, then 1 pill 24 hours after the first dose, and 1 more pill 24 hours after that. If you have sex on multiple days, keep taking 1 pill each day until you take your last dose 48 hours after the last time you had sex.",
+      "keyPoints": [
+        "Step 1: Take 2 pills (double dose) 2 to 24 hours before sex",
+        "Step 2: Take 1 pill 24 hours after the first dose",
+        "Step 3: Take 1 pill 24 hours after the second dose",
+        "If sex continues over multiple days, keep taking 1 pill per day until 48 hours after the last sexual encounter"
+      ],
+      "callouts": [
+        {
+          "type": "important",
+          "title": "Planning ahead is key",
+          "text": "You need to take the first dose at least 2 hours before sex, so some advance planning is needed. If you frequently have unplanned sex, daily PrEP might be a better fit."
+        },
+        {
+          "type": "note",
+          "title": "Minimum of 4 pills per event",
+          "text": "Each sexual event requires a minimum of 4 pills total: 2 before and 2 after. If sexual activity spans multiple days, you will need additional pills."
+        }
+      ]
+    },
+    {
+      "id": "effectiveness",
+      "title": "Effectiveness",
+      "content": "The IPERGAY study showed that on-demand PrEP reduced the risk of HIV by 86% compared to placebo. When participants used it consistently and correctly, effectiveness was even higher. While daily PrEP has the highest effectiveness rate (over 99%), on-demand PrEP provides strong protection for people who use it correctly.",
+      "keyPoints": [
+        "86% reduction in HIV risk in the IPERGAY clinical trial",
+        "Effectiveness is highest when the dosing schedule is followed carefully",
+        "Protection depends on taking the pills at the right times",
+        "Daily PrEP may be more effective for people who have very frequent sex"
+      ]
+    },
+    {
+      "id": "who_is_it_for",
+      "title": "Who Is This Option For?",
+      "content": "On-demand PrEP is currently recommended for cisgender men who have sex with men. It has not been studied enough in other populations to be recommended for everyone. If you are a cisgender woman, a transgender person, or someone who has receptive vaginal sex, daily PrEP or an injectable option may be more appropriate.",
+      "keyPoints": [
+        "Currently recommended for cisgender men who have sex with men",
+        "Not recommended for people who have receptive vaginal sex",
+        "Best suited for people who have sex infrequently or on a somewhat predictable schedule",
+        "If you have sex very frequently (daily or near-daily), daily PrEP may be simpler and more effective"
+      ],
+      "callouts": [
+        {
+          "type": "important",
+          "title": "Talk to your provider",
+          "text": "On-demand PrEP is not right for everyone. Discuss your sexual activity patterns and health situation with your provider to see if this approach makes sense for you."
+        }
+      ]
+    },
+    {
+      "id": "side_effects",
+      "title": "Side Effects",
+      "content": "Since on-demand PrEP uses the same medication as daily oral PrEP (Truvada), the side effects are similar but may occur less often because you are taking fewer pills overall.",
+      "keyPoints": [
+        "Side effects are similar to daily oral PrEP but may be less frequent",
+        "Possible nausea, headache, or stomach upset around the time you take the pills",
+        "These effects are usually mild and temporary",
+        "Less overall medication exposure may mean fewer long-term side effects"
+      ]
+    },
+    {
+      "id": "getting_started",
+      "title": "Getting Started",
+      "content": "Getting started with on-demand PrEP is similar to starting daily PrEP. You will need to see a provider, get tested for HIV, and receive a prescription for Truvada. The main difference is how you take the medication.",
+      "keyPoints": [
+        "You will need an HIV test to confirm you are HIV-negative",
+        "Your provider will check your kidney function",
+        "You will receive a prescription for Truvada",
+        "Your provider will explain the 2-1-1 dosing schedule",
+        "You should always have pills available so you are prepared"
+      ]
+    },
+    {
+      "id": "cost_access",
+      "title": "Cost & Access",
+      "content": "On-demand PrEP uses the same medication as daily oral PrEP, so the same assistance programs apply. Because you use fewer pills overall, your medication may last longer, potentially lowering your costs.",
+      "keyPoints": [
+        "Uses Truvada or its generic equivalent",
+        "The same insurance coverage and assistance programs apply as daily oral PrEP",
+        "Fewer pills used overall may mean lower costs",
+        "Ready, Set, PrEP and Gilead Advancing Access programs can help with costs"
+      ]
+    },
+    {
+      "id": "common_questions",
+      "title": "Common Questions",
+      "content": "Here are answers to some of the most frequently asked questions about on-demand PrEP.",
+      "keyPoints": [
+        "Q: What if I have sex more often than expected? - A: If sex is ongoing, keep taking 1 pill per day until 48 hours after your last sexual encounter.",
+        "Q: Can I switch between on-demand and daily PrEP? - A: Yes, talk to your provider about switching. If you are transitioning to daily PrEP, start taking a pill every day.",
+        "Q: What if I forget the before-sex dose? - A: The before-sex dose is essential for protection. If you did not take it in time, consider using condoms for that encounter.",
+        "Q: Is on-demand PrEP as good as daily PrEP? - A: Daily PrEP has a higher effectiveness rate, but on-demand PrEP is still highly protective when used correctly. The best PrEP is the one you will use consistently.",
+        "Q: Can I use Descovy for on-demand PrEP? - A: On-demand PrEP has only been studied with Truvada. It is not recommended with Descovy at this time."
+      ]
+    }
+  ]
+}

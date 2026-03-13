@@ -48,16 +48,55 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
       {recommendation?.primary && (
         <div className="summary-card">
           <h2>I'm Interested In</h2>
-          <div className={`recommendation-card ${recommendation.primary.id}`} style={{ marginBottom: 0 }}>
+          <div className={`recommendation-card ${recommendation.primary.colorClass}`} style={{ marginBottom: 0 }}>
             <span className="recommendation-label top-match">Top Match</span>
             <h3>{recommendation.primary.name}</h3>
             <p>{recommendation.primary.heading}</p>
+
+            {/* WHY this was chosen - personalized rationale */}
+            {recommendation.rationale && recommendation.rationale.length > 0 && (
+              <>
+                <h4 style={{ marginTop: 'var(--space-md)', marginBottom: 'var(--space-sm)', fontSize: 'var(--font-size-base)' }}>
+                  Why this option matched my preferences:
+                </h4>
+                <ul className="action-items">
+                  {recommendation.rationale.map((reason, i) => (
+                    <li key={i}>{reason}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+
             {recommendation.primary.reasons && (
-              <ul className="action-items">
-                {recommendation.primary.reasons.map((reason, i) => (
-                  <li key={i}>{reason}</li>
-                ))}
-              </ul>
+              <>
+                <h4 style={{ marginTop: 'var(--space-md)', marginBottom: 'var(--space-sm)', fontSize: 'var(--font-size-base)' }}>
+                  Key benefits of this option:
+                </h4>
+                <ul className="action-items">
+                  {recommendation.primary.reasons.map((reason, i) => (
+                    <li key={i}>{reason}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {recommendation.primary.considerations && recommendation.primary.considerations.length > 0 && (
+              <>
+                <h4 style={{ marginTop: 'var(--space-md)', marginBottom: 'var(--space-sm)', fontSize: 'var(--font-size-base)' }}>
+                  Things to discuss with my provider:
+                </h4>
+                <ul className="key-points">
+                  {recommendation.primary.considerations.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {recommendation.primary.specialNote && (
+              <div className="callout important" style={{ marginTop: 'var(--space-md)' }}>
+                <p>{recommendation.primary.specialNote}</p>
+              </div>
             )}
           </div>
         </div>
@@ -68,7 +107,7 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
         <div className="summary-card">
           <h2>I'd Also Like to Learn About</h2>
           {recommendation.alternatives.map((alt, idx) => (
-            <div key={idx} className={`recommendation-card ${alt.id}`}>
+            <div key={idx} className={`recommendation-card ${alt.colorClass}`}>
               <span className="recommendation-label also-consider">Also Consider</span>
               <h3>{alt.name}</h3>
               <p>{alt.heading}</p>

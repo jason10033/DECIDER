@@ -19,7 +19,7 @@
           "type": "information"
         },
         {
-          "name": "HIV.gov — PrEP",
+          "name": "HIV.gov - PrEP",
           "description": "The federal government's main resource for HIV information, including a section on PrEP with the latest updates and guidance.",
           "url": "https://www.hiv.gov/hiv-basics/hiv-prevention/using-hiv-medication-to-reduce-risk/pre-exposure-prophylaxis",
           "type": "information"
@@ -71,30 +71,6 @@
           "description": "ViiV Healthcare offers patient assistance programs for people who are prescribed Apretude (cabotegravir). Includes help for both insured and uninsured individuals.",
           "url": "https://www.viivconnect.com",
           "type": "assistance"
-        },
-        {
-          "name": "Patient Advocate Foundation",
-          "description": "Provides case management and financial aid to help people access their prescribed medications, including PrEP.",
-          "url": "https://www.patientadvocate.org",
-          "type": "assistance"
-        }
-      ]
-    },
-    {
-      "id": "support",
-      "title": "Support & Questions",
-      "resources": [
-        {
-          "name": "PrEP Hotline (NASTAD)",
-          "description": "Call to speak with someone who can answer your questions about PrEP, help you find a provider, and connect you with assistance programs. Available Monday through Friday.",
-          "phone": "1-855-448-7737",
-          "type": "hotline"
-        },
-        {
-          "name": "HIV Prevention Hotline (CDC INFO)",
-          "description": "Get answers to your questions about HIV prevention, testing, and treatment from trained information specialists.",
-          "phone": "1-800-232-4636",
-          "type": "hotline"
         }
       ]
     }

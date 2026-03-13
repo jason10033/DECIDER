@@ -1,18 +1,17 @@
 {
-  "title": "PrEP Options Counseling",
-  "subtitle": "DECIDER",
+  "title": ": PrEP Options Counseling",
+  "subtitle": "DECIDE",
   "footer": "This tool is for educational purposes only and does not replace medical advice from your healthcare provider. Always talk to your provider before starting or changing any medication.",
   "welcome": {
     "badge": "Your PrEP Options, Your Choice",
     "heading": "Find the Right PrEP Option for You",
     "subheading": "Learn, compare, and decide which PrEP method fits your life",
-    "description": "PrEP (pre-exposure prophylaxis) is a safe and highly effective way to prevent HIV. Today there are more options than ever — a daily pill, an injection every 2 months, or an injection every 6 months. This tool will help you explore each option, think about what matters most to you, and feel confident talking to your provider about the best fit for your life.",
-    "timeEstimate": "About 10-15 minutes",
+    "description": "PrEP (pre-exposure prophylaxis) is a safe and highly effective way to prevent HIV. Today there are more options than ever: a daily pill, a pill before and after sex, an injection every 2 months, or an injection every 6 months. This tool will help you explore each option, think about what matters most to you, and feel confident talking to your provider about the best fit for your life.",
     "steps": [
       {
         "number": 1,
         "title": "Learn",
-        "description": "Get the facts about each PrEP option — how it works, what to expect, and what's involved."
+        "description": "Get the facts about each PrEP option: how it works, what to expect, and what's involved."
       },
       {
         "number": 2,

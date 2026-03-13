@@ -1,4 +1,4 @@
-/* DECIDER Design System — Warm, Welcoming, Health-Focused */
+/* DECIDE Design System - Warm, Welcoming, Health-Focused */
 
 :root {
   /* Primary palette */
@@ -21,6 +21,9 @@
   --color-injectable-6mo: #2F855A;
   --color-injectable-6mo-light: #E6FFF0;
   --color-injectable-6mo-border: #68D391;
+  --color-on-demand: #D69E2E;
+  --color-on-demand-light: #FEFCBF;
+  --color-on-demand-border: #ECC94B;
 
   /* Neutrals */
   --color-background: #F7FAFC;
@@ -269,7 +272,7 @@ body {
 
 .steps-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-lg);
   text-align: center;
 }
@@ -280,6 +283,11 @@ body {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .step-number {
@@ -481,7 +489,7 @@ body {
 /* Modality Cards (Education page) */
 .modality-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-lg);
   margin: var(--space-2xl) 0;
 }
@@ -503,6 +511,7 @@ body {
 }
 
 .modality-card.oral { border-color: var(--color-oral-border); }
+.modality-card.on-demand { border-color: var(--color-on-demand-border); }
 .modality-card.injectable-2mo { border-color: var(--color-injectable-2mo-border); }
 .modality-card.injectable-6mo { border-color: var(--color-injectable-6mo-border); }
 
@@ -518,6 +527,7 @@ body {
 }
 
 .modality-card.oral .modality-icon { background: var(--color-oral-light); }
+.modality-card.on-demand .modality-icon { background: var(--color-on-demand-light); }
 .modality-card.injectable-2mo .modality-icon { background: var(--color-injectable-2mo-light); }
 .modality-card.injectable-6mo .modality-icon { background: var(--color-injectable-6mo-light); }
 
@@ -571,6 +581,7 @@ body {
 }
 
 .modality-banner.oral { background: linear-gradient(135deg, var(--color-oral), var(--color-primary-dark)); }
+.modality-banner.on-demand { background: linear-gradient(135deg, var(--color-on-demand), #B7791F); }
 .modality-banner.injectable-2mo { background: linear-gradient(135deg, var(--color-injectable-2mo), #553C9A); }
 .modality-banner.injectable-6mo { background: linear-gradient(135deg, var(--color-injectable-6mo), var(--color-secondary-dark)); }
 
@@ -689,6 +700,7 @@ body {
 }
 
 .comparison-table thead th.oral { background: var(--color-oral); }
+.comparison-table thead th.on-demand { background: var(--color-on-demand); }
 .comparison-table thead th.injectable-2mo { background: var(--color-injectable-2mo); }
 .comparison-table thead th.injectable-6mo { background: var(--color-injectable-6mo); }
 
@@ -738,6 +750,7 @@ body {
 }
 
 .comparison-mobile-card .card-header.oral { background: var(--color-oral); }
+.comparison-mobile-card .card-header.on-demand { background: var(--color-on-demand); }
 .comparison-mobile-card .card-header.injectable-2mo { background: var(--color-injectable-2mo); }
 .comparison-mobile-card .card-header.injectable-6mo { background: var(--color-injectable-6mo); }
 
@@ -780,7 +793,7 @@ body {
 
 .best-for-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-md);
 }
 
@@ -791,6 +804,7 @@ body {
 }
 
 .best-for-item.oral { background: var(--color-oral-light); border: 1px solid var(--color-oral-border); }
+.best-for-item.on-demand { background: var(--color-on-demand-light); border: 1px solid var(--color-on-demand-border); }
 .best-for-item.injectable-2mo { background: var(--color-injectable-2mo-light); border: 1px solid var(--color-injectable-2mo-border); }
 .best-for-item.injectable-6mo { background: var(--color-injectable-6mo-light); border: 1px solid var(--color-injectable-6mo-border); }
 
@@ -800,6 +814,7 @@ body {
 }
 
 .best-for-item.oral h3 { color: var(--color-oral); }
+.best-for-item.on-demand h3 { color: var(--color-on-demand); }
 .best-for-item.injectable-2mo h3 { color: var(--color-injectable-2mo); }
 .best-for-item.injectable-6mo h3 { color: var(--color-injectable-6mo); }
 
@@ -919,6 +934,7 @@ body {
 }
 
 .recommendation-card.oral { border-left-color: var(--color-oral); }
+.recommendation-card.on-demand { border-left-color: var(--color-on-demand); }
 .recommendation-card.injectable-2mo { border-left-color: var(--color-injectable-2mo); }
 .recommendation-card.injectable-6mo { border-left-color: var(--color-injectable-6mo); }
 
@@ -1186,19 +1202,40 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
   .main-content {
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-md);
+  }
+
+  .welcome-page {
+    padding: var(--space-lg) 0;
   }
 
   .welcome-page h1 {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-xl);
+  }
+
+  .welcome-page h2 {
+    font-size: var(--font-size-base);
+  }
+
+  .welcome-description {
+    font-size: var(--font-size-base);
   }
 
   .steps-grid {
     grid-template-columns: 1fr 1fr;
   }
 
+  .step-card {
+    aspect-ratio: auto;
+    padding: var(--space-lg) var(--space-md);
+  }
+
   .btn-group {
     flex-direction: column;
+  }
+
+  .btn-lg {
+    width: 100%;
   }
 
   .progress-step-label {
@@ -1209,6 +1246,14 @@ body {
     width: 28px;
     height: 28px;
     font-size: 0.75rem;
+  }
+
+  .app-header {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .header-logo {
+    font-size: var(--font-size-lg) !important;
   }
 
   .modality-cards {
@@ -1227,9 +1272,41 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .education-section {
+    padding: var(--space-lg);
+  }
+
+  .question-card {
+    padding: var(--space-lg);
+  }
+
+  .recommendation-card {
+    padding: var(--space-lg);
+  }
+
+  .summary-card {
+    padding: var(--space-lg);
+  }
+
   .summary-card .response-item {
     flex-direction: column;
     gap: var(--space-xs);
+  }
+
+  .provider-section {
+    padding: var(--space-lg);
+  }
+
+  .resource-item {
+    padding: var(--space-md);
+  }
+
+  h1 {
+    font-size: var(--font-size-xl) !important;
+  }
+
+  h2 {
+    font-size: var(--font-size-lg) !important;
   }
 }
 

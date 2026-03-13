@@ -16,6 +16,7 @@ import assessmentContent from './content/assessment.json';
 import oralContent from './content/modality-oral.json';
 import injectable2moContent from './content/modality-injectable-2mo.json';
 import injectable6moContent from './content/modality-injectable-6mo.json';
+import onDemandContent from './content/modality-on-demand.json';
 
 export default function App() {
   const { responses, setAnswer, toggleMultiAnswer, getAnswer, isComplete, reset } = useAssessment();
@@ -36,13 +37,13 @@ export default function App() {
     return generateRecommendation(responses);
   }, [responses]);
 
-  // Handle assessment completion — submit to Qualtrics
+  // Handle assessment completion  - submit to Qualtrics
   const handleContinueToResults = () => {
     if (assessmentContent?.questions && isComplete(assessmentContent.questions)) {
       try {
         qualtricsService.submit(responses);
       } catch (e) {
-        // Silently handle submission errors — don't block the user
+        // Silently handle submission errors  - don't block the user
         console.warn('Qualtrics submission error:', e);
       }
     }
@@ -69,6 +70,15 @@ export default function App() {
           element={
             <ModalityModule
               content={oralContent}
+              onVisitModality={handleVisitModality}
+            />
+          }
+        />
+        <Route
+          path="/learn/on-demand"
+          element={
+            <ModalityModule
+              content={onDemandContent}
               onVisitModality={handleVisitModality}
             />
           }

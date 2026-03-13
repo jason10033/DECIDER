@@ -1,8 +1,9 @@
 {
   "title": "Compare Your PrEP Options",
-  "intro": "Here's a side-by-side look at the three PrEP options available today. Each one is highly effective — the best choice is the one that fits your life.",
+  "intro": "Here's a side-by-side look at the PrEP options available today. Each one is highly effective - the best choice is the one that fits your life.",
   "options": [
     { "id": "oral", "name": "Daily Pill", "brandName": "Truvada / Descovy", "colorClass": "oral" },
+    { "id": "on_demand", "name": "On-Demand Pill", "brandName": "Truvada (2-1-1)", "colorClass": "on-demand" },
     { "id": "injectable_2mo", "name": "2-Month Injection", "brandName": "Apretude", "colorClass": "injectable-2mo" },
     { "id": "injectable_6mo", "name": "6-Month Injection", "brandName": "Sunlenca", "colorClass": "injectable-6mo" }
   ],
@@ -10,62 +11,79 @@
     {
       "label": "How You Take It",
       "oral": "Swallow one pill by mouth",
+      "on_demand": "Swallow pills before and after sex (2-1-1 schedule)",
       "injectable_2mo": "Injection into the buttock muscle by your provider",
       "injectable_6mo": "Small injection under the skin in the belly area by your provider"
     },
     {
       "label": "How Often",
       "oral": "Every day",
+      "on_demand": "Only around the time you have sex (minimum 4 pills per event)",
       "injectable_2mo": "Every 2 months (after getting started)",
       "injectable_6mo": "Every 6 months (after getting started)"
     },
     {
       "label": "Where",
-      "oral": "At home — wherever you are",
+      "oral": "At home - wherever you are",
+      "on_demand": "At home - wherever you are",
       "injectable_2mo": "At your provider's office or clinic",
       "injectable_6mo": "At your provider's office or clinic"
     },
     {
       "label": "Effectiveness",
       "oral": "Over 99% when taken daily as directed",
+      "on_demand": "86% reduction in HIV risk in the IPERGAY trial when used correctly",
       "injectable_2mo": "Shown to be more effective than daily pills in clinical studies",
-      "injectable_6mo": "96% reduction in HIV risk in clinical trials — highly effective"
+      "injectable_6mo": "96% reduction in HIV risk in clinical trials - highly effective"
     },
     {
       "label": "Common Side Effects",
-      "oral": "Mild nausea, headache, or stomach upset when starting — usually goes away in a few weeks",
-      "injectable_2mo": "Soreness, swelling, or tenderness at the injection site — usually mild and temporary",
-      "injectable_6mo": "Small bump or nodule under the skin at the injection site — usually painless and temporary"
+      "oral": "Mild nausea, headache, or stomach upset when starting - usually goes away in a few weeks",
+      "on_demand": "Similar to daily oral PrEP but may occur less often due to less medication overall",
+      "injectable_2mo": "Soreness, swelling, or tenderness at the injection site - usually mild and temporary",
+      "injectable_6mo": "Small bump or nodule under the skin at the injection site - usually painless and temporary"
     },
     {
       "label": "Getting Started",
       "oral": "HIV test, kidney labs, prescription from provider. Protection builds up in about 7-21 days depending on type of exposure.",
+      "on_demand": "HIV test, kidney labs, prescription for Truvada. Take 2 pills 2-24 hours before sex to start.",
       "injectable_2mo": "HIV test, 1 month of daily oral lead-in tablets, then first injection. Second injection 1 month later, then every 2 months.",
       "injectable_6mo": "HIV test, 2 oral loading tablets on Day 1, 1 tablet on Day 2, then first injection at Day 28. Next injection in 6 months."
     },
     {
       "label": "Stopping",
-      "oral": "Easy to stop — protection fades within days. Simple to restart later.",
+      "oral": "Easy to stop - protection fades within days. Simple to restart later.",
+      "on_demand": "Easy to stop - simply stop taking pills around sex. Easy to restart.",
       "injectable_2mo": "Medicine stays in your body 12+ months after last injection. Must use other protection during this tail period.",
       "injectable_6mo": "Medicine stays in your body for an extended period. Must work with your provider on a transition plan for continued protection."
     },
     {
       "label": "Privacy",
       "oral": "Requires having pills at home. Could be seen by others in your household.",
+      "on_demand": "Requires having pills available. Fewer pills may be easier to keep private.",
       "injectable_2mo": "No pills at home. Only your provider's office knows about your visits.",
       "injectable_6mo": "No pills at home (after the brief oral loading). Only your provider's office knows about your visits."
     },
     {
       "label": "Clinic Visits",
       "oral": "Every 3 months for HIV testing and prescription refills",
+      "on_demand": "Every 3 months for HIV testing and prescription refills",
       "injectable_2mo": "Every 2 months for your injection (includes HIV testing)",
       "injectable_6mo": "Every 6 months for your injection (includes HIV testing)"
     },
     {
+      "label": "Who It's For",
+      "oral": "Anyone at risk for HIV",
+      "on_demand": "Currently recommended for cisgender men who have sex with men",
+      "injectable_2mo": "Anyone at risk for HIV",
+      "injectable_6mo": "Anyone at risk for HIV"
+    },
+    {
       "label": "Drug Interactions",
       "oral": "Few drug interactions. Tell your provider about all medications.",
+      "on_demand": "Few drug interactions. Tell your provider about all medications.",
       "injectable_2mo": "Few drug interactions. Tell your provider about all medications.",
-      "injectable_6mo": "Some important interactions — certain seizure medications and St. John's wort can reduce effectiveness. Tell your provider about everything you take."
+      "injectable_6mo": "Some important interactions - certain seizure medications and St. John's wort can reduce effectiveness. Tell your provider about everything you take."
     }
   ],
   "bestFor": [
@@ -83,6 +101,19 @@
       ]
     },
     {
+      "id": "on_demand",
+      "colorClass": "on-demand",
+      "title": "On-demand PrEP might be best if...",
+      "points": [
+        "You don't want to take a pill every day",
+        "You have sex infrequently or on a somewhat predictable schedule",
+        "You are a cisgender man who has sex with men",
+        "You prefer not to get injections",
+        "You want to use less medication overall",
+        "You want the flexibility to easily start and stop"
+      ]
+    },
+    {
       "id": "injectable_2mo",
       "colorClass": "injectable-2mo",
       "title": "The 2-month injection might be best if...",
@@ -91,7 +122,7 @@
         "You're okay with getting a shot in the buttock every 2 months",
         "You're comfortable with regular clinic visits",
         "You want the option that was shown to be more effective than pills in studies",
-        "Privacy is important to you — no pills at home",
+        "Privacy is important to you - no pills at home",
         "You're okay with the commitment and understand the long tail when stopping"
       ]
     },
@@ -104,7 +135,7 @@
         "You're okay with a small shot under the skin in the belly area",
         "You prefer not to think about HIV prevention on a daily or even monthly basis",
         "You want a highly effective newer option",
-        "Privacy matters — no pills at home after the initial loading phase",
+        "Privacy matters - no pills at home after the initial loading phase",
         "You don't take medications that interact with lenacapavir (like St. John's wort or certain seizure medications)"
       ]
     }

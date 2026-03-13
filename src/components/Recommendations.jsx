@@ -15,7 +15,7 @@ export default function Recommendations({ recommendation, assessmentResponses })
     );
   }
 
-  const { primary, alternatives, providerTips } = recommendation;
+  const { primary, alternatives, rationale } = recommendation;
 
   return (
     <div className="recommendations-page">
@@ -26,12 +26,24 @@ export default function Recommendations({ recommendation, assessmentResponses })
       </p>
 
       {/* Primary Recommendation */}
-      <div className={`recommendation-card primary-rec ${primary.id}`}>
+      <div className={`recommendation-card primary-rec ${primary.colorClass}`}>
         <span className="recommendation-label top-match">Top Match</span>
         <h2>{primary.name}</h2>
         <p>{primary.heading}</p>
 
-        <h3>Why this might work for you</h3>
+        {/* Personalized rationale - WHY this was chosen */}
+        {rationale && rationale.length > 0 && (
+          <>
+            <h3>Why we matched you with this option</h3>
+            <ul className="action-items">
+              {rationale.map((reason, i) => (
+                <li key={i}>{reason}</li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        <h3 style={{ marginTop: 'var(--space-lg)' }}>Key benefits</h3>
         <ul className="action-items">
           {primary.reasons.map((reason, i) => (
             <li key={i}>{reason}</li>
@@ -48,13 +60,19 @@ export default function Recommendations({ recommendation, assessmentResponses })
             </ul>
           </>
         )}
+
+        {primary.specialNote && (
+          <div className="callout important" style={{ marginTop: 'var(--space-lg)' }}>
+            <p>{primary.specialNote}</p>
+          </div>
+        )}
       </div>
 
       {/* Alternative Options */}
       {alternatives && alternatives.length > 0 && (
         <>
           {alternatives.map((alt, idx) => (
-            <div key={idx} className={`recommendation-card ${alt.id}`}>
+            <div key={idx} className={`recommendation-card ${alt.colorClass}`}>
               <span className="recommendation-label also-consider">Also Consider</span>
               <h2>{alt.name}</h2>
               <p>{alt.heading}</p>
@@ -68,30 +86,6 @@ export default function Recommendations({ recommendation, assessmentResponses })
             </div>
           ))}
         </>
-      )}
-
-      {/* Questions to Ask Your Provider */}
-      {primary.providerQuestions && primary.providerQuestions.length > 0 && (
-        <div className="provider-section">
-          <h2>Questions to Ask Your Provider</h2>
-          <ul className="provider-tips">
-            {primary.providerQuestions.map((question, i) => (
-              <li key={i}>{question}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Provider Conversation Starters */}
-      {providerTips && providerTips.length > 0 && (
-        <div className="provider-section" style={{ background: 'var(--color-injectable-6mo-light)' }}>
-          <h2>Ways to Start the Conversation</h2>
-          <ul className="provider-tips">
-            {providerTips.map((tip, i) => (
-              <li key={i}>{tip}</li>
-            ))}
-          </ul>
-        </div>
       )}
 
       <div className="btn-group">
