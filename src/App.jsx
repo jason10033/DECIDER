@@ -22,6 +22,8 @@ export default function App() {
   const { responses, setAnswer, toggleMultiAnswer, getAnswer, isComplete, reset } = useAssessment();
   const [visitedModalities, setVisitedModalities] = useState([]);
   const [selectedAlternativeIds, setSelectedAlternativeIds] = useState([]);
+  const [selectedQuestionIds, setSelectedQuestionIds] = useState([]);
+  const [selectedStarterIds, setSelectedStarterIds] = useState([]);
   const navigate = useNavigate();
 
   const handleVisitModality = (modalityId) => {
@@ -37,6 +39,20 @@ export default function App() {
         return prev.filter(id => id !== altId);
       }
       return [...prev, altId];
+    });
+  };
+
+  const handleToggleQuestion = (idx) => {
+    setSelectedQuestionIds(prev => {
+      if (prev.includes(idx)) return prev.filter(id => id !== idx);
+      return [...prev, idx];
+    });
+  };
+
+  const handleToggleStarter = (idx) => {
+    setSelectedStarterIds(prev => {
+      if (prev.includes(idx)) return prev.filter(id => id !== idx);
+      return [...prev, idx];
     });
   };
 
@@ -146,7 +162,15 @@ export default function App() {
           }
         />
 
-        <Route path="/resources" element={<Resources />} />
+        <Route path="/resources" element={
+          <Resources
+            recommendation={recommendation}
+            selectedQuestionIds={selectedQuestionIds}
+            onToggleQuestion={handleToggleQuestion}
+            selectedStarterIds={selectedStarterIds}
+            onToggleStarter={handleToggleStarter}
+          />
+        } />
 
         <Route
           path="/summary"
@@ -156,6 +180,8 @@ export default function App() {
               assessmentResponses={responses}
               assessmentContent={assessmentContent}
               selectedAlternatives={selectedAlternatives}
+              selectedQuestionIds={selectedQuestionIds}
+              selectedStarterIds={selectedStarterIds}
             />
           }
         />

@@ -1,44 +1,64 @@
 import { Link } from 'react-router-dom';
 import resourcesContent from '../content/resources.json';
-import recommendationsContent from '../content/recommendations.json';
 
-export default function Resources() {
+export default function Resources({ recommendation, selectedQuestionIds, onToggleQuestion, selectedStarterIds, onToggleStarter }) {
   const { title, intro, categories } = resourcesContent;
-  const { providerSection } = recommendationsContent;
+
+  const dynamicQuestions = recommendation?.dynamicQuestions || [];
+  const dynamicStarters = recommendation?.dynamicConversationStarters || [];
 
   return (
     <div className="resources-page">
       <h1>{title}</h1>
       <p className="resources-intro">{intro}</p>
 
-      {/* Questions to Ask Your Provider */}
-      <div className="provider-section" style={{ marginBottom: 'var(--space-2xl)' }}>
-        <h2>Questions to Ask Your Provider</h2>
-        <p style={{ color: 'var(--color-text-muted)', marginBottom: 'var(--space-md)' }}>
-          Here are some helpful questions to bring up at your next appointment:
-        </p>
-        <ul className="provider-tips">
-          <li>Which PrEP option would you recommend for my situation?</li>
-          <li>What tests do I need before starting PrEP?</li>
-          <li>How often will I need to come in for follow-up visits?</li>
-          <li>Are there programs to help me pay for PrEP?</li>
-          <li>What should I know about side effects?</li>
-          <li>What happens if I want to switch to a different PrEP option later?</li>
-        </ul>
-      </div>
-
-      {/* Ways to Start the Conversation */}
-      {providerSection && providerSection.tips && (
-        <div className="provider-section" style={{ background: 'var(--color-injectable-6mo-light)', marginBottom: 'var(--space-2xl)' }}>
-          <h2>{providerSection.heading}</h2>
-          <p style={{ color: 'var(--color-text-muted)', marginBottom: 'var(--space-md)' }}>
-            {providerSection.intro}
+      {/* Dynamic Questions to Ask Your Provider */}
+      {dynamicQuestions.length > 0 && (
+        <div className="provider-section" style={{ marginBottom: 'var(--space-2xl)' }}>
+          <h2>Questions to Ask Your Provider</h2>
+          <p style={{ color: 'var(--color-text-muted)', marginBottom: 'var(--space-sm)' }}>
+            Based on your results, here are some questions you may want to ask. Check the ones you'd like to include on your printable summary.
           </p>
-          <ul className="provider-tips">
-            {providerSection.tips.map((tip, i) => (
-              <li key={i}>{tip}</li>
-            ))}
-          </ul>
+          <div className="selectable-list">
+            {dynamicQuestions.map((q, i) => {
+              const isSelected = selectedQuestionIds?.includes(i);
+              return (
+                <label key={i} className={`selectable-item ${isSelected ? 'selected' : ''}`}>
+                  <input
+                    type="checkbox"
+                    checked={isSelected || false}
+                    onChange={() => onToggleQuestion?.(i)}
+                  />
+                  <span>{q}</span>
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Dynamic Conversation Starters */}
+      {dynamicStarters.length > 0 && (
+        <div className="provider-section" style={{ background: 'var(--color-injectable-6mo-light)', marginBottom: 'var(--space-2xl)' }}>
+          <h2>Ways to Start the Conversation</h2>
+          <p style={{ color: 'var(--color-text-muted)', marginBottom: 'var(--space-sm)' }}>
+            Not sure how to bring up PrEP? Check any conversation starters you'd like on your summary.
+          </p>
+          <div className="selectable-list">
+            {dynamicStarters.map((tip, i) => {
+              const isSelected = selectedStarterIds?.includes(i);
+              return (
+                <label key={i} className={`selectable-item ${isSelected ? 'selected' : ''}`}>
+                  <input
+                    type="checkbox"
+                    checked={isSelected || false}
+                    onChange={() => onToggleStarter?.(i)}
+                  />
+                  <span>{tip}</span>
+                </label>
+              );
+            })}
+          </div>
         </div>
       )}
 

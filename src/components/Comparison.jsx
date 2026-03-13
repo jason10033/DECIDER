@@ -146,6 +146,16 @@ export default function Comparison() {
       <h1>{title}</h1>
       <p className="comparison-intro">{intro}</p>
 
+      {/* Head-to-Head CTA - Top */}
+      <div className="h2h-cta">
+        <button
+          className="btn btn-primary btn-lg"
+          onClick={() => setView('headtohead')}
+        >
+          Compare Two Options Head-to-Head &rarr;
+        </button>
+      </div>
+
       {/* Full Comparison Table - All Options */}
       <div className="full-comparison-table">
         <div className="full-table-scroll">

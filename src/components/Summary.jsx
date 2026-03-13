@@ -21,7 +21,7 @@ const questionGroups = [
   },
   {
     label: 'My Situation',
-    ids: ['prep_01', 'prep_05', 'prep_06', 'prep_07', 'prep_10']
+    ids: ['prep_00', 'prep_01', 'prep_05', 'prep_06', 'prep_07', 'prep_10']
   },
   {
     label: 'My Concerns',
@@ -29,12 +29,18 @@ const questionGroups = [
   }
 ];
 
-export default function Summary({ recommendation, assessmentResponses, assessmentContent, selectedAlternatives }) {
+export default function Summary({ recommendation, assessmentResponses, assessmentContent, selectedAlternatives, selectedQuestionIds, selectedStarterIds }) {
   const questions = assessmentContent?.questions || [];
 
   const handlePrint = () => {
     window.print();
   };
+
+  // Get selected questions and starters
+  const dynamicQuestions = recommendation?.dynamicQuestions || [];
+  const dynamicStarters = recommendation?.dynamicConversationStarters || [];
+  const selectedQuestions = (selectedQuestionIds || []).map(i => dynamicQuestions[i]).filter(Boolean);
+  const selectedStarters = (selectedStarterIds || []).map(i => dynamicStarters[i]).filter(Boolean);
 
   return (
     <div className="summary-page">
@@ -46,13 +52,6 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
       {/* About Me Section - Organized by groups */}
       <div className="summary-card">
         <h2>About Me</h2>
-
-        {/* Summary sentence at top */}
-        {recommendation?.summarySentence && (
-          <div className="summary-sentence">
-            <p>{recommendation.summarySentence}</p>
-          </div>
-        )}
 
         {questionGroups.map(group => {
           const groupQuestions = group.ids
@@ -86,6 +85,13 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
             </div>
           );
         })}
+
+        {/* Summary sentence at bottom */}
+        {recommendation?.summarySentence && (
+          <div className="summary-sentence" style={{ marginTop: 'var(--space-lg)' }}>
+            <p>{recommendation.summarySentence}</p>
+          </div>
+        )}
       </div>
 
       {/* I'm Interested In */}
@@ -160,30 +166,53 @@ export default function Summary({ recommendation, assessmentResponses, assessmen
         </div>
       )}
 
-      {/* Questions I Have */}
-      <div className="summary-card">
-        <h2>Questions I Have</h2>
-        {recommendation?.primary?.providerQuestions && (
-          <ul className="checklist">
-            {recommendation.primary.providerQuestions.map((q, i) => (
-              <li key={i}>{q}</li>
-            ))}
-          </ul>
-        )}
-        <div className="notes-section">
-          <p>Write additional questions or notes here:</p>
+      {/* Questions I Want to Ask - user-selected from Resources */}
+      {(selectedQuestions.length > 0 || selectedStarters.length > 0) && (
+        <div className="summary-card">
+          <h2>Questions I Want to Ask</h2>
+          {selectedStarters.length > 0 && (
+            <>
+              <h3 className="about-me-group-label">How I want to start the conversation</h3>
+              <ul className="checklist">
+                {selectedStarters.map((s, i) => (
+                  <li key={i}>{s}</li>
+                ))}
+              </ul>
+            </>
+          )}
+          {selectedQuestions.length > 0 && (
+            <>
+              <h3 className="about-me-group-label" style={{ marginTop: 'var(--space-md)' }}>Questions for my provider</h3>
+              <ul className="checklist">
+                {selectedQuestions.map((q, i) => (
+                  <li key={i}>{q}</li>
+                ))}
+              </ul>
+            </>
+          )}
+          <div className="notes-section">
+            <p>Write additional questions or notes here:</p>
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Fallback if no questions selected */}
+      {selectedQuestions.length === 0 && selectedStarters.length === 0 && (
+        <div className="summary-card">
+          <h2>Questions I Want to Ask</h2>
+          <div className="notes-section">
+            <p>Write your questions or notes here:</p>
+          </div>
+        </div>
+      )}
 
       {/* My Next Steps */}
       <div className="summary-card">
         <h2>My Next Steps</h2>
         <ul className="checklist">
           <li>Schedule an appointment with my healthcare provider</li>
-          <li>Ask about getting tested for HIV before starting PrEP</li>
-          <li>Discuss which PrEP option is right for me</li>
-          <li>Ask about costs, insurance coverage, and assistance programs</li>
-          <li>Learn about follow-up visits and monitoring</li>
+          <li>Get tested for HIV and STIs before starting PrEP</li>
+          <li>Decide together with my provider which PrEP option is right for me</li>
         </ul>
       </div>
 

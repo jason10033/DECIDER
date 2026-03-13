@@ -4,6 +4,17 @@
   "reassurance": "There are no right or wrong answers. Every person's needs, preferences, and circumstances are different. This tool helps you reflect on what's important to you so you and your provider can make the best decision together.",
   "questions": [
     {
+      "id": "prep_00",
+      "type": "single_choice",
+      "text": "What sex were you assigned at birth?",
+      "options": [
+        { "value": "male", "label": "Male" },
+        { "value": "female", "label": "Female" },
+        { "value": "intersex", "label": "Intersex" },
+        { "value": "prefer_not_say", "label": "I'd prefer not to say" }
+      ]
+    },
+    {
       "id": "prep_01",
       "type": "single_choice",
       "text": "Have you used PrEP before?",

@@ -11,6 +11,14 @@ export function generateRecommendation(responses) {
   // Score each option based on responses
   const scores = { oral: 0, on_demand: 0, injectable_2mo: 0, injectable_6mo: 0 };
 
+  // prep_00: Sex assigned at birth - CRITICAL for on-demand eligibility
+  // On-demand PrEP (2-1-1) is only recommended for persons assigned male at birth
+  if (responses.prep_00 === 'female') {
+    scores.on_demand -= 10; // effectively disqualify on-demand
+  } else if (responses.prep_00 === 'intersex' || responses.prep_00 === 'prefer_not_say') {
+    scores.on_demand -= 5; // strongly discourage but don't fully disqualify
+  }
+
   // prep_01: Prior PrEP experience
   if (responses.prep_01 === 'yes_oral') {
     scores.injectable_2mo += 1;
@@ -173,11 +181,17 @@ export function generateRecommendation(responses) {
   // Generate a plain-language summary sentence
   const summarySentence = generateSummarySentence(primaryId, responses, templates[primaryId]?.name);
 
+  // Generate dynamic provider questions and conversation starters based on results
+  const dynamicQuestions = generateDynamicProviderQuestions(primaryId, responses);
+  const dynamicConversationStarters = generateDynamicConversationStarters(primaryId, responses);
+
   return {
     primary,
     alternatives,
     rationale,
     summarySentence,
+    dynamicQuestions,
+    dynamicConversationStarters,
     providerTips: recommendationTemplates.providerSection.tips,
     providerHeading: recommendationTemplates.providerSection.heading
   };
@@ -291,4 +305,101 @@ function generateRationale(primaryId, responses) {
 
 function concerns(responses) {
   return responses.prep_08 || [];
+}
+
+function generateDynamicProviderQuestions(primaryId, responses) {
+  const questions = [];
+
+  // Questions based on the primary recommendation
+  if (primaryId === 'oral') {
+    questions.push('Which oral PrEP medication - Truvada or Descovy - would you recommend for me?');
+    questions.push('What should I do if I miss a dose?');
+  }
+  if (primaryId === 'on_demand') {
+    questions.push('Is on-demand (2-1-1) PrEP a good option for my situation?');
+    questions.push('How do I make sure I follow the dosing schedule correctly?');
+  }
+  if (primaryId === 'injectable_2mo') {
+    questions.push('Do you offer the cabotegravir (Apretude) injection at this clinic?');
+    questions.push('What should I expect during the oral lead-in period?');
+    questions.push('What happens if I miss or am late for an injection appointment?');
+  }
+  if (primaryId === 'injectable_6mo') {
+    questions.push('Do you offer lenacapavir (Sunlenca) for PrEP at this clinic?');
+    questions.push('What does the oral loading phase involve?');
+  }
+
+  // Questions based on their concerns
+  const userConcerns = responses.prep_08 || [];
+  if (userConcerns.includes('side_effects')) {
+    questions.push('What side effects should I watch for, and when should I contact you?');
+  }
+  if (userConcerns.includes('cost')) {
+    questions.push('Are there programs to help me pay for PrEP, like Ready Set PrEP or copay assistance?');
+  }
+  if (userConcerns.includes('stopping')) {
+    if (primaryId === 'injectable_2mo' || primaryId === 'injectable_6mo') {
+      questions.push('If I want to stop, what is the plan for staying protected during the medication tail period?');
+    } else {
+      questions.push('What happens if I decide to stop taking PrEP?');
+    }
+  }
+  if (userConcerns.includes('privacy')) {
+    questions.push('How can I keep my PrEP use private?');
+  }
+
+  // Questions based on pregnancy
+  if (responses.prep_06 === 'yes' || responses.prep_06 === 'not_sure') {
+    questions.push('How does PrEP work with pregnancy planning? Is it safe during pregnancy?');
+  }
+
+  // Questions based on medications
+  if (responses.prep_07 === 'yes_prescription' || responses.prep_07 === 'yes_both') {
+    questions.push('Will any of my current medications interact with this PrEP option?');
+  }
+  if (responses.prep_07 === 'yes_supplements' || responses.prep_07 === 'yes_both') {
+    if (primaryId === 'injectable_6mo') {
+      questions.push('Do any of my supplements interact with lenacapavir?');
+    }
+  }
+
+  // General question everyone should ask
+  questions.push('What tests do I need before starting, and how often will I need follow-up visits?');
+
+  return questions;
+}
+
+function generateDynamicConversationStarters(primaryId, responses) {
+  const starters = [];
+
+  // Personalized opening based on their journey
+  if (responses.prep_01 === 'no' || responses.prep_01 === 'not_sure') {
+    starters.push("I've been learning about PrEP and I'm interested in getting started. Can we talk about which option might be right for me?");
+  } else {
+    starters.push("I've used PrEP before and I'd like to explore whether a different option might work better for me now.");
+  }
+
+  // Based on primary recommendation
+  if (primaryId === 'oral') {
+    starters.push("I think a daily pill might work well for my lifestyle. Can you tell me more about oral PrEP?");
+  } else if (primaryId === 'on_demand') {
+    starters.push("I've read about on-demand PrEP where you take pills before and after sex. Could that be an option for me?");
+  } else if (primaryId === 'injectable_2mo') {
+    starters.push("I'm interested in the every-2-month PrEP injection. Do you offer that here, and would it be a good fit for me?");
+  } else if (primaryId === 'injectable_6mo') {
+    starters.push("I've heard about a PrEP injection you only get twice a year. Can we talk about whether that could work for me?");
+  }
+
+  // Based on what matters to them
+  starters.push("I used a decision tool that helped me think about my PrEP options. Can I share what I learned with you?");
+
+  if (responses.prep_05 === 'very_important') {
+    starters.push("Privacy is really important to me. What PrEP options would let me be the most discreet?");
+  }
+
+  if (responses.prep_09 === 'lowest_cost' || (responses.prep_08 || []).includes('cost')) {
+    starters.push("I'm concerned about the cost of PrEP. What assistance programs are available to help me?");
+  }
+
+  return starters;
 }
