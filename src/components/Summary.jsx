@@ -185,36 +185,6 @@ export default function Summary({
 
   return (
     <div className="summary-page">
-      {/* Name & Pronoun Fields */}
-      <div className="summary-identity-fields no-print">
-        <div className="identity-field">
-          <label htmlFor="patient-name">First Name</label>
-          <input
-            id="patient-name"
-            type="text"
-            placeholder="Enter your first name"
-            value={patientName}
-            onChange={(e) => onPatientNameChange(e.target.value)}
-            className="identity-input"
-          />
-        </div>
-        <div className="identity-field">
-          <label htmlFor="patient-pronouns">Pronouns</label>
-          <select
-            id="patient-pronouns"
-            value={patientPronouns}
-            onChange={(e) => onPatientPronounsChange(e.target.value)}
-            className="identity-input"
-          >
-            <option value="">Select pronouns</option>
-            <option value="he/him">he/him</option>
-            <option value="she/her">she/her</option>
-            <option value="they/them">they/them</option>
-            <option value="ze/zir">ze/zir</option>
-          </select>
-        </div>
-      </div>
-
       {/* View Toggle */}
       <div className="summary-toggle no-print">
         <button
@@ -230,6 +200,38 @@ export default function Summary({
           Your Physician's Guide to You
         </button>
       </div>
+
+      {/* Name & Pronoun Fields - only in physician view */}
+      {isPhysician && (
+        <div className="summary-identity-fields no-print">
+          <div className="identity-field">
+            <label htmlFor="patient-name">First Name</label>
+            <input
+              id="patient-name"
+              type="text"
+              placeholder="Enter your first name"
+              value={patientName}
+              onChange={(e) => onPatientNameChange(e.target.value)}
+              className="identity-input"
+            />
+          </div>
+          <div className="identity-field">
+            <label htmlFor="patient-pronouns">Pronouns</label>
+            <select
+              id="patient-pronouns"
+              value={patientPronouns}
+              onChange={(e) => onPatientPronounsChange(e.target.value)}
+              className="identity-input"
+            >
+              <option value="">Select pronouns</option>
+              <option value="he/him">he/him</option>
+              <option value="she/her">she/her</option>
+              <option value="they/them">they/them</option>
+              <option value="ze/zir">ze/zir</option>
+            </select>
+          </div>
+        </div>
+      )}
 
       {/* Title */}
       <h1>

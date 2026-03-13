@@ -26,7 +26,12 @@ export default function useAssessment() {
   const getAnswer = (id) => responses[id];
 
   const isComplete = (questions) => {
-    return questions.every(q => {
+    // Filter to only visible questions (e.g., pregnancy question only for female)
+    const visibleQuestions = questions.filter(q => {
+      if (q.id === 'prep_06') return responses.prep_00 === 'female';
+      return true;
+    });
+    return visibleQuestions.every(q => {
       const answer = responses[q.id];
       if (q.type === 'multi_choice') return answer && answer.length > 0;
       return answer !== undefined && answer !== null;
