@@ -9,6 +9,7 @@ import Assessment from './components/Assessment';
 import Recommendations from './components/Recommendations';
 import Resources from './components/Resources';
 import Summary from './components/Summary';
+import About from './components/About';
 import useAssessment from './hooks/useAssessment';
 import { generateRecommendation } from './services/recommendations';
 import qualtricsService from './services/qualtrics';
@@ -24,6 +25,9 @@ export default function App() {
   const [selectedAlternativeIds, setSelectedAlternativeIds] = useState([]);
   const [selectedQuestionIds, setSelectedQuestionIds] = useState([]);
   const [selectedStarterIds, setSelectedStarterIds] = useState([]);
+  const [patientName, setPatientName] = useState('');
+  const [patientPronouns, setPatientPronouns] = useState('');
+  const [customQuestions, setCustomQuestions] = useState([]);
   const navigate = useNavigate();
 
   const handleVisitModality = (modalityId) => {
@@ -54,6 +58,16 @@ export default function App() {
       if (prev.includes(idx)) return prev.filter(id => id !== idx);
       return [...prev, idx];
     });
+  };
+
+  const handleAddCustomQuestion = (question) => {
+    if (question.trim()) {
+      setCustomQuestions(prev => [...prev, question.trim()]);
+    }
+  };
+
+  const handleRemoveCustomQuestion = (idx) => {
+    setCustomQuestions(prev => prev.filter((_, i) => i !== idx));
   };
 
   // Generate recommendation from assessment responses
@@ -169,6 +183,9 @@ export default function App() {
             onToggleQuestion={handleToggleQuestion}
             selectedStarterIds={selectedStarterIds}
             onToggleStarter={handleToggleStarter}
+            customQuestions={customQuestions}
+            onAddCustomQuestion={handleAddCustomQuestion}
+            onRemoveCustomQuestion={handleRemoveCustomQuestion}
           />
         } />
 
@@ -182,9 +199,15 @@ export default function App() {
               selectedAlternatives={selectedAlternatives}
               selectedQuestionIds={selectedQuestionIds}
               selectedStarterIds={selectedStarterIds}
+              customQuestions={customQuestions}
+              patientName={patientName}
+              onPatientNameChange={setPatientName}
+              patientPronouns={patientPronouns}
+              onPatientPronounsChange={setPatientPronouns}
             />
           }
         />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Layout>
   );

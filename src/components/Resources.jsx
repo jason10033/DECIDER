@@ -1,11 +1,24 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import resourcesContent from '../content/resources.json';
 
-export default function Resources({ recommendation, selectedQuestionIds, onToggleQuestion, selectedStarterIds, onToggleStarter }) {
+export default function Resources({
+  recommendation, selectedQuestionIds, onToggleQuestion,
+  selectedStarterIds, onToggleStarter,
+  customQuestions, onAddCustomQuestion, onRemoveCustomQuestion
+}) {
+  const [customInput, setCustomInput] = useState('');
   const { title, intro, categories } = resourcesContent;
 
   const dynamicQuestions = recommendation?.dynamicQuestions || [];
   const dynamicStarters = recommendation?.dynamicConversationStarters || [];
+
+  const handleAddQuestion = () => {
+    if (customInput.trim()) {
+      onAddCustomQuestion?.(customInput);
+      setCustomInput('');
+    }
+  };
 
   return (
     <div className="resources-page">
@@ -33,6 +46,43 @@ export default function Resources({ recommendation, selectedQuestionIds, onToggl
                 </label>
               );
             })}
+          </div>
+
+          {/* Custom question input */}
+          <div style={{ marginTop: 'var(--space-lg)' }}>
+            <p style={{ fontWeight: 600, marginBottom: 'var(--space-sm)', fontSize: 'var(--font-size-sm)' }}>
+              Have your own question? Add it here:
+            </p>
+            <div className="custom-question-input-row">
+              <input
+                type="text"
+                placeholder="Type your question..."
+                value={customInput}
+                onChange={(e) => setCustomInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleAddQuestion(); }}
+              />
+              <button onClick={handleAddQuestion} className="btn btn-primary" disabled={!customInput.trim()}>
+                Add
+              </button>
+            </div>
+
+            {/* Show added custom questions */}
+            {customQuestions && customQuestions.length > 0 && (
+              <div style={{ marginTop: 'var(--space-sm)' }}>
+                {customQuestions.map((q, i) => (
+                  <div key={i} className="custom-question-tag">
+                    <span>{q}</span>
+                    <button
+                      className="custom-question-remove"
+                      onClick={() => onRemoveCustomQuestion?.(i)}
+                      title="Remove question"
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
