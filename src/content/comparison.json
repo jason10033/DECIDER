@@ -11,14 +11,14 @@
     {
       "label": "How You Take It",
       "oral": "Swallow one pill by mouth",
-      "on_demand": "Swallow pills before and after sex (2-1-1 schedule)",
+      "on_demand": "Take 2 pills 2-24 hours before sex, then 1 pill each day for 2 days after (2-1-1 schedule)",
       "injectable_2mo": "Injection into the buttock muscle by your provider",
       "injectable_6mo": "Small injection under the skin in the belly area by your provider"
     },
     {
       "label": "How Often",
       "oral": "Every day",
-      "on_demand": "Only around the time you have sex (minimum 4 pills per event)",
+      "on_demand": "Only around the time you have sex - requires planning at least 2 hours ahead (minimum 4 pills per event)",
       "injectable_2mo": "Every 2 months (after getting started)",
       "injectable_6mo": "Every 6 months (after getting started)"
     },
