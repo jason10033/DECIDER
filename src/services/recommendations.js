@@ -358,7 +358,7 @@ function generateDynamicProviderQuestions(primaryId, responses) {
     questions.push('What happens if I miss or am late for an injection appointment?');
   }
   if (primaryId === 'injectable_6mo') {
-    questions.push('Do you offer lenacapavir (Sunlenca) for PrEP at this clinic?');
+    questions.push('Do you offer lenacapavir (Yeztugo) for PrEP at this clinic?');
     questions.push('What does the oral loading phase involve?');
   }
 

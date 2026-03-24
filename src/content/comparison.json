@@ -5,7 +5,7 @@
     { "id": "oral", "name": "Daily Pill", "brandName": "Truvada / Descovy", "colorClass": "oral" },
     { "id": "on_demand", "name": "On-Demand Pill", "brandName": "Truvada (2-1-1)", "colorClass": "on-demand" },
     { "id": "injectable_2mo", "name": "2-Month Injection", "brandName": "Apretude", "colorClass": "injectable-2mo" },
-    { "id": "injectable_6mo", "name": "6-Month Injection", "brandName": "Sunlenca", "colorClass": "injectable-6mo" }
+    { "id": "injectable_6mo", "name": "6-Month Injection", "brandName": "Yeztugo", "colorClass": "injectable-6mo" }
   ],
   "categories": [
     {
