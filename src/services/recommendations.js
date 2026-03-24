@@ -172,7 +172,7 @@ export function generateRecommendation(responses) {
 
   // Special case: pregnancy override
   if (responses.prep_06 === 'yes') {
-    primary.specialNote = 'Because you are planning a pregnancy, oral PrEP (Truvada) is currently the recommended option. Talk to your provider about the best timing.';
+    primary.specialNote = 'Because you are planning a pregnancy, oral PrEP (tenofovir/emtricitabine) is currently the recommended option. Talk to your provider about the best timing.';
   }
 
   // Generate personalized rationale based on responses
@@ -282,7 +282,7 @@ function generateRationale(primaryId, responses) {
       reasons.push('This option is the easiest to start and stop, which was important to you.');
     }
     if (responses.prep_06 === 'yes' || responses.prep_06 === 'not_sure') {
-      reasons.push('For pregnancy planning, oral PrEP (Truvada) is the recommended choice.');
+      reasons.push('For pregnancy planning, oral PrEP (tenofovir/emtricitabine) is the recommended choice.');
     }
   }
 

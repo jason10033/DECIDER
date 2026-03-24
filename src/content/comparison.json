@@ -46,7 +46,7 @@
     {
       "label": "Getting Started",
       "oral": "HIV test, kidney labs, prescription from provider. Protection builds up in about 7-21 days depending on type of exposure.",
-      "on_demand": "HIV test, kidney labs, prescription for Truvada. Take 2 pills 2-24 hours before sex to start.",
+      "on_demand": "HIV test, kidney labs, prescription for tenofovir/emtricitabine (Truvada). Take 2 pills 2-24 hours before sex to start.",
       "injectable_2mo": "HIV test, 1 month of daily oral lead-in tablets, then first injection. Second injection 1 month later, then every 2 months.",
       "injectable_6mo": "HIV test, 2 oral loading tablets on Day 1, 1 tablet on Day 2, then first injection at Day 28. Next injection in 6 months."
     },

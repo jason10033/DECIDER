@@ -62,13 +62,13 @@
         },
         {
           "name": "Gilead Advancing Access",
-          "description": "Gilead Sciences offers copay assistance for people with insurance, as well as free medication for eligible people without insurance. Covers Truvada, Descovy, and Yeztugo.",
+          "description": "Gilead Sciences offers copay assistance for people with insurance, as well as free medication for eligible people without insurance. Covers tenofovir disoproxil fumarate (Truvada), tenofovir alafenamide (Descovy), and lenacapavir (Yeztugo).",
           "url": "https://www.gileadadvancingaccess.com",
           "type": "assistance"
         },
         {
           "name": "ViiV Patient Assistance",
-          "description": "ViiV Healthcare offers patient assistance programs for people who are prescribed Apretude (cabotegravir). Includes help for both insured and uninsured individuals.",
+          "description": "ViiV Healthcare offers patient assistance programs for people who are prescribed cabotegravir (Apretude). Includes help for both insured and uninsured individuals.",
           "url": "https://www.viivconnect.com",
           "type": "assistance"
         }

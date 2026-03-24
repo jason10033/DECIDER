@@ -3,7 +3,7 @@
   "intro": "Based on what you've shared about your preferences, here's how each PrEP option lines up with what matters most to you. Remember - all three options are highly effective. The best one is the one you'll use consistently.",
   "options": {
     "oral": {
-      "name": "Daily Pill (Truvada / Descovy)",
+      "name": "Daily Pill (tenofovir/emtricitabine)",
       "heading": "Oral PrEP might be a great fit for you",
       "reasons": [
         "You can take it at home on your own schedule - no clinic visits for each dose",
@@ -27,7 +27,7 @@
       ]
     },
     "on_demand": {
-      "name": "On-Demand Pill (Truvada 2-1-1)",
+      "name": "On-Demand Pill (tenofovir/emtricitabine 2-1-1)",
       "heading": "On-demand PrEP might be a great fit for you",
       "reasons": [
         "You only take pills when you need them, not every day",
@@ -41,18 +41,18 @@
         "Currently recommended only for cisgender men who have sex with men",
         "Requires following the 2-1-1 schedule carefully for full protection",
         "Daily PrEP may be a better fit if you have sex very frequently",
-        "Only studied with Truvada, not Descovy"
+        "Only studied with tenofovir disoproxil fumarate (Truvada), not tenofovir alafenamide (Descovy)"
       ],
       "providerQuestions": [
         "Is on-demand (2-1-1) PrEP a good option for my situation?",
         "How do I make sure I'm following the dosing schedule correctly?",
         "What should I do if I forget to take the before-sex dose?",
         "Should I consider switching to daily PrEP if my situation changes?",
-        "Are there programs to help me pay for Truvada?"
+        "Are there programs to help me pay for tenofovir/emtricitabine?"
       ]
     },
     "injectable_2mo": {
-      "name": "2-Month Injection (Apretude)",
+      "name": "2-Month Injection (cabotegravir)",
       "heading": "The every-2-month injection might be a great fit for you",
       "reasons": [
         "No daily pill to remember - your protection is built in at each appointment",
@@ -76,7 +76,7 @@
       ]
     },
     "injectable_6mo": {
-      "name": "6-Month Injection (Yeztugo)",
+      "name": "6-Month Injection (lenacapavir)",
       "heading": "The twice-yearly injection might be a great fit for you",
       "reasons": [
         "Only two clinic visits per year - the most convenient dosing schedule available",

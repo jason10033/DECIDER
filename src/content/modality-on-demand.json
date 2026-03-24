@@ -11,16 +11,16 @@
     "Also called event-driven PrEP or 2-1-1 dosing",
     "Highly effective when used correctly",
     "Currently recommended for cisgender men who have sex with men",
-    "Uses the same medication as daily oral PrEP (Truvada)"
+    "Uses the same medication as daily oral PrEP, tenofovir/emtricitabine (Truvada)"
   ],
   "sections": [
     {
       "id": "overview",
       "title": "Overview",
-      "content": "On-demand PrEP, also called event-driven PrEP or 2-1-1 dosing, is a way to take PrEP only when you need it, rather than every day. Instead of a daily pill, you take pills before and after sex. This approach uses the same medication as daily oral PrEP (Truvada) but on a different schedule. It was studied in the IPERGAY trial and found to be highly effective at preventing HIV.",
+      "content": "On-demand PrEP, also called event-driven PrEP or 2-1-1 dosing, is a way to take PrEP only when you need it, rather than every day. Instead of a daily pill, you take pills before and after sex. This approach uses the same medication as daily oral PrEP (tenofovir/emtricitabine) but on a different schedule. It was studied in the IPERGAY trial and found to be highly effective at preventing HIV.",
       "keyPoints": [
         "Take pills only around the time you have sex",
-        "Uses the same medication as daily oral PrEP (Truvada)",
+        "Uses the same medication as daily oral PrEP (tenofovir/emtricitabine)",
         "Studied and shown to be highly effective in clinical research",
         "A good option if you don't want to take a pill every day"
       ]
@@ -90,7 +90,7 @@
     {
       "id": "side_effects",
       "title": "Side Effects",
-      "content": "Since on-demand PrEP uses the same medication as daily oral PrEP (Truvada), the side effects are similar but may occur less often because you are taking fewer pills overall.",
+      "content": "Since on-demand PrEP uses the same medication as daily oral PrEP (tenofovir/emtricitabine), the side effects are similar but may occur less often because you are taking fewer pills overall.",
       "keyPoints": [
         "Side effects are similar to daily oral PrEP but may be less frequent",
         "Possible nausea, headache, or stomach upset around the time you take the pills",
@@ -101,11 +101,11 @@
     {
       "id": "getting_started",
       "title": "Getting Started",
-      "content": "Getting started with on-demand PrEP is similar to starting daily PrEP. You will need to see a provider, get tested for HIV, and receive a prescription for Truvada. The main difference is how you take the medication.",
+      "content": "Getting started with on-demand PrEP is similar to starting daily PrEP. You will need to see a provider, get tested for HIV, and receive a prescription for tenofovir/emtricitabine. The main difference is how you take the medication.",
       "keyPoints": [
         "You will need an HIV test to confirm you are HIV-negative",
         "Your provider will check your kidney function",
-        "You will receive a prescription for Truvada",
+        "You will receive a prescription for tenofovir/emtricitabine",
         "Your provider will explain the 2-1-1 dosing schedule",
         "You should always have pills available so you are prepared"
       ]
@@ -115,7 +115,7 @@
       "title": "Cost & Access",
       "content": "On-demand PrEP uses the same medication as daily oral PrEP, so the same assistance programs apply. Because you use fewer pills overall, your medication may last longer, potentially lowering your costs.",
       "keyPoints": [
-        "Uses Truvada or its generic equivalent",
+        "Uses tenofovir/emtricitabine (Truvada) or its generic equivalent",
         "The same insurance coverage and assistance programs apply as daily oral PrEP",
         "Fewer pills used overall may mean lower costs",
         "Ready, Set, PrEP and Gilead Advancing Access programs can help with costs"
@@ -130,7 +130,7 @@
         "Q: Can I switch between on-demand and daily PrEP? - A: Yes, talk to your provider about switching. If you are transitioning to daily PrEP, start taking a pill every day.",
         "Q: What if I forget the before-sex dose? - A: The before-sex dose is essential for protection. If you did not take it in time, consider using condoms for that encounter.",
         "Q: Is on-demand PrEP as good as daily PrEP? - A: Daily PrEP has a higher effectiveness rate, but on-demand PrEP is still highly protective when used correctly. The best PrEP is the one you will use consistently.",
-        "Q: Can I use Descovy for on-demand PrEP? - A: On-demand PrEP has only been studied with Truvada. It is not recommended with Descovy at this time."
+        "Q: Can I use tenofovir alafenamide (Descovy) for on-demand PrEP? - A: On-demand PrEP has only been studied with tenofovir disoproxil fumarate (Truvada). It is not recommended with tenofovir alafenamide at this time."
       ]
     }
   ]
