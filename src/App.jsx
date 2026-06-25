@@ -1,5 +1,6 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { useState, useMemo } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { capturePageview } from './services/analytics';
 import Layout from './components/Layout';
 import Welcome from './components/Welcome';
 import Education from './components/Education';
@@ -30,6 +31,12 @@ export default function App() {
   const [patientPronouns, setPatientPronouns] = useState('');
   const [customQuestions, setCustomQuestions] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Capture a pageview on each route change (HashRouter).
+  useEffect(() => {
+    capturePageview(location.pathname);
+  }, [location.pathname]);
 
   const handleVisitModality = (modalityId) => {
     setVisitedModalities(prev => {
