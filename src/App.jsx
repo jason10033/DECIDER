@@ -88,7 +88,7 @@ export default function App() {
   // Resolve selected alternative objects from IDs
   const selectedAlternatives = useMemo(() => {
     if (!recommendation?.alternatives) return [];
-    return recommendation.alternatives.filter(alt => selectedAlternativeIds.includes(alt.id));
+    return recommendation.alternatives.filter(alt => selectedAlternativeIds.includes(alt.id) && !alt.notRecommended);
   }, [recommendation, selectedAlternativeIds]);
 
   // Handle assessment completion - submit to Qualtrics

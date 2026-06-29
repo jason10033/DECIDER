@@ -16,6 +16,8 @@ export default function Recommendations({ recommendation, assessmentResponses, s
   }
 
   const { primary, alternatives, rationale, summarySentence } = recommendation;
+  const exploreAlternatives = (alternatives || []).filter(alt => !alt.notRecommended);
+  const cautionedAlternatives = (alternatives || []).filter(alt => alt.notRecommended);
 
   return (
     <div className="recommendations-page">
@@ -76,13 +78,13 @@ export default function Recommendations({ recommendation, assessmentResponses, s
       </div>
 
       {/* Other Options - Opt-in for Summary */}
-      {alternatives && alternatives.length > 0 && (
+      {exploreAlternatives.length > 0 && (
         <div className="alternatives-section">
           <h2>Other Options to Explore</h2>
           <p className="alternatives-intro">
             Check any options you'd also like to discuss with your provider. They'll appear on your printable summary.
           </p>
-          {alternatives.map((alt, idx) => {
+          {exploreAlternatives.map((alt, idx) => {
             const isSelected = selectedAlternativeIds?.includes(alt.id);
             return (
               <div key={idx} className={`recommendation-card alternative-selectable ${alt.colorClass} ${isSelected ? 'alt-selected' : ''}`}>
@@ -107,6 +109,27 @@ export default function Recommendations({ recommendation, assessmentResponses, s
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Less suitable - shown for transparency, not selectable for the summary */}
+      {cautionedAlternatives.length > 0 && (
+        <div className="alternatives-section less-suitable">
+          <h2>Less Suitable for Your Situation</h2>
+          <p className="alternatives-intro">
+            Based on your answers, these options may not be the best fit right now. They're shown here for completeness, and your provider can explain more.
+          </p>
+          {cautionedAlternatives.map((alt, idx) => (
+            <div key={idx} className={`recommendation-card alternative-muted ${alt.colorClass}`}>
+              <span className="recommendation-label">Usually not recommended for you</span>
+              <h2>{alt.name}</h2>
+              {alt.cautionReason && (
+                <div className="callout important">
+                  <p>{alt.cautionReason}</p>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       )}
 

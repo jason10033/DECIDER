@@ -1370,6 +1370,30 @@ body {
   margin-bottom: var(--space-lg);
 }
 
+/* Less suitable group - de-emphasized, not selectable */
+.alternatives-section.less-suitable {
+  margin-top: var(--space-2xl);
+}
+
+.alternatives-section.less-suitable h2 {
+  color: var(--color-text-muted);
+}
+
+.alternative-muted {
+  opacity: 0.85;
+  border: 1px dashed var(--color-border);
+  background: var(--color-surface, #fff);
+}
+
+.alternative-muted .recommendation-label {
+  background: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.alternative-muted h2 {
+  font-size: var(--font-size-lg);
+}
+
 .alternative-selectable {
   position: relative;
   transition: opacity 0.2s ease;

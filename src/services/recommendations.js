@@ -163,12 +163,17 @@ export function generateRecommendation(responses) {
     allScores: { ...scores }
   };
 
-  const alternatives = alternativeIds.map(id => ({
-    id,
-    ...templates[id],
-    colorClass: colorClassMap[id] || id,
-    score: scores[id]
-  }));
+  const alternatives = alternativeIds.map(id => {
+    const cautionReason = getCautionReason(id, responses);
+    return {
+      id,
+      ...templates[id],
+      colorClass: colorClassMap[id] || id,
+      score: scores[id],
+      notRecommended: !!cautionReason,
+      cautionReason
+    };
+  });
 
   // Special case: pregnancy override
   if (responses.prep_06 === 'yes') {
@@ -264,6 +269,31 @@ function generateSummarySentence(primaryId, responses, primaryName) {
     : factors.slice(0, -1).join(', ') + ' and ' + factors[factors.length - 1];
 
   return `Based on ${factorText}, ${primaryName} was the closest match to what matters most to you. This is a starting point for your conversation with your provider, who can help you make the final decision together.`;
+}
+
+// Flag alternatives that a hard clinical rule rules out for this patient,
+// returning a plain-language reason (or null if the option is appropriate).
+function getCautionReason(id, responses) {
+  const reasons = [];
+  const planningPregnancy = responses.prep_06 === 'yes' || responses.prep_06 === 'not_sure';
+
+  if (id === 'on_demand') {
+    if (responses.prep_00 === 'female') {
+      reasons.push('On-demand (2-1-1) PrEP is currently studied and recommended only for cisgender men who have sex with men.');
+    } else if (responses.prep_00 === 'intersex' || responses.prep_00 === 'prefer_not_say') {
+      reasons.push('On-demand (2-1-1) PrEP is currently studied only for cisgender men who have sex with men. Ask your provider whether it applies to you.');
+    }
+    if (planningPregnancy) {
+      reasons.push('On-demand PrEP has not been studied for people who are pregnant or planning a pregnancy.');
+    }
+  }
+
+  if ((id === 'injectable_2mo' || id === 'injectable_6mo') && planningPregnancy) {
+    const drug = id === 'injectable_2mo' ? 'cabotegravir' : 'lenacapavir';
+    reasons.push(`There is limited safety data for ${drug} during pregnancy or pregnancy planning, so oral PrEP is the recommended choice.`);
+  }
+
+  return reasons.length ? reasons.join(' ') : null;
 }
 
 function generateRationale(primaryId, responses) {
