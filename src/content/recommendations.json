@@ -1,6 +1,4 @@
 {
-  "title": "Your Personalized Results",
-  "intro": "Based on what you've shared about your preferences, here's how each PrEP option lines up with what matters most to you. Remember - all three options are highly effective. The best one is the one you'll use consistently.",
   "options": {
     "oral": {
       "name": "Daily Pill (tenofovir/emtricitabine)",
@@ -100,16 +98,5 @@
         "What are my options if my insurance doesn't cover this yet?"
       ]
     }
-  },
-  "providerSection": {
-    "heading": "Ways to Start the Conversation with Your Provider",
-    "intro": "Talking to your provider about PrEP doesn't have to be complicated. Here are some conversation starters you can use:",
-    "tips": [
-      "\"I've been learning about PrEP and I'm interested in starting. Can we talk about which option might be right for me?\"",
-      "\"I'd like to know more about the different ways to take PrEP - the daily pill, the 2-month shot, and the 6-month shot.\"",
-      "\"I've been thinking about HIV prevention and I'd like to explore PrEP. What would the next steps be?\"",
-      "\"I used a decision tool that helped me think about my PrEP options. Can I share what I learned with you?\"",
-      "\"I have some questions about PrEP side effects and what to expect. Can we go through them together?\""
-    ]
   }
 }

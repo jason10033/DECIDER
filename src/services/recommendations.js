@@ -191,9 +191,7 @@ export function generateRecommendation(responses) {
     rationale,
     summarySentence,
     dynamicQuestions,
-    dynamicConversationStarters,
-    providerTips: recommendationTemplates.providerSection.tips,
-    providerHeading: recommendationTemplates.providerSection.heading
+    dynamicConversationStarters
   };
 }
 
