@@ -6,9 +6,74 @@
 //   - "extract": pull the conversation into the same prep_00..prep_10 schema the
 //                assessment uses, so the existing recommendation engine can run.
 
+import comparison from '../../src/content/comparison.json' with { type: 'json' };
+
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-5';
 const ANTHROPIC_VERSION = '2023-06-01';
+
+// Ground the conversation in the tool's own curated Compare content so the
+// chatbot's spoken facts match the rest of DECIDE rather than drifting to
+// general knowledge. Built from comparison.json (single source of truth).
+function buildGrounding() {
+  const lines = [
+    'CURATED FACTS. The following are DECIDE\'s own vetted facts from the Compare page. Ground everything you say about the options in these. Do not contradict them or invent numbers that conflict with them:'
+  ];
+  for (const opt of comparison.options) {
+    lines.push('');
+    lines.push(`${opt.name} (${opt.brandName}):`);
+    for (const cat of comparison.categories) {
+      lines.push(`- ${cat.label}: ${cat[opt.id]}`);
+    }
+    const bf = comparison.bestFor.find((b) => b.id === opt.id);
+    if (bf) lines.push(`- ${bf.title} ${bf.points.join('; ')}`);
+  }
+  return lines.join('\n');
+}
+
+const GROUNDING = buildGrounding();
+
+// Token pricing per million tokens, for surfacing an estimated cost per
+// conversation. Cache reads/writes priced relative to input.
+const PRICING = {
+  'claude-sonnet-5': { input: 3, output: 15, cacheRead: 0.3, cacheWrite: 3.75, introInput: 2, introOutput: 10, introUntil: '2026-08-31' },
+  'claude-opus-5': { input: 5, output: 25, cacheRead: 0.5, cacheWrite: 6.25 },
+  'claude-haiku-4-5': { input: 1, output: 5, cacheRead: 0.1, cacheWrite: 1.25 }
+};
+
+function priceFor(model) {
+  const p = PRICING[model] || PRICING['claude-sonnet-5'];
+  let input = p.input;
+  let output = p.output;
+  if (p.introUntil && new Date() <= new Date(`${p.introUntil}T23:59:59Z`)) {
+    input = p.introInput;
+    output = p.introOutput;
+  }
+  return { input, output, cacheRead: p.cacheRead, cacheWrite: p.cacheWrite };
+}
+
+function emptyUsage() {
+  return { input_tokens: 0, output_tokens: 0, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 };
+}
+
+function addUsage(acc, u) {
+  if (!u) return;
+  acc.input_tokens += u.input_tokens || 0;
+  acc.output_tokens += u.output_tokens || 0;
+  acc.cache_read_input_tokens += u.cache_read_input_tokens || 0;
+  acc.cache_creation_input_tokens += u.cache_creation_input_tokens || 0;
+}
+
+function costFromUsage(model, u) {
+  const p = priceFor(model);
+  const perM = (tok, rate) => ((tok || 0) / 1e6) * rate;
+  return (
+    perM(u.input_tokens, p.input) +
+    perM(u.output_tokens, p.output) +
+    perM(u.cache_read_input_tokens, p.cacheRead) +
+    perM(u.cache_creation_input_tokens, p.cacheWrite)
+  );
+}
 
 // Pages the chatbot can surface beside the conversation. Adding a new modality
 // is a matter of extending this list and the extraction schema below.
@@ -133,6 +198,7 @@ async function callAnthropic(apiKey, body) {
 async function runChat(apiKey, clientMessages) {
   const messages = clientMessages.map((m) => ({ role: m.role, content: m.content }));
   const references = [];
+  const usage = emptyUsage();
   let ready = false;
   let readyNote = '';
 
@@ -140,11 +206,12 @@ async function runChat(apiKey, clientMessages) {
     const data = await callAnthropic(apiKey, {
       model: MODEL,
       max_tokens: 1024,
-      system: SYSTEM_PROMPT,
+      system: [{ type: 'text', text: `${SYSTEM_PROMPT}\n\n${GROUNDING}`, cache_control: { type: 'ephemeral' } }],
       tools: TOOLS,
       output_config: { effort: 'low' },
       messages
     });
+    addUsage(usage, data.usage);
 
     const textBlocks = data.content.filter((b) => b.type === 'text');
     const toolUses = data.content.filter((b) => b.type === 'tool_use');
@@ -169,14 +236,17 @@ async function runChat(apiKey, clientMessages) {
     }
 
     const reply = textBlocks.map((b) => b.text).join('\n').trim();
-    return { reply, references, ready, readyNote };
+    return { reply, references, ready, readyNote, usage, cost: costFromUsage(MODEL, usage), model: MODEL };
   }
 
   return {
     reply: "Let's keep going. Tell me a bit more about what matters to you.",
     references,
     ready,
-    readyNote
+    readyNote,
+    usage,
+    cost: costFromUsage(MODEL, usage),
+    model: MODEL
   };
 }
 
@@ -206,7 +276,9 @@ async function runExtract(apiKey, clientMessages) {
   } catch {
     responses = {};
   }
-  return { responses };
+  const usage = emptyUsage();
+  addUsage(usage, data.usage);
+  return { responses, usage, cost: costFromUsage(MODEL, usage), model: MODEL };
 }
 
 function contentToText(content) {

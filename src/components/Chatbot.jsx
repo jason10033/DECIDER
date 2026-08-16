@@ -192,7 +192,14 @@ export default function Chatbot({ onComplete }) {
                   <li key={id} className="side-panel-card">
                     <h3>{ref.title}</h3>
                     <p>{ref.blurb}</p>
-                    <Link to={ref.route} className="side-panel-link">Learn more &rarr;</Link>
+                    <Link
+                      to={ref.route}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="side-panel-link"
+                    >
+                      Learn more (opens in a new tab) &rarr;
+                    </Link>
                   </li>
                 );
               })}
