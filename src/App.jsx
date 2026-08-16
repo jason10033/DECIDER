@@ -1,6 +1,6 @@
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useMemo, useEffect } from 'react';
-import { capturePageview } from './services/analytics';
+import { capturePageview, captureEvent } from './services/analytics';
 import Layout from './components/Layout';
 import Welcome from './components/Welcome';
 import Education from './components/Education';
@@ -12,6 +12,7 @@ import Resources from './components/Resources';
 import Summary from './components/Summary';
 import About from './components/About';
 import AdditionalResources from './components/AdditionalResources';
+import Chatbot from './components/Chatbot';
 import useAssessment from './hooks/useAssessment';
 import { generateRecommendation } from './services/recommendations';
 import qualtricsService from './services/qualtrics';
@@ -22,7 +23,7 @@ import injectable6moContent from './content/modality-injectable-6mo.json';
 import onDemandContent from './content/modality-on-demand.json';
 
 export default function App() {
-  const { responses, setAnswer, toggleMultiAnswer, getAnswer, isComplete, reset } = useAssessment();
+  const { responses, setAnswer, toggleMultiAnswer, getAnswer, isComplete, reset, setAll } = useAssessment();
   const [visitedModalities, setVisitedModalities] = useState([]);
   const [selectedAlternativeIds, setSelectedAlternativeIds] = useState([]);
   const [selectedQuestionIds, setSelectedQuestionIds] = useState([]);
@@ -90,6 +91,23 @@ export default function App() {
     if (!recommendation?.alternatives) return [];
     return recommendation.alternatives.filter(alt => selectedAlternativeIds.includes(alt.id) && !alt.notRecommended);
   }, [recommendation, selectedAlternativeIds]);
+
+  // Chatbot handoff: adopt the conversation-derived responses and route into the
+  // same results/summary flow the assessment uses.
+  const handleChatComplete = (chatResponses) => {
+    setAll(chatResponses);
+    try {
+      captureEvent('chatbot_completed', { ...chatResponses, source: 'chatbot' });
+    } catch (e) {
+      console.warn('Analytics error:', e);
+    }
+    try {
+      qualtricsService.submit(chatResponses);
+    } catch (e) {
+      console.warn('Qualtrics submission error:', e);
+    }
+    navigate('/recommendations');
+  };
 
   // Handle assessment completion - submit to Qualtrics
   const handleContinueToResults = () => {
@@ -216,6 +234,7 @@ export default function App() {
           }
         />
         <Route path="/additional-resources" element={<AdditionalResources />} />
+        <Route path="/chatbot" element={<Chatbot onComplete={handleChatComplete} />} />
         <Route path="/about" element={<About />} />
       </Routes>
     </Layout>

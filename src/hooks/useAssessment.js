@@ -23,6 +23,9 @@ export default function useAssessment() {
     });
   };
 
+  // Bulk-set the full responses object (used by the chatbot handoff).
+  const setAll = (all) => setResponses(all || {});
+
   const getAnswer = (id) => responses[id];
 
   const isComplete = (questions) => {
@@ -40,5 +43,5 @@ export default function useAssessment() {
 
   const reset = () => setResponses({});
 
-  return { responses, setAnswer, toggleMultiAnswer, getAnswer, isComplete, reset };
+  return { responses, setAnswer, toggleMultiAnswer, getAnswer, isComplete, reset, setAll };
 }

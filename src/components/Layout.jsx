@@ -39,7 +39,10 @@ export default function Layout({ children }) {
           <Link to="/" className="header-logo">
             {siteConfig.subtitle} <span>{siteConfig.title}</span>
           </Link>
-          <Link to="/about" className="header-about-link">About</Link>
+          <nav className="header-nav">
+            <Link to="/chatbot" className="header-about-link">Chatbot pilot</Link>
+            <Link to="/about" className="header-about-link">About</Link>
+          </nav>
         </div>
         {showProgress && (
           <div className="progress-bar-container">
