@@ -7,6 +7,23 @@
 //                assessment uses, so the existing recommendation engine can run.
 
 import comparison from '../../src/content/comparison.json' with { type: 'json' };
+import assessment from '../../src/content/assessment.json' with { type: 'json' };
+
+// A field-by-field guide for extraction, built from the assessment's own
+// question text and option labels so the model knows exactly what each prep_*
+// field and option value means.
+function buildExtractGuide() {
+  const lines = [
+    'Map the conversation to these questions. For each question the conversation addresses, directly or by clear implication, choose the closest option value. Leave a question out only when the conversation gives no signal about it.'
+  ];
+  for (const q of assessment.questions) {
+    const opts = q.options.map((o) => `${o.value} = ${o.label}`).join('; ');
+    const multi = q.type === 'multi_choice' ? ' [choose all that apply]' : '';
+    lines.push(`- ${q.id}${multi} — "${q.text}": ${opts}`);
+  }
+  return lines.join('\n');
+}
+const EXTRACT_GUIDE = buildExtractGuide();
 
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-5';
@@ -300,7 +317,7 @@ async function runExtract(apiKey, clientMessages) {
     model: MODEL,
     max_tokens: 1024,
     system:
-      'You extract a PrEP options counseling conversation into a structured preferences object. Capture every field the person states or clearly implies, mapping their natural language to the closest option value (for example, "privacy really matters to me" -> prep_05 very_important; "I might forget a daily pill" -> prep_08 includes remembering; "as few visits as possible" -> prep_04 every_6mo and prep_09 fewest_visits; "insurance through work" -> prep_10 private_insurance). Only leave a field out when the conversation genuinely does not address it. Do not guess sex assigned at birth (prep_00) or pregnancy status (prep_06) without clear evidence.',
+      `You extract a PrEP options counseling conversation into a structured preferences object. Capture every field the person states or clearly implies, mapping their natural language to the closest option value. Only leave a field out when the conversation genuinely does not address it. Do not guess sex assigned at birth (prep_00) or pregnancy status (prep_06) without clear evidence; prep_06 only applies if assigned female at birth.\n\n${EXTRACT_GUIDE}`,
     output_config: { format: { type: 'json_schema', schema: EXTRACT_SCHEMA } },
     messages: [
       {
