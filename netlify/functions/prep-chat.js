@@ -336,7 +336,7 @@ async function runExtract(apiKey, clientMessages) {
   }
   const usage = emptyUsage();
   addUsage(usage, data.usage);
-  return { responses, usage, cost: costFromUsage(MODEL, usage), model: MODEL };
+  return { responses, usage, cost: costFromUsage(MODEL, usage), model: MODEL, _v: 'guide-v3' };
 }
 
 function contentToText(content) {
