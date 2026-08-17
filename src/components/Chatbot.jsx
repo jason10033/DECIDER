@@ -71,7 +71,7 @@ const DEFAULTS = {
   prep_05: 'somewhat',
   prep_07: 'not_sure',
   prep_08: ['none'],
-  prep_09: 'most_effective',
+  prep_09: 'fewest_side_effects', // engine-neutral: avoids biasing an unknown priority toward any option
   prep_10: 'not_sure'
 };
 
