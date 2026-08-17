@@ -167,70 +167,28 @@ const TOOLS = [
 // Extraction schema: mirrors assessment.json prep_00..prep_10 exactly so the
 // existing recommendation engine consumes it unchanged. All fields optional -
 // only include what the conversation supports.
+// Every field is REQUIRED with an explicit "not_discussed" escape value. This
+// forces the model to make a decision for each dimension (so it stops silently
+// skipping things the person clearly said); "not_discussed" values are stripped
+// afterward so only real answers reach the recommendation engine.
+const ND = 'not_discussed';
 const EXTRACT_SCHEMA = {
   type: 'object',
   additionalProperties: false,
   properties: {
-    prep_00: {
-      type: 'string',
-      enum: ['male', 'female', 'intersex', 'prefer_not_say'],
-      description: 'Sex assigned at birth. Only set with clear evidence.'
-    },
-    prep_01: {
-      type: 'string',
-      enum: ['yes_oral', 'yes_injectable', 'yes_both', 'no', 'not_sure'],
-      description: 'Whether they have used PrEP before (oral pills, injections, both, or no).'
-    },
-    prep_06: {
-      type: 'string',
-      enum: ['yes', 'no', 'not_applicable', 'not_sure'],
-      description: 'Pregnant, breastfeeding, or planning a pregnancy within a year. Only relevant if assigned female at birth; do not guess.'
-    },
-    prep_07: {
-      type: 'string',
-      enum: ['yes_prescription', 'yes_supplements', 'yes_both', 'no', 'not_sure'],
-      description: 'Whether they regularly take other prescription medications, vitamins/supplements, both, or none.'
-    },
-    prep_10: {
-      type: 'string',
-      enum: ['private_insurance', 'medicaid', 'medicare', 'no_insurance', 'not_sure', 'prefer_not_say'],
-      description: 'Insurance or coverage situation.'
-    },
-    prep_02: {
-      type: 'string',
-      enum: ['daily_pill', 'injection', 'no_preference'],
-      description: 'Whether they would prefer to take a daily pill or get an injection.'
-    },
-    prep_05: {
-      type: 'string',
-      enum: ['very_important', 'somewhat', 'not_concerned'],
-      description: 'How important privacy/discretion is to them about taking PrEP.'
-    },
-    prep_08: {
-      type: 'array',
-      items: {
-        type: 'string',
-        enum: ['side_effects', 'cost', 'remembering', 'privacy', 'needles', 'clinic_visits', 'stopping', 'none']
-      },
-      description: "Their concerns about PrEP. Include every concern they mention (e.g. 'worried I'd forget a pill' -> remembering; 'others finding out' -> privacy)."
-    },
-    prep_09: {
-      type: 'string',
-      enum: ['convenience', 'fewest_side_effects', 'most_effective', 'most_private', 'easiest_to_stop', 'fewest_visits', 'lowest_cost'],
-      description: "What matters most to them in choosing an option (their top priority)."
-    },
-    prep_03: {
-      type: 'string',
-      enum: ['fine', 'tolerable', 'prefer_avoid', 'no_way'],
-      description: 'How they feel about needles/injections, from comfortable (fine) to strongly wanting to avoid them (no_way).'
-    },
-    prep_04: {
-      type: 'string',
-      enum: ['every_2mo', 'every_3mo', 'every_6mo', 'flexible'],
-      description: 'How often they are comfortable visiting a provider.'
-    }
+    prep_00: { type: 'string', enum: ['male', 'female', 'intersex', 'prefer_not_say', ND], description: 'Sex assigned at birth. Use not_discussed if not clearly stated; never guess.' },
+    prep_01: { type: 'string', enum: ['yes_oral', 'yes_injectable', 'yes_both', 'no', 'not_sure', ND], description: 'Whether they have used PrEP before.' },
+    prep_06: { type: 'string', enum: ['yes', 'no', 'not_applicable', 'not_sure', ND], description: 'Pregnant/breastfeeding/planning pregnancy within a year. not_applicable if not assigned female at birth; not_discussed if unknown. Never guess.' },
+    prep_07: { type: 'string', enum: ['yes_prescription', 'yes_supplements', 'yes_both', 'no', 'not_sure', ND], description: 'Other medications, vitamins, or supplements taken regularly.' },
+    prep_10: { type: 'string', enum: ['private_insurance', 'medicaid', 'medicare', 'no_insurance', 'not_sure', 'prefer_not_say', ND], description: 'Insurance or coverage situation.' },
+    prep_02: { type: 'string', enum: ['daily_pill', 'injection', 'no_preference', ND], description: 'Prefer a daily pill or an injection.' },
+    prep_05: { type: 'string', enum: ['very_important', 'somewhat', 'not_concerned', ND], description: 'How important privacy/discretion is to them.' },
+    prep_08: { type: 'array', items: { type: 'string', enum: ['side_effects', 'cost', 'remembering', 'privacy', 'needles', 'clinic_visits', 'stopping', 'none'] }, description: 'Every concern they mention. Empty array if none discussed.' },
+    prep_09: { type: 'string', enum: ['convenience', 'fewest_side_effects', 'most_effective', 'most_private', 'easiest_to_stop', 'fewest_visits', 'lowest_cost', ND], description: 'Their single top priority in choosing an option.' },
+    prep_03: { type: 'string', enum: ['fine', 'tolerable', 'prefer_avoid', 'no_way', ND], description: 'How they feel about needles/injections.' },
+    prep_04: { type: 'string', enum: ['every_2mo', 'every_3mo', 'every_6mo', 'flexible', ND], description: 'How often they are comfortable visiting a provider.' }
   },
-  required: []
+  required: ['prep_00', 'prep_01', 'prep_06', 'prep_07', 'prep_10', 'prep_02', 'prep_05', 'prep_08', 'prep_09', 'prep_03', 'prep_04']
 };
 
 async function callAnthropic(apiKey, body) {
@@ -328,15 +286,24 @@ async function runExtract(apiKey, clientMessages) {
   });
 
   const textBlock = data.content.find((b) => b.type === 'text');
-  let responses = {};
+  let raw = {};
   try {
-    responses = JSON.parse(textBlock?.text || '{}');
+    raw = JSON.parse(textBlock?.text || '{}');
   } catch {
-    responses = {};
+    raw = {};
+  }
+  // Drop the "not_discussed" escape values and empty arrays so only real
+  // answers reach the recommendation engine (missing fields fall back to the
+  // client's neutral defaults).
+  const responses = {};
+  for (const [k, v] of Object.entries(raw)) {
+    if (v === ND) continue;
+    if (Array.isArray(v) && v.length === 0) continue;
+    responses[k] = v;
   }
   const usage = emptyUsage();
   addUsage(usage, data.usage);
-  return { responses, usage, cost: costFromUsage(MODEL, usage), model: MODEL, _v: 'guide-v3' };
+  return { responses, usage, cost: costFromUsage(MODEL, usage), model: MODEL, _v: 'req-v4' };
 }
 
 function contentToText(content) {
