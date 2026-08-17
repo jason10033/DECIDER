@@ -154,23 +154,64 @@ const EXTRACT_SCHEMA = {
   type: 'object',
   additionalProperties: false,
   properties: {
-    prep_00: { type: 'string', enum: ['male', 'female', 'intersex', 'prefer_not_say'] },
-    prep_01: { type: 'string', enum: ['yes_oral', 'yes_injectable', 'yes_both', 'no', 'not_sure'] },
-    prep_06: { type: 'string', enum: ['yes', 'no', 'not_applicable', 'not_sure'] },
-    prep_07: { type: 'string', enum: ['yes_prescription', 'yes_supplements', 'yes_both', 'no', 'not_sure'] },
-    prep_10: { type: 'string', enum: ['private_insurance', 'medicaid', 'medicare', 'no_insurance', 'not_sure', 'prefer_not_say'] },
-    prep_02: { type: 'string', enum: ['daily_pill', 'injection', 'no_preference'] },
-    prep_05: { type: 'string', enum: ['very_important', 'somewhat', 'not_concerned'] },
+    prep_00: {
+      type: 'string',
+      enum: ['male', 'female', 'intersex', 'prefer_not_say'],
+      description: 'Sex assigned at birth. Only set with clear evidence.'
+    },
+    prep_01: {
+      type: 'string',
+      enum: ['yes_oral', 'yes_injectable', 'yes_both', 'no', 'not_sure'],
+      description: 'Whether they have used PrEP before (oral pills, injections, both, or no).'
+    },
+    prep_06: {
+      type: 'string',
+      enum: ['yes', 'no', 'not_applicable', 'not_sure'],
+      description: 'Pregnant, breastfeeding, or planning a pregnancy within a year. Only relevant if assigned female at birth; do not guess.'
+    },
+    prep_07: {
+      type: 'string',
+      enum: ['yes_prescription', 'yes_supplements', 'yes_both', 'no', 'not_sure'],
+      description: 'Whether they regularly take other prescription medications, vitamins/supplements, both, or none.'
+    },
+    prep_10: {
+      type: 'string',
+      enum: ['private_insurance', 'medicaid', 'medicare', 'no_insurance', 'not_sure', 'prefer_not_say'],
+      description: 'Insurance or coverage situation.'
+    },
+    prep_02: {
+      type: 'string',
+      enum: ['daily_pill', 'injection', 'no_preference'],
+      description: 'Whether they would prefer to take a daily pill or get an injection.'
+    },
+    prep_05: {
+      type: 'string',
+      enum: ['very_important', 'somewhat', 'not_concerned'],
+      description: 'How important privacy/discretion is to them about taking PrEP.'
+    },
     prep_08: {
       type: 'array',
       items: {
         type: 'string',
         enum: ['side_effects', 'cost', 'remembering', 'privacy', 'needles', 'clinic_visits', 'stopping', 'none']
-      }
+      },
+      description: "Their concerns about PrEP. Include every concern they mention (e.g. 'worried I'd forget a pill' -> remembering; 'others finding out' -> privacy)."
     },
-    prep_09: { type: 'string', enum: ['convenience', 'fewest_side_effects', 'most_effective', 'most_private', 'easiest_to_stop', 'fewest_visits', 'lowest_cost'] },
-    prep_03: { type: 'string', enum: ['fine', 'tolerable', 'prefer_avoid', 'no_way'] },
-    prep_04: { type: 'string', enum: ['every_2mo', 'every_3mo', 'every_6mo', 'flexible'] }
+    prep_09: {
+      type: 'string',
+      enum: ['convenience', 'fewest_side_effects', 'most_effective', 'most_private', 'easiest_to_stop', 'fewest_visits', 'lowest_cost'],
+      description: "What matters most to them in choosing an option (their top priority)."
+    },
+    prep_03: {
+      type: 'string',
+      enum: ['fine', 'tolerable', 'prefer_avoid', 'no_way'],
+      description: 'How they feel about needles/injections, from comfortable (fine) to strongly wanting to avoid them (no_way).'
+    },
+    prep_04: {
+      type: 'string',
+      enum: ['every_2mo', 'every_3mo', 'every_6mo', 'flexible'],
+      description: 'How often they are comfortable visiting a provider.'
+    }
   },
   required: []
 };
@@ -259,7 +300,7 @@ async function runExtract(apiKey, clientMessages) {
     model: MODEL,
     max_tokens: 1024,
     system:
-      'You extract a PrEP options counseling conversation into a structured preferences object. Only include a field when the conversation gives clear evidence for it; omit anything you are unsure about. Do not guess sex assigned at birth or pregnancy status without clear evidence.',
+      'You extract a PrEP options counseling conversation into a structured preferences object. Capture every field the person states or clearly implies, mapping their natural language to the closest option value (for example, "privacy really matters to me" -> prep_05 very_important; "I might forget a daily pill" -> prep_08 includes remembering; "as few visits as possible" -> prep_04 every_6mo and prep_09 fewest_visits; "insurance through work" -> prep_10 private_insurance). Only leave a field out when the conversation genuinely does not address it. Do not guess sex assigned at birth (prep_00) or pregnancy status (prep_06) without clear evidence.',
     output_config: { format: { type: 'json_schema', schema: EXTRACT_SCHEMA } },
     messages: [
       {
