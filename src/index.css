@@ -332,7 +332,48 @@ body {
   margin-bottom: var(--space-xs);
 }
 
+.side-panel-toggle {
+  display: inline-block;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: var(--space-xs);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.side-panel-toggle:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.side-panel-facts {
+  margin: 0 0 var(--space-xs);
+}
+
+.side-panel-facts div {
+  margin-bottom: var(--space-xs);
+}
+
+.side-panel-facts dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+}
+
+.side-panel-facts dd {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--color-text);
+}
+
 .side-panel-link {
+  display: inline-block;
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--color-primary);

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { sendChatTurn, extractResponses } from '../services/prepChat';
+import comparison from '../content/comparison.json';
 
 // Metadata for the pages the chatbot can surface beside the conversation.
 const REFERENCES = {
@@ -36,6 +36,30 @@ const REFERENCES = {
   }
 };
 
+// Map a side-panel reference id to its Compare-table option id, so we can show
+// the curated key facts inline (no navigation, so the conversation is never lost).
+const OPTION_KEY = {
+  oral: 'oral',
+  'on-demand': 'on_demand',
+  'injectable-2mo': 'injectable_2mo',
+  'injectable-6mo': 'injectable_6mo'
+};
+const KEY_CATEGORIES = ['How You Take It', 'How Often', 'Effectiveness', "Who It's For", 'Stopping'];
+
+function factsFor(id) {
+  const optId = OPTION_KEY[id];
+  if (!optId) return null;
+  return comparison.categories
+    .filter((c) => KEY_CATEGORIES.includes(c.label))
+    .map((c) => ({ label: c.label, value: c[optId] }));
+}
+
+// Absolute URL so target=_blank reliably opens a new tab instead of navigating
+// the current tab's hash in place (which would discard the conversation).
+function fullUrl(route) {
+  return `${window.location.origin}${window.location.pathname}#${route}`;
+}
+
 // Neutral fallbacks so a partial conversation still yields a complete results
 // page. Real values extracted from the conversation always take precedence.
 const DEFAULTS = {
@@ -67,8 +91,11 @@ export default function Chatbot({ onComplete }) {
   const [busy, setBusy] = useState(false);
   const [ready, setReady] = useState(false);
   const [refs, setRefs] = useState([]); // ordered list of reference ids
+  const [expanded, setExpanded] = useState({}); // which reference cards show inline facts
   const [error, setError] = useState('');
   const scrollRef = useRef(null);
+
+  const toggleExpanded = (id) => setExpanded((p) => ({ ...p, [id]: !p[id] }));
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -188,18 +215,40 @@ export default function Chatbot({ onComplete }) {
             <ul className="side-panel-cards">
               {refs.map((id) => {
                 const ref = REFERENCES[id];
+                const facts = factsFor(id);
+                const isOpen = expanded[id];
                 return (
                   <li key={id} className="side-panel-card">
                     <h3>{ref.title}</h3>
                     <p>{ref.blurb}</p>
-                    <Link
-                      to={ref.route}
+                    {facts && (
+                      <button
+                        type="button"
+                        className="side-panel-toggle"
+                        onClick={() => toggleExpanded(id)}
+                        aria-expanded={isOpen}
+                      >
+                        {isOpen ? 'Hide key facts' : 'Show key facts'}
+                      </button>
+                    )}
+                    {facts && isOpen && (
+                      <dl className="side-panel-facts">
+                        {facts.map((f) => (
+                          <div key={f.label}>
+                            <dt>{f.label}</dt>
+                            <dd>{f.value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    )}
+                    <a
+                      href={fullUrl(ref.route)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="side-panel-link"
                     >
-                      Learn more (opens in a new tab) &rarr;
-                    </Link>
+                      Open full page (new tab) &rarr;
+                    </a>
                   </li>
                 );
               })}
