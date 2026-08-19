@@ -92,33 +92,36 @@ export default function App() {
     return recommendation.alternatives.filter(alt => selectedAlternativeIds.includes(alt.id) && !alt.notRecommended);
   }, [recommendation, selectedAlternativeIds]);
 
-  // Chatbot handoff: adopt the conversation-derived responses and route into the
-  // same results/summary flow the assessment uses.
-  const handleChatComplete = (chatResponses) => {
-    setAll(chatResponses);
+  // Record a completed set of responses on either path. PostHog captures the
+  // outcome for evaluation (the channel actually configured), and Qualtrics
+  // (submitAssessment) records it when live mode is configured. Neither failure
+  // may block the user.
+  const recordResponses = (data, source) => {
     try {
-      captureEvent('chatbot_completed', { ...chatResponses, source: 'chatbot' });
+      captureEvent(source === 'chatbot' ? 'chatbot_completed' : 'assessment_completed', { ...data, source });
     } catch (e) {
       console.warn('Analytics error:', e);
     }
     try {
-      qualtricsService.submit(chatResponses);
+      Promise.resolve(qualtricsService.submitAssessment(data)).catch((e) =>
+        console.warn('Qualtrics submission error:', e)
+      );
     } catch (e) {
       console.warn('Qualtrics submission error:', e);
     }
+  };
+
+  // Chatbot handoff: adopt the conversation-derived responses, record them, and
+  // route into the same results/summary flow the assessment uses.
+  const handleChatComplete = (chatResponses) => {
+    setAll(chatResponses);
+    recordResponses(chatResponses, 'chatbot');
     navigate('/recommendations');
   };
 
-  // Handle assessment completion - submit to Qualtrics
+  // Assessment completion: record the responses, then continue to results.
   const handleContinueToResults = () => {
-    if (assessmentContent?.questions && isComplete(assessmentContent.questions)) {
-      try {
-        qualtricsService.submit(responses);
-      } catch (e) {
-        // Silently handle submission errors - don't block the user
-        console.warn('Qualtrics submission error:', e);
-      }
-    }
+    recordResponses(responses, 'assessment');
     navigate('/recommendations');
   };
 
@@ -184,7 +187,7 @@ export default function App() {
               responses={responses}
               onAnswer={setAnswer}
               onToggleMulti={toggleMultiAnswer}
-              nextPath="/recommendations"
+              onContinue={handleContinueToResults}
               backPath="/compare"
             />
           }

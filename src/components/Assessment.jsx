@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-export default function Assessment({ content, responses, onAnswer, onToggleMulti, nextPath, backPath }) {
+export default function Assessment({ content, responses, onAnswer, onToggleMulti, onContinue, backPath }) {
   if (!content) return null;
 
   const { title, description, reassurance, questions } = content;
@@ -83,18 +83,15 @@ export default function Assessment({ content, responses, onAnswer, onToggleMulti
 
       <div className="btn-group">
         <Link to={backPath || '/compare'} className="btn btn-secondary">&larr; Back</Link>
-        <Link
-          to={nextPath || '/recommendations'}
-          className={`btn btn-primary ${!allAnswered ? '' : ''}`}
-          onClick={(e) => {
-            if (!allAnswered) {
-              e.preventDefault();
-            }
-          }}
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => { if (allAnswered && onContinue) onContinue(); }}
+          disabled={!allAnswered}
           style={!allAnswered ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
         >
           See What Fits &rarr;
-        </Link>
+        </button>
       </div>
     </div>
   );
