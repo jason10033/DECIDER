@@ -137,7 +137,7 @@ function generatePhysicianEmailBody(name, pronouns, recommendation, assessmentRe
 }
 
 // Generate text version of patient summary for email
-function generatePatientEmailBody(recommendation, assessmentResponses, assessmentContent, selectedAlternatives, selectedQuestionIds, selectedStarterIds, customQuestions) {
+function generatePatientEmailBody(recommendation, assessmentResponses, assessmentContent, selectedAlternatives, selectedQuestionIds, selectedStarterIds, customQuestions, plan) {
   const questions = assessmentContent?.questions || [];
   const dynamicQuestions = recommendation?.dynamicQuestions || [];
   const dynamicStarters = recommendation?.dynamicConversationStarters || [];
@@ -203,6 +203,12 @@ function generatePatientEmailBody(recommendation, assessmentResponses, assessmen
     body += '\n';
   }
 
+  // My plan (implementation intention)
+  if (plan && (plan.when || plan.action)) {
+    body += 'MY PLAN\n';
+    body += `  When ${plan.when || '__________'}, I will ${plan.action || '__________'}.\n\n`;
+  }
+
   // Next steps
   body += 'MY NEXT STEPS\n';
   body += '  - Schedule an appointment with my healthcare provider\n';
@@ -234,7 +240,8 @@ export default function Summary({
   recommendation, assessmentResponses, assessmentContent,
   selectedAlternatives, selectedQuestionIds, selectedStarterIds,
   customQuestions,
-  patientName, onPatientNameChange, patientPronouns, onPatientPronounsChange
+  patientName, onPatientNameChange, patientPronouns, onPatientPronounsChange,
+  plan, onPlanChange
 }) {
   const [viewMode, setViewMode] = useState('patient'); // 'patient' or 'physician'
   const [emailAddress, setEmailAddress] = useState('');
@@ -267,7 +274,7 @@ export default function Summary({
     const subject = encodeURIComponent('My PrEP Conversation Guide');
     const body = encodeURIComponent(generatePatientEmailBody(
       recommendation, assessmentResponses, assessmentContent,
-      selectedAlternatives, selectedQuestionIds, selectedStarterIds, customQuestions
+      selectedAlternatives, selectedQuestionIds, selectedStarterIds, customQuestions, plan
     ));
     window.open(`mailto:${patientEmailAddress}?subject=${subject}&body=${body}`, '_self');
     setShowPatientEmailForm(false);
@@ -360,6 +367,46 @@ export default function Summary({
           <h2>Summary</h2>
           <div className="summary-sentence">
             <p>{getSummarySentence()}</p>
+          </div>
+        </div>
+      )}
+
+      {/* My Next Step - implementation intention (patient view only) */}
+      {!isPhysician && (
+        <div className="summary-card my-plan-card">
+          <h2>My Next Step</h2>
+          <p className="my-plan-intro">
+            Turning a decision into a specific plan makes it far more likely to happen. Make one small,
+            concrete plan for your next step.
+          </p>
+          <div className="my-plan-fields no-print">
+            <label className="my-plan-label">
+              <span>When will you do it?</span>
+              <input
+                type="text"
+                className="identity-input"
+                placeholder="e.g., this Friday afternoon"
+                value={plan?.when || ''}
+                onChange={(e) => onPlanChange({ ...(plan || {}), when: e.target.value })}
+              />
+            </label>
+            <label className="my-plan-label">
+              <span>What will you do?</span>
+              <input
+                type="text"
+                className="identity-input"
+                placeholder="e.g., call the clinic to book a PrEP visit"
+                value={plan?.action || ''}
+                onChange={(e) => onPlanChange({ ...(plan || {}), action: e.target.value })}
+              />
+            </label>
+          </div>
+          <div className="my-plan-statement">
+            {plan?.when || plan?.action ? (
+              <p><strong>My plan:</strong> When {plan.when || '__________'}, I will {plan.action || '__________'}.</p>
+            ) : (
+              <p className="my-plan-placeholder">My plan: When __________, I will __________.</p>
+            )}
           </div>
         </div>
       )}

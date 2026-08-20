@@ -31,6 +31,7 @@ export default function App() {
   const [patientName, setPatientName] = useState('');
   const [patientPronouns, setPatientPronouns] = useState('');
   const [customQuestions, setCustomQuestions] = useState([]);
+  const [plan, setPlan] = useState({ when: '', action: '' }); // implementation intention (IMB behavioral skills / motivation)
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -233,6 +234,8 @@ export default function App() {
               onPatientNameChange={setPatientName}
               patientPronouns={patientPronouns}
               onPatientPronounsChange={setPatientPronouns}
+              plan={plan}
+              onPlanChange={setPlan}
             />
           }
         />

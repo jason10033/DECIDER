@@ -3,13 +3,16 @@
 
 | | |
 |---|---|
-| **Document version** | 1.0 |
+| **Document version** | 2.0 |
 | **Date** | 19 August 2026 |
 | **Status** | Baseline. Reflects `main` at commit `ce46322`. |
 | **Repository** | https://github.com/jason10033/DECIDER (private) |
 | **Package name** | `decider-prep-counseling` v1.0.0 |
+| **Full name** | **DE**cision-aid for PrEP **C**hoice to **I**mprove **D**uration of **E**ngagement |
+| **Study** | NIH R34, Columbia University Irving Medical Center / New York-Presbyterian. MPIs Delivette Castor and Jason Zucker. |
+| **Development phase** | **IPDAS Phase 3 Initial Prototype.** See Section T5.1. |
 | **Owner** | Jason Zucker |
-| **Purpose of this document** | A complete handoff record. Someone who has never seen this codebase should be able to read this document, clone the repository, run it, change it, and deploy it without asking a question. |
+| **Purpose of this document** | A complete handoff record. Someone who has never seen this codebase should be able to read this document, clone the repository, run it, change it, deploy it, and defend its theoretical basis to a study section without asking a question. |
 
 ### Maintenance protocol
 
@@ -17,22 +20,29 @@ This document is updated **weekly** and on any change to the deployed site. The 
 
 1. Diff `main` against the commit named in the header above.
 2. Update every section the diff touches. Sections 4, 5, 7, 8, and 11 are the ones that go stale first.
-3. Add a row to the changelog in Section 14.
-4. Bump the document version (minor for content changes, major for architectural changes) and the commit hash in the header.
+3. **If the change closes or opens a gap named in Section T9, update T9 in the same commit.** That section is the map between what the grant specifies and what exists, and it is the part of this document a new investigator will read first.
+4. Add a row to the changelog in Section 14.
+5. Bump the document version (minor for content changes, major for architectural changes) and the commit hash in the header.
 
 A change that is not reflected here is a change that has not been handed over.
+
+**Separate cadence: clinical content review.** The four `modality-*.json` files and `comparison.json` must be reviewed together against current CDC and NYSDOH guidance on a standing cadence, and the reviewer and date recorded. See Section T9.5 for why this is the project's likeliest failure mode.
 
 ---
 
 ## Table of contents
 
-**Part 0: Theoretical foundation**
-- T1. Why a framework matters here
-- T2. The primary framework: the Ottawa Decision Support Framework
-- T3. Quality standard: IPDAS
-- T4. The clinical encounter: Elwyn's three-talk model
-- T5. Where DECIDE departs from orthodoxy, and why
-- T6. Evidence base, evaluation plan, and references
+**Part 0: Theoretical foundation** *(source of record: the project's own R34 research strategy)*
+- T1. Why the theory matters here, and what it obligates
+- T2. The problem theory: choice proliferation, choice overload, and equity
+- T3. The behavioural framework: **dyadic IMB**
+- T4. The decision framework: ODSF and the three-talk model
+- T5. IPDAS: a development process, not only a checklist
+- T6. Technology theory: NASSS, Persuasive Systems Design, acceptance, equity
+- T7. The implementation framework: CFIR
+- T8. What the theory obligates you to measure
+- T9. **Where the built app sits against the specified intervention** ← read this first
+- T10. Evidence base and references
 
 **Part I: Functional specification**
 1. Purpose and scope
@@ -62,194 +72,477 @@ A change that is not reflected here is a change that has not been handed over.
 
 # Part 0: Theoretical foundation
 
-## T1. Why a framework matters here
+> **Source of record.** The theory in this Part is not reconstructed from the code. It is taken from the project's own NIH R34 research strategy, *DECIDE: DEcision-aid for PrEP Choice to Improve Duration of Engagement* (MPIs Delivette Castor and Jason Zucker; co-investigators Kathrine Meyers and Magdalena Sobieszczyk; Columbia University Irving Medical Center / New York-Presbyterian). Where this document adds frameworks the grant does not name, they are marked **[extension]** and the reason for adding them is given.
+>
+> **Read Section T9 before anything else if you are inheriting this project.** The deployed application is a partial realisation of the intervention the grant specifies, and knowing which parts are missing is the difference between a useful handoff and a misleading one.
 
-DECIDE is a patient decision aid. That is a defined class of intervention with an established theoretical base, an international quality standard, and a Cochrane evidence base of over two hundred randomised trials. Building one without naming the framework it implements is how a tool ends up as an attractive brochure with a quiz bolted on.
+## T1. Why the theory matters here, and what it obligates
 
-Naming the framework does three concrete things for this project:
+DECIDE is a patient decision aid. That is a defined class of intervention with an established theoretical base, an international quality standard, a prescribed development process, and a Cochrane evidence base of over two hundred randomised trials. Building one without naming the frameworks it implements is how a tool ends up as an attractive brochure with a quiz bolted on.
 
-1. It tells a developer **which behaviours are load-bearing** and must survive refactoring. The congruence filter in `generateSummarySentence` looks like a stylistic nicety; it is in fact the values-clarification mechanism, and removing it would change what class of intervention this is.
-2. It gives the research team **the outcome measures to evaluate against**, rather than inventing them after the fact.
-3. It gives the clinical team **a defensible answer** to the two hardest questions a health department will ask: why does this tool recommend anything at all, and how do you know it does not just push people toward the newest drug.
+The grant is explicit that DECIDE is **"a theoretically driven, evidence-based, personalized, dyadic decision aid"**, and it names three frameworks:
 
-PrEP is a textbook **preference-sensitive decision**. All four modalities are highly effective. There is no dominant option on efficacy for most people. The right choice turns on how a specific person weighs privacy against needles, convenience against reversibility, and cost against clinic burden. This is precisely the decision class for which decision aids were designed and in which they have the strongest evidence (Stacey et al., 2024).
+| Framework | Role in the project | Grant section |
+|---|---|---|
+| **Information-Motivation-Behavioral Skills (IMB)**, applied **dyadically** | The behavioural model. Structures the BPSR, the client interview guides, and the client-side measures. | C.1.2, Figure 3 |
+| **IPDAS**, as a **five-phase development process** | The development methodology. Figure 2 is the project's own phase diagram, and the specific aims are phases of it. | C, Figure 2 |
+| **CFIR** | The implementation-evaluation lens. Structures provider interview guides and the Aim 3 implementation outcomes. | C.1.3, Table 2 |
 
-## T2. The primary framework: the Ottawa Decision Support Framework
+Naming them does four concrete things:
 
-**DECIDE implements the Ottawa Decision Support Framework (ODSF).** The ODSF, developed by O'Connor and colleagues and updated in a three-part 20th-anniversary review (Hoefel et al., 2020; Stacey et al., 2020), is the most widely used theoretical basis for patient decision aids. It is organised into three sequential elements: **assess decisional needs → provide decision support → evaluate decision quality**.
+1. It tells a developer **which behaviours are load-bearing** and must survive refactoring. The congruence filter in `generateSummarySentence` looks like a stylistic nicety; it is the values-clarification mechanism. The `considerations` list is not padding; it is the unrealistic-expectations control.
+2. It gives the research team **the outcome measures**, rather than inventing them afterwards. Section T8 lists them.
+3. It gives the clinical team **a defensible answer** to the two hardest questions a health department asks: why does this tool recommend anything at all, and how do you know it does not just push people toward the newest drug.
+4. It tells whoever inherits the codebase **what to build next and why**, which is Section T9.
 
-The ODSF holds that unresolved decisional needs cause decisional conflict, that decisional conflict causes decision delay, decision regret, and blame, and that targeted decision support resolves the needs and therefore improves decision quality. Decision quality in the ODSF is defined as **informed, values-congruent choice**.
+## T2. The problem theory: choice proliferation, choice overload, and equity
 
-### T2.1 Element 1: decisional needs → what DECIDE assesses and addresses
+The grant's causal argument runs in four steps. Each one constrains the design.
+
+### T2.1 The PrEP pipeline is expanding faster than the capacity to counsel about it
+
+Daily oral, event-driven oral (2-1-1), two-monthly cabotegravir, six-monthly lenacapavir, with islatravir, vaginal rings, implants, and preventive vaccines behind them. The grant's framing: *"potential PrEP users could be faced with numerous dosing options and pharmaceutical products in the next five years."*
+
+### T2.2 More choice does not automatically mean better decisions
+
+> *"Evidence from other areas of medicine suggest an inverse relationship between increased information and/or task complexity and decision quality. This paradoxical effect of choice is hypothesized to be mediated through greater cognitive demand and decisional conflict."* (A.3)
+
+The supporting real-world observation is the Amsterdam cohort: in the era of choice, younger PrEP users were more likely to switch from oral to event-driven, **and still more likely to discontinue altogether**. Switching is not the same as staying.
+
+**[extension] The choice-overload literature is more useful here than a flat "too much choice is bad".** Scheibehenne, Greifeneder and Todd (2010) meta-analysed the effect and found a mean near zero: choice overload is not a universal law. Chernev, Böckenholt and Goodman (2015) resolved this by identifying four moderators that determine whether it appears at all:
+
+| Moderator | Present in PrEP choice? | What DECIDE does about it |
+|---|---|---|
+| **Choice set complexity** | Yes. Four options differing on route, cadence, reversibility, privacy, cost, and eligibility. | The eleven-category comparison matrix and the head-to-head view reduce the set to two at a time |
+| **Decision task difficulty** | Yes. Time-pressured, in a short visit, often same-day. | The tool moves Option Talk out of the visit entirely (T4.2) |
+| **Preference uncertainty** | Yes. Most people have never articulated how they weigh privacy against needles. | This is exactly what the assessment is: an explicit values-clarification exercise |
+| **Decision goal** | Mixed. Some clients are minimising effort, some are optimising. | The ranked result serves effort-minimisers; the full comparison and the selectable alternatives serve optimisers |
+
+**This is the strongest available theoretical justification for DECIDE's most contested design decision, which is that it ranks the options.** The moderator literature says choice overload appears when the set is complex, the task is hard, and preferences are unformed. A decision aid that clarifies preferences and structures the comparison is attacking three of the four moderators directly. It is not merely presenting information; it is reducing the specific conditions under which more options make decisions worse.
+
+### T2.3 Providers are a bottleneck, and choice makes it worse
+
+The grant's own preliminary data (C.4.2, Get2PrEP3): **over 80% of surveyed providers said more HIV prevention options would make them *less* likely to recommend a medication-based option, and only 50% were confident guiding people to a method that worked for them.** Open-ended responses centred on increased time and educational burden.
+
+> *"In designing DECIDE we aim to determine if providing information about PrEP options directly to patients reduces the educational burdens and time spent required by providers."* (C.4.2)
+
+**This is why DECIDE is dyadic rather than patient-facing.** It is not a courtesy to providers. The grant's position, supported by two of its own provider-side studies (Get2PrEP2, where an interpretive lab comment did not increase PrEP referrals or prescriptions though it did increase documentation of safe-sex and condom counselling; and Get2PrEP3, where provider e-mails produced a modest 7% increase in PrEP discussions or referrals), is that:
+
+> *"Given the limited impact of provider side interventions to increase PrEP uptake, combined with the documented role providers play in PrEP uptake, DECIDE must be dyadic, supporting both the client and provider, especially in settings not routinely providing HIV prevention services."* (C.4.1)
+
+### T2.4 Expanded options can widen disparities rather than narrow them
+
+Most new HIV infections occur in racial and ethnic minorities, yet Black/African American and Hispanic/Latinx MSM comprise only 28% of people prescribed PrEP, and are persistent about half as often as white counterparts. At the project's own NYP clinic, PrEP use was lower among Latino (26%) and Black (30%) than white (35%) MSM, with higher disengagement among Black MSM. In a representative NYC sample, Black and LatinX MSM were **nearly four times more likely** to view talking to a doctor about their sex life as a barrier, and **almost half as likely to endorse agency in medical decision-making**.
+
+> *"Conceivably, racial and ethnic disparities in PrEP uptake and persistence could be exacerbated in the context of choice if barriers to uptake and persistent use, like self-efficacy with talking to one's doctor and ongoing risk perception, is not addressed."* (A.5)
+
+**This is the equity rationale for the conversation-starter generator**, which is otherwise the least obviously necessary feature in the tool. Self-efficacy for talking to a provider about sex is a measured, racially patterned barrier. A pre-written, selectable opener is a low-cost, direct intervention on it. Anyone tempted to cut that feature for simplicity should read this paragraph first.
+
+## T3. The behavioural framework: dyadic IMB
+
+**The grant's primary theoretical framework is the Information-Motivation-Behavioral Skills model** (Fisher and Fisher, 1992), applied in a form the grant states is novel:
+
+> *"To date the IMB model has not been applied to the client-provider dyad."* (C.1.2)
+
+IMB holds that a person adopts and sustains a health behaviour when they are **informed**, **motivated**, and possess the **behavioural skills** to act. Information and motivation are largely independent inputs; behavioural skills are the proximal determinant. The model's practical value is that it separates three failure modes that look identical from the outside: a person who does not know, a person who does not want to, and a person who wants to and cannot.
+
+### T3.1 The dyadic model, both sides
+
+The grant's Figure 3 places the same three constructs on both sides of the encounter, with DECIDE-informed feedback flowing between them.
+
+| | **Client** | **Provider** |
+|---|---|---|
+| **Information** | Knowledge about each modality; frequency and logistics of clinic visits by modality; understanding out-of-pocket cost by modality | PrEP eligibility criteria; knowledge about each modality; visit intensity and logistics by modality; understanding out-of-pocket cost by modality |
+| **Motivation** | Self-perceived risk; attitudes and beliefs about each modality; social norms; competing life priorities | Perceived risk of HIV for the patient; attitudes and beliefs about each modality; social norms; competing visit priorities |
+| **Behavioural skills** | Communicating values and preferences; asking clarifying questions about options; self-efficacy; comparing options to make an informed choice | Eliciting patient values and preferences; communicating options; assessing patient understanding of options; evaluating patient self-efficacy; assessing patient uncertainty among options |
+
+Feedback cadence differs by side: **monthly to the client, pre-visit to the provider**, both via the BPSR.
+
+### T3.2 What IMB obligates the software to do
+
+This mapping is the most operationally useful thing in Part 0, because it says which code exists for which theoretical reason.
+
+| IMB construct | Side | Implemented by | Notes |
+|---|---|---|---|
+| Information: modality knowledge | Client | `/education`, four `/learn/*` deep dives, `education.json`, `modality-*.json` | |
+| Information: visit logistics | Client | `comparison.json` categories "How Often", "Where", "Clinic Visits" | |
+| Information: out-of-pocket cost | Client | `cost_access` section in every modality file; the "Help Paying for PrEP" resource category | Weak. Nothing is personalised to the `prep_10` insurance answer. See T9.3. |
+| Motivation: self-perceived risk | Client | **Not elicited.** | The assessment has no risk-perception item, despite decreased perceived risk being the second most common discontinuation reason in the grant's own data (29%). See T9.3. |
+| Motivation: attitudes and beliefs by modality | Client | `prep_08` concerns, `prep_05` privacy, `prep_03` needle attitude | |
+| Motivation: competing life priorities | Client | `prep_04` visit-frequency tolerance | Partial |
+| Behavioural skill: communicating values and preferences | Client | The physician-view Summary, written in the third person with chosen pronouns | This is a **skill substitute**: the tool speaks for the client. See T3.3. |
+| Behavioural skill: asking clarifying questions | Client | `generateDynamicProviderQuestions()` plus the custom-question field | |
+| Behavioural skill: self-efficacy | Client | `generateDynamicConversationStarters()` | The direct response to the disparity in T2.4 |
+| Behavioural skill: comparing options to make an informed choice | Client | `Comparison.jsx` overview and head-to-head views | |
+| Information and Motivation, provider side | Provider | The physician-view Summary only | Thin. No eligibility criteria, no per-modality logistics, no cost reference for the provider. See T9.3. |
+| Behavioural skill: eliciting patient values | Provider | The physician-view Summary delivers the elicited values pre-formed | Again a substitute rather than a skill-builder |
+| Behavioural skill: assessing patient uncertainty among options | Provider | **Not implemented.** The provider never sees how close the scores were. | The engine computes `allScores` and attaches it to `primary`. Rendering it would be a small change with real theoretical justification. See T9.3. |
+
+### T3.3 The substitution question, stated plainly
+
+Several behavioural-skill cells above are marked "skill substitute". This is a genuine theoretical tension worth recording rather than glossing.
+
+IMB says behavioural skills are the proximal determinant of sustained behaviour. A tool that performs the skill *for* the client (speaking their preferences in clinical language on their behalf) improves the immediate encounter but does not obviously build the skill for the next one. A tool that *rehearses* the skill (the conversation starters, which the client selects and then says themselves) does.
+
+DECIDE does both, and the balance is currently tilted toward substitution. **Whether substitution or skill-building better serves the grant's primary outcome, which is duration of engagement over 6 and 9 months, is an empirical question this project is well placed to answer and has not yet framed as one.** If engagement is the outcome, skill-building should probably win, because the client attends many visits and the tool is only present at some of them.
+
+## T4. The decision framework: ODSF and the three-talk model
+
+IMB explains behaviour. It does not tell you what a good decision looks like. Two decision-science frameworks supply that, and both are what make DECIDE a *decision aid* rather than a health-education app.
+
+### T4.1 The Ottawa Decision Support Framework
+
+The ODSF (O'Connor and colleagues; 20th-anniversary update, Hoefel et al. and Stacey et al., 2020) is the most widely used theoretical basis for patient decision aids, and is one of the intellectual antecedents of the IPDAS quality criteria. Three sequential elements: **assess decisional needs → provide decision support → evaluate decision quality**. Unresolved decisional needs cause decisional conflict; decisional conflict causes delay, regret, and blame; targeted support resolves the needs. Decision quality is defined as **informed, values-congruent choice**.
+
+The grant's mechanism ("greater cognitive demand and decisional conflict", A.3) is the ODSF's mechanism, and its client-level secondary outcome is the ODSF's own instrument.
 
 | ODSF decisional need | How DECIDE addresses it | Where in the code |
 |---|---|---|
-| **Inadequate knowledge** | Learn page plus four modality deep dives plus the eleven-category comparison matrix | `education.json`, `modality-*.json`, `comparison.json` |
-| **Unrealistic expectations** | Every option template carries a `considerations` list alongside its `reasons` list, so benefits and harms are presented symmetrically | `recommendations.json` |
-| **Unclear values** | The eleven-question assessment is an explicit values-clarification exercise; `prep_09` in particular forces a single-priority trade-off | `assessment.json`, `useAssessment.js` |
-| **Inadequate support and resources** | Provider-question generator, conversation-starter generator, the physician-view summary, and the external resource directory | `recommendations.js`, `Resources.jsx`, `Summary.jsx`, `resources.json` |
-| **Unclear about what matters most (decisional conflict)** | The ranked result plus the congruence-filtered summary sentence names back to the user which of their own stated values drove the match | `generateSummarySentence()` |
-| **Difficult decision-making role** | Framing throughout: "a decision you and your healthcare provider make together"; the tool never says a choice is correct | `assessment.json`, `Recommendations.jsx` |
+| **Inadequate knowledge** | Learn page, four deep dives, eleven-category comparison | `education.json`, `modality-*.json`, `comparison.json` |
+| **Unrealistic expectations** | Every option template carries `considerations` alongside `reasons`, presented symmetrically | `recommendations.json` |
+| **Unclear values** | The eleven-question assessment; `prep_09` forces a single-priority trade-off | `assessment.json`, `useAssessment.js` |
+| **Inadequate support and resources** | Provider questions, conversation starters, physician-view summary, resource directory | `recommendations.js`, `Resources.jsx`, `Summary.jsx`, `resources.json` |
+| **Unclear what matters most** | The congruence-filtered summary sentence names back the client's own values | `generateSummarySentence()` |
+| **Difficult decision-making role** | Framing throughout: "a decision you and your healthcare provider make together" | `assessment.json`, `Recommendations.jsx` |
 
-Two of these deserve elaboration because they are the parts most likely to be broken by a well-meaning code change.
+**Two of these are the parts most likely to be broken by a well-meaning simplification.**
 
-**Values clarification.** Witteman et al. (2021), in an updated systematic review and meta-analysis of 33 studies, found that explicit values clarification methods improve values-congruence of choice and reduce decisional conflict relative to decision aids without them. DECIDE uses an **implicit-to-explicit hybrid**: the assessment elicits attribute-level preferences (implicit), and the summary sentence reflects them back in the user's own terms (explicit). The design rule in `generateSummarySentence` is that **only factors that genuinely support the recommended option are named**. A factor pointing the other way is deliberately excluded, so the sentence never reads as if the tool overrode the person. That rule is a values-clarification design decision, not copy-editing.
+**Values clarification.** Witteman et al. (2021), an updated systematic review and meta-analysis of 33 studies, found that explicit values clarification methods improve values-congruence of choice and reduce decisional conflict relative to decision aids without them. DECIDE uses an implicit-to-explicit hybrid: the assessment elicits attribute-level preferences, and the summary sentence reflects them back in the client's own terms. **The design rule in `generateSummarySentence` is that only factors genuinely supporting the recommended option are named**, so the sentence never reads as though the tool overrode the person. That rule is a values-clarification decision, not copy-editing.
 
-**Unrealistic expectations.** Every option in `recommendations.json` carries `considerations`, and the Results screen renders them under "Things to consider" directly beneath the benefits. Removing that section to simplify the page would convert the tool from a decision aid into a promotional interface. It is a framework requirement.
+**Unrealistic expectations.** Removing "Things to consider" from the Results screen to simplify the page would convert the tool from a decision aid into a promotional interface. It is a framework requirement.
 
-### T2.2 Element 2: decision support → the three ODSF modalities
+### T4.2 Elwyn's three-talk model
 
-The ODSF recognises three decision support modalities: clinical counselling, patient decision tools, and decision coaching. DECIDE occupies the second and deliberately **hands off** to the first.
+The ODSF explains what the *tool* must do. Elwyn's three-talk model (BMJ 2017) explains what the *encounter* must do, and DECIDE is explicitly designed to pre-load two of its three stages. This is the mechanism by which the grant's provider-burden problem (T2.3) is addressed.
 
-The handoff is the entire point of the Prepare and Summary screens. The tool does not attempt to close the decision. It produces an artefact designed to make the clinical counselling encounter better: a named top match, a set of alternatives the person actively chose to discuss, the questions they want to ask, the openers they can use, and a physician-facing view written in the third person with clinical section headings.
-
-The **dual-view Summary** (patient view and physician view) is an unusual feature among decision aids and is worth naming as a design contribution: it produces one artefact that serves both sides of the ODSF's clinical-counselling modality without asking the user to translate their own preferences into clinical language.
-
-### T2.3 Element 3: decision quality → what should be measured
-
-The ODSF's outcome is **decision quality: an informed, values-congruent choice**. The validated instruments are:
-
-| Construct | Instrument | Note |
+| Three-talk stage | What it requires | What DECIDE contributes |
 |---|---|---|
-| Decisional conflict | **Decisional Conflict Scale** (O'Connor, 1995), 16 items, five subscales: informed, values clarity, support, uncertainty, effective decision | The primary ODSF outcome measure |
-| Decisional conflict, brief | **SURE test**, 4 items | Practical for a web tool where a 16-item scale would cause dropout |
-| Preparedness | **Preparation for Decision Making Scale** (Bennett et al., 2010), 10 items | Measures exactly what DECIDE's Summary screen is for |
-| Knowledge | Study-specific items on the four modalities | |
-| Values-congruence | Concordance between stated top priority (`prep_09`) and eventual regimen | Requires follow-up |
+| **Team talk** | Establish that a choice exists and that the client's preferences matter | The conversation starters, especially *"I used a decision tool that helped me think about my PrEP options. Can I share what I learned with you?"* This is a scripted Team Talk opener handed to the person with the lowest measured self-efficacy for starting it. |
+| **Option talk** | Compare the alternatives and their trade-offs | **Done before the visit.** The comparison matrix, deep dives, and selected-alternatives list mean the clinician does not deliver Option Talk cold in a fifteen-minute slot. This is the direct answer to the 80% of providers who said more options would make them less likely to recommend one. |
+| **Decision talk** | Elicit preferences and arrive at a decision together | Deliberately left to the clinician. DECIDE supplies the inputs and stops. |
 
-**None of these are currently instrumented.** See Section 15 and T6.2.
+This is why the output is an artefact rather than a verdict, and why the physician view is third-person with chosen pronouns: it is designed to be *handed over* at the start of Decision Talk.
 
-## T3. Quality standard: IPDAS
+### T4.3 [extension] Dual-process reasoning
 
-The **International Patient Decision Aid Standards** (Elwyn et al., 2006; Joseph-Williams et al., 2014; IPDAS Evidence Update 2.0, 2021) is the field's quality checklist. It is not a theory; it is the conformance standard a decision aid is judged against. IPDAS separates criteria into qualifying (a tool is not a decision aid without these), certifying (a tool with serious risk of harmful bias without these), and quality criteria.
+The grant notes that co-investigator Meyers *"has outlined the challenges of PrEP choice including the integration of dual-process models, mitigation of bias, and tools to support patient-centered communication."* Dual-process accounts (Kahneman; Croskerry in clinical medicine) distinguish fast, associative, heuristic-driven System 1 reasoning from slow, deliberative System 2 reasoning.
 
-Below is an honest self-audit of DECIDE against the core IPDAS dimensions as of this baseline.
+The relevance is specific and not decorative. **A decision aid can either exploit System 1 or recruit System 2, and DECIDE does both in different places:**
+
+- The **ranked top match with a colour-coded card** is a System 1 affordance. It is fast, it anchors, and it is what makes the tool usable for someone with five minutes in a waiting room.
+- The **eleven-question assessment, the eleven-category comparison, and the "Things to consider" list** are System 2 recruitment. They are slow and effortful by design.
+- The **congruence-filtered rationale** is the bridge: it makes the System 1 output inspectable by System 2, so the person can disagree with the reasoning rather than only with the conclusion.
+
+The residual risk, which is real and untested, is **anchoring**: a ranked result may anchor a client who would otherwise have deliberated. The honest framing is that DECIDE is a decision aid with a preference-matching layer, and that layer should be evaluated on whether it improves or degrades values-congruence relative to the same content presented unranked. That is a testable question and it has not been tested.
+
+## T5. IPDAS: a development process, not only a checklist
+
+**This is the correction most worth absorbing.** The previous version of this document treated IPDAS as a conformance checklist. The grant treats it as the **development methodology**, and Figure 2 is the project's own phase diagram. Both readings are correct and they are different instruments.
+
+### T5.1 IPDAS as process (Coulter et al., 2013; Witteman et al., 2021)
+
+The systematic development process for patient decision aids has a consistent shape across the field: scoping and design, prototype, alpha testing with people involved in development, beta testing in real conditions with people who were not, and production of a final version, all overseen by a multidisciplinary steering group and documented throughout.
+
+**The grant's Figure 2 instantiates it in five phases, and the specific aims are literally phases of it:**
+
+| Phase | Content | Status |
+|---|---|---|
+| **1. Define the scope, purpose and target audience** | | **Complete** |
+| **2. Assemble an advisory group** | Harlem Pride, NYC HIV Prevention Community Advisory Board (letters of support) | **Complete** |
+| **3. Design** | 3.1 Assess patient views on content and decisional needs · 3.2 Assess provider views · 3.3 Synthesise evidence, determine format and distribution | **Aim 1.** Partly complete; the current build is the Initial Prototype. |
+| → **Initial Prototype** | | **This codebase** |
+| **4. Alpha testing** | Usability testing | **Aim 2.** Not started. |
+| **5. Beta testing** | Preliminary efficacy RCT | **Aim 3A and 3B.** Not started. |
+
+**The consequence for a developer is direct: this codebase is a Phase 3 prototype, not a product.** It is expected to be substantially rewritten after Aims 1 and 2. That is the reason to keep the content-versus-code boundary in Section 7.3 clean, and it is the reason not to over-invest in polish before alpha testing.
+
+### T5.2 Alpha testing has a specified method
+
+Aim 2 is not "get some feedback". The grant specifies:
+
+- A **digital beta built in Articulate Rise**. The current build is React and Vite. **This is an unresolved decision and it is consequential**: Articulate Rise is an authoring tool that non-developers can edit, which matches the content-owned-by-clinicians model, but it cannot host the recommendation engine or the chatbot. See T9.4.
+- **Heuristic evaluation** by five bioinformatics experts from the CUIMC Department of Bioinformatics, using a Heuristic Evaluation Checklist based on **ten recommended heuristics for usable interface design**. **[extension]** These are Nielsen's ten usability heuristics (1994): visibility of system status, match between system and the real world, user control and freedom, consistency and standards, error prevention, recognition rather than recall, flexibility and efficiency of use, aesthetic and minimalist design, help users recognise and recover from errors, and help and documentation.
+- **Think-aloud protocol with the five usability experts**, who experience the aid as both client and provider while describing what they are thinking, seeing, and trying to do; interactions and vocalisations are recorded to surface problems static screenshots miss. Separately, **20 clients and 5 providers** give end-user feedback through private semi-structured interviews, with guides built on IMB (clients) and on IMB plus CFIR (providers).
+- Iterate **until no new changes are made**, then freeze for Aim 3.
+
+**[extension] Nielsen's heuristics are the right lens for this codebase and two of them are already at risk.** *Visibility of system status*: the assessment's forward button is disabled at 50% opacity with no message explaining what is unanswered. *Error prevention and recovery*: a client who changes an assessment answer after selecting questions gets a silently different question list (Section 15.2). Both would surface immediately in heuristic evaluation, and both are cheap to fix now.
+
+### T5.3 IPDAS as checklist: honest self-audit
+
+Separately from the process, IPDAS is the field's quality standard (Elwyn et al., 2006; Joseph-Williams et al., 2014; Evidence Update 2.0, Stacey and Volk, 2021), separating qualifying criteria (a tool is not a decision aid without these), certifying criteria (serious risk of harmful bias without these), and quality criteria.
 
 | IPDAS criterion | Status | Evidence or gap |
 |---|---|---|
 | **Qualifying** | | |
 | Describes the health condition | Met | `/education`, three accordion sections |
 | Describes the decision to be considered | Met | Welcome and Assessment intro copy |
-| Lists the options | Met | All four modalities, plus the implicit option of not starting is **not** presented (see gap below) |
-| Describes positive and negative features of each option | Met | `reasons` and `considerations` for all four |
+| Lists the options | Met | All four modalities. **"Not starting PrEP" is not presented.** |
+| Describes positive and negative features of each | Met | `reasons` and `considerations` for all four |
 | **Certifying** | | |
-| Presents probabilities of outcomes in an unbiased, understandable way | **Partial** | Effectiveness is described in prose ("96% reduction in HIV risk in clinical trials" for lenacapavir; "even more effective than daily pills" for cabotegravir). There are no event rates, no common denominator, and no visual risk display. This is the single largest IPDAS gap. |
-| Includes methods to clarify and express values | Met | The 11-question assessment and the congruence-filtered summary |
+| Presents outcome probabilities in an unbiased, understandable way | **Partial** | Effectiveness is prose ("96% reduction in HIV risk in clinical trials"; "even more effective than daily pills"). No event rates, no common denominator, no visual risk display. **The largest IPDAS gap**, and the one most likely to be flagged by an expert reviewer. |
+| Includes methods to clarify and express values | Met | The assessment plus the congruence-filtered summary |
 | Includes structured guidance for deliberation and communication | Met | Prepare screen and dual-view Summary |
 | **Quality** | | |
-| Uses plain language | Met | Reading level is consistently low; no formal Flesch-Kincaid audit has been run |
-| Balanced presentation of options | **Partial** | Presentation is balanced; the *ranking* is not neutral by design. See T5.1. |
-| Discloses funding source and conflicts of interest | **Not met** | The About page describes the tool but does not disclose funding or COI. This is a qualifying-adjacent expectation and a straightforward fix. |
-| Provides evidence sources and update policy | **Not met** | No citations, no "last reviewed" date, no named clinical reviewer anywhere in the interface. |
-| Reports development process | **Not met** | Not described in the tool |
-| Includes the option of doing nothing | **Not met** | "Not starting PrEP" is not presented as an option |
-| Field-tested with users and clinicians | Unknown | Not documented in the repository |
+| Plain language | Met | Consistently low reading level; no formal readability audit |
+| Balanced presentation | **Partial** | Presentation is balanced; the ranking is not neutral by design. Defensible (T2.2, T4.3), but must be declared. |
+| Discloses funding source and conflicts of interest | **Not met** | The About page does not disclose the NIH R34, the institution, or COI. Straightforward fix. |
+| Provides evidence sources and an update policy | **Not met** | No citations, no "last reviewed" date, no named clinical reviewer anywhere in the interface |
+| Reports the development process | **Not met** | Not described in the tool, despite a documented five-phase process existing |
+| Includes the option of doing nothing | **Not met** | A clinical design decision, not an oversight; make it deliberately |
+| Field-tested with users and clinicians | **Planned** | Aim 2 |
+| Available in the languages of the target population | **Not met** | The grant commits to **English and Spanish**. The build is English only, with no i18n scaffolding. |
 
-**The four "not met" rows are the highest-value non-code work available on this project.** Three of them (funding disclosure, evidence sources with a review date and named reviewer, development process) are content additions to `About.jsx` and require no engineering. The fourth (presenting the option of not starting) is a genuine design question for the clinical team: a prevention tool that offers "no PrEP" as an equal option is making a different clinical statement than one that does not, and the decision should be deliberate rather than accidental.
+**Five of these are non-code content work and are the highest-value tasks available on this project right now.** Funding disclosure, evidence sources with a review date and named reviewer, and a development-process description are three paragraphs in `About.jsx`. Spanish is a build task that gets harder the longer the content files grow.
 
-## T4. The clinical encounter: Elwyn's three-talk model
+## T6. [extension] Technology theory: why a good decision aid still fails as software
 
-The ODSF explains what the *tool* must do. Elwyn's **three-talk model** (Elwyn et al., BMJ 2017) explains what the *encounter* must do, and DECIDE is explicitly designed to pre-load two of its three stages.
+The grant names IMB, IPDAS, and CFIR. **It does not name a technology-adoption framework, and that is the gap this section fills.** The justification is in the grant's own text: it worries explicitly about **transportability** (*"Interventions that demonstrate efficacy and fail to be scaled for public health impact, often are resulting from lack of stakeholder and community engagement as well as less attention to transportability"*), it has a distribution strategy that depends on third-party platforms (AVAC PrEP Watch, BLUPrInt, the patient portal), and it made a deliberate architectural choice to sit outside the EMR. Those are technology-adoption questions, and there are frameworks for them.
 
-| Three-talk stage | What it requires | What DECIDE contributes |
+### T6.1 NASSS: the framework for whether this will spread at all
+
+The **NASSS framework** (Greenhalgh et al., JMIR 2017) explains nonadoption, abandonment, and failure to scale up, spread, and sustain health technologies. Its core claim: healthcare is a complex adaptive system, and **the more complexity in each domain, the less likely the technology sustains**. Its practical use is as a complexity audit before scaling.
+
+| NASSS domain | DECIDE's complexity | Assessment |
 |---|---|---|
-| **Team talk** | Establish that a choice exists and that the patient's preferences matter | The conversation starters, especially "I used a decision tool that helped me think about my PrEP options. Can I share what I learned with you?" This is a scripted team-talk opener. |
-| **Option talk** | Compare the alternatives and their trade-offs | Done before the visit. The comparison matrix, the deep dives, and the selected-alternatives list mean the clinician does not have to deliver Option Talk cold in a fifteen-minute slot. |
-| **Decision talk** | Elicit preferences and arrive at a decision together | Deliberately left to the clinician. DECIDE supplies the inputs (top match, rationale, chosen alternatives, questions) and stops. |
+| **Condition** | HIV prevention in people who are well. No symptom driving urgency, and perceived risk fluctuates (29% of the grant's discontinuations). | **Complicated.** Motivation is not supplied by the condition; it has to be supplied by the intervention. |
+| **Technology** | Static web app, no accounts, no PHI, no EMR write-back, no dependency beyond a browser. | **Simple. This is DECIDE's single greatest asset for spread**, and it is a direct consequence of the C.4.7 finding that users refused a downloadable app and wanted it inside platforms they already use. |
+| **Value proposition** | To the client: a clearer decision. To the provider: less unpaid counselling time. To the clinic: PrEP uptake and engagement. | **Straightforward for client and provider; unproven for the clinic.** No business case exists because no efficacy data exists. This is what Aim 3 is for. |
+| **Adopter system** | Clients (no training, no account), providers (a short online training module in Aim 3B), clinic staff (none). | **Simple on the client side, complicated on the provider side.** The BPSR requires a provider to open, read, and act on it inside a visit. That is the adoption risk. |
+| **Organisation** | Deliberately outside the EMR to avoid the EMR change queue. Distribution via portal link and third-party websites. | **Simple by design, and this was the right call.** The grant is explicit: *"Being external to the EMR will allow us to make rapid changes as we learn."* |
+| **Wider context** | EHE 2030 targets, CDC guidance, NYS DOH guidance, a drug pipeline that changes annually. | **Complex, and it is the main sustainability threat.** Content goes stale on someone else's schedule. There is currently no review cadence and no "last reviewed" date. |
+| **Embedding and adaptation over time** | Monthly BPSR cadence implies indefinite institutional ownership of content accuracy. | **Complex, and unaddressed.** See T9.5. |
 
-This mapping is why the tool's output is an artefact rather than a verdict, and why the physician view is written in the third person with the patient's chosen pronouns: it is designed to be *handed over* at the start of Decision Talk.
+**The NASSS audit produces one clear conclusion.** DECIDE is unusually simple in the domains that usually kill health technologies (technology, organisation) and complex in the two that are usually underestimated (wider context, embedding over time). **Its likeliest failure mode is not nonadoption. It is content decay: a live tool giving 2026 advice in 2029.** Nothing in the current build, and nothing in the grant, assigns ownership of that. Section T9.5 proposes the minimum viable answer.
 
-The generated provider questions serve a second, evidence-supported function. Patients frequently do not raise their concerns; a pre-written question list is a low-cost intervention against that, and it is why the Prepare screen makes the user *actively select* questions rather than printing all of them. Selection is a commitment device.
+### T6.2 Persuasive Systems Design: naming what the tool does to behaviour
 
-## T5. Where DECIDE departs from orthodoxy, and why
+The **Persuasive Systems Design model** (Oinas-Kukkonen and Harjumaa, 2009) is the standard vocabulary for the features by which software changes behaviour, in four categories: primary task support, dialogue support, system credibility support, and social support. It is worth applying here because it makes DECIDE's design choices nameable and, more usefully, exposes which categories are empty.
 
-Three design choices sit outside the mainstream decision-aid pattern. Each is defensible, and each should be defended explicitly rather than discovered by a reviewer.
+| PSD category | Principle | In DECIDE |
+|---|---|---|
+| **Primary task** | Reduction (complex task to simple) | The eleven questions reduce a four-way multi-attribute comparison to a ranked result |
+| | Tailoring | Every recommendation, rationale, question list, and starter list is generated from the client's own answers |
+| | Personalisation | Name and pronouns in the physician view; custom questions |
+| | Self-monitoring | **Absent in the build. This is exactly what the monthly BPSR is.** |
+| **Dialogue** | Praise, rewards, reminders, suggestion | **Almost entirely absent.** The grant's monthly text message is the reminder; the chatbot pilot is the only dialogue feature that exists. |
+| | Similarity, liking | Not used |
+| **System credibility** | Trustworthiness, expertise, surface credibility | **Weak, and it maps exactly onto the unmet IPDAS criteria in T5.3.** No named clinical reviewer, no citations, no institutional attribution, no review date. Credibility is a persuasion variable, not just a compliance box. |
+| | Third-party endorsement | **Planned but not built.** Distribution via AVAC PrEP Watch and BLUPrInt is itself third-party endorsement, and it is currently absent from the interface. |
+| **Social support** | Social comparison, normative influence | Not used, and arguably should not be for a stigmatised health behaviour |
 
-### T5.1 It ranks the options
+**The PSD audit says the same thing the IPDAS audit says from a different direction:** the highest-value missing features are credibility markers, and they cost three paragraphs. It also shows that the BPSR is not a nice-to-have report but the tool's entire self-monitoring capability, which is the PSD principle most associated with sustained behaviour.
 
-Most IPDAS-conformant decision aids present options neutrally and refuse to recommend. DECIDE scores and ranks. The justification:
+### T6.3 Acceptance, usability, and the sociotechnical view
 
-- The ranking is **transparent and deterministic**. Every weight is in one readable function; the full table is in Section 10.2 of this document. It is not a black box and not a model.
-- The ranking is **explained in the user's own terms**. `summarySentence` and `rationale[]` name the specific answers that produced the result. The user can see, and disagree with, the reasoning.
-- The result is **framed as a starting point, never as a decision**. Every screen repeats this.
-- Alternatives remain **fully visible and actively selectable** for the summary, so the ranking narrows attention without foreclosing options.
+Three more lenses, each with one specific thing to say.
 
-The residual risk is real: a ranked result can anchor a user who would otherwise have deliberated. The honest framing is that DECIDE is a **decision aid with a preference-matching layer**, and the preference-matching layer should be evaluated on whether it improves or degrades values-congruence relative to the same content presented unranked. That is a testable question and it has not been tested.
+**Technology Acceptance Model / UTAUT** (Davis 1989; Venkatesh et al. 2003). Adoption is driven by perceived usefulness and perceived ease of use, extended in UTAUT to performance expectancy, effort expectancy, social influence, and facilitating conditions. **The grant's C.4.7 interviews are a TAM finding in all but name:** across 12 qualitative interviews, prospective users were uniformly supportive of the functionality, but most did not want a free-standing app they would have to download, asking instead for it to be built into platforms they already use such as their patient portal. Effort expectancy, not performance expectancy, determined the architecture. **The lesson generalises to the next decision: anything that adds an account, a download, or a login will be resisted on the same grounds.**
 
-### T5.2 Some options are actively cautioned
+**Nielsen's heuristics and think-aloud** are already the Aim 2 method. See T5.2.
 
-The three hard exclusion rules in Section 5.1 (on-demand for people assigned female at birth or of uncertain natal sex; on-demand and both injectables in pregnancy or pregnancy planning) are not preference weighting. They are clinical eligibility, imported from labelling and guideline evidence.
+**The sociotechnical model** (Sittig and Singh, 2010) covers eight dimensions of health IT safety. Two are live here: **workflow and communication** (the BPSR has to arrive at a moment a provider can act on it, which is the pre-visit cadence in Figure 3 and is not built), and **people** (provider training is what makes the provider side of the IMB model actionable, and neither form is built: a short training on HIV prevention counselling and PrEP recommendations embedded in the provider e-mail in Aim 3A, and an online training module covering SDM plus a live session with a study team member in Aim 3B).
 
-The framework justification is that the ODSF's decision-quality target is an **informed** choice, and a person who chooses an option their clinician will immediately rule out has not made an informed one. The design decision that keeps this IPDAS-compatible is that cautioned options are **still displayed**, in a clearly labelled "Less Suitable for Your Situation" block, with the reason stated in plain language and a pointer to the provider. Hiding them would be paternalistic; showing them with the reason is informative.
+**[extension] Digital equity.** The grant's whole rationale is a disparity, so the delivery mechanism must not reintroduce one. The build is on the right side of most of this: no download, no account, no minimum device, no data cost beyond a page load. Three risks remain and should be tracked as design constraints:
 
-### T5.3 The chatbot pilot
+1. **Language.** English only against an English-and-Spanish commitment (T5.3).
+2. **Reading level.** Never formally audited. The grant's population includes clients for whom self-efficacy with clinical conversation is already a measured barrier.
+3. **The chatbot pilot.** Free-text conversation in English privileges written fluency in a way the structured assessment does not. If the chatbot path is evaluated, it should be evaluated **for differential performance by race, ethnicity, and language**, not only in aggregate. This is a real and specific equity risk in the newest feature and it is worth stating before the data exists.
 
-The conversational entry point has no established decision-aid framework behind it. It is a genuine research question rather than a settled design, and it should be described as such.
+## T7. The implementation framework: CFIR
 
-What keeps it inside the framework:
+The grant uses **CFIR** (Damschroder et al.; the grant cites the original five-domain, 39-construct version, updated in 2022 to 48 constructs) for the implementation side: to structure the provider interview guide in Aim 1, to co-structure it with IMB in Aim 2, and to define the implementation outcomes in Aim 3.
 
-- It **grounds the model in the tool's own curated facts.** The `GROUNDING` block is generated from `comparison.json`, and the system prompt forbids contradicting it. The chatbot cannot say something the Compare page does not say.
-- It **does not make the recommendation.** The model's only job is conversation and structured extraction into `prep_00`..`prep_10`. The same deterministic engine then runs. Decision quality is therefore bounded by the same auditable logic on both paths.
-- It **covers the same eleven dimensions**, enumerated in the system prompt, so the values-clarification content is preserved.
-- The extraction schema's `not_discussed` escape value and the neutral client-side defaults exist so that a partial conversation degrades to a *less-informed* recommendation rather than a *wrongly-informed* one.
+| CFIR domain | Aim 1 and 2 provider-guide use | Aim 3 outcome measures (grant Table 2) |
+|---|---|---|
+| **Intervention characteristics** | Provider interview guide | Feasibility, acceptability, appropriateness, relative advantage |
+| **Inner setting** | Provider interview guide | Readiness to use DECIDE, absorptive capacity, available resources |
+| **Characteristics of individuals** | Provider interview guide | Knowledge, self-efficacy, state of change, motivation, values |
+| **Process** | Workflow integration questions | Fidelity of implementation |
+| **Outer setting** | Context | Not separately measured in Table 2 |
 
-What is untested: whether a conversational elicitation produces the same values-clarification benefit as an explicit structured exercise, or whether it produces a fluent, agreeable, and less reflective process. Witteman's finding that *explicit* values clarification outperforms implicit is a reason for genuine caution here. If the pilot is evaluated, this is the comparison worth running: assessment path versus chatbot path, on the SURE test and on values-congruence.
+The grant's stated questions are concrete and worth reproducing, because they are what a developer should be designing for: *"when to use DECIDE within the clinic workflow, how providers will interact with DECIDE to facilitate SDM conversations, what inner and outer context factors may facilitate or challenge integration of DECIDE into clinic workflow."*
 
-## T6. Evidence base, evaluation plan, and references
+**The division of labour in the grant's instrument design shifts across aims, and it is worth reading precisely.** In **Aim 1**, client interview guides are built on IMB and provider guides on CFIR alone (C.5). From **Aim 2 onward the provider instruments are dual-framework**: the Aim 2 provider guide "is based on the IMB and CFIR model" (C.6), and the Aim 3A provider survey "will include domains of the IMB model and the CFIR model as outlined in Table 2" (C.7.1).
 
-### T6.1 The evidence this tool is standing on
+So the provider side of Figure 3 **is** instrumented, from Aim 2 on. What it lacks is a **separate row in Table 2**: the provider IMB constructs are folded into the CFIR "Individual characteristics" row (knowledge, self-efficacy, state of change, motivation, values), which is where they are measured. That is defensible, since the constructs overlap. It is worth being aware of if the dyadic IMB claim is being presented as the novel contribution, because the analysis plan will need to pull those constructs out of a CFIR-labelled row to report them as IMB.
+
+## T8. What the theory obligates you to measure
+
+Every framework above carries instruments. This table is the complete measurement model, drawn from the grant's Table 2 where it exists and flagged where it does not.
+
+| Construct | Instrument | Source | Instrumented in the build? |
+|---|---|---|---|
+| **Primary, Aim 3A** | PrEP discussion or initiation within one month of STI diagnosis | Chart review, EMR | n/a, clinical |
+| **Primary, Aim 3B** | Engagement, measured by **Visit Constancy at four-month intervals (VC4)** | EMR. The grant applied three commonly used engagement metrics retrospectively to NYP-HPP oral PrEP patients and found VC4 had excellent internal correlation. | n/a, clinical |
+| **Decisional conflict** | **Decisional Conflict Scale** (O'Connor, 1995): 16 items, five subscales (informed, values clarity, support, uncertainty, effective decision) | ODSF; grant Table 2 | **No** |
+| **Shared decision making, client-perceived** | Client survey | Grant Table 2 | **No** |
+| **Shared decision making, observed** | **OPTION scale** (Elwyn et al., 2003; 2005), independent rater on a subset of 10 recorded dyads | Grant Table 2, "Secondary 3B (Dyad)" | **No** |
+| **IMB constructs, client** | PrEP information, motivations, behaviors | Grant Table 2 | **No** |
+| **IMB constructs, provider** | Knowledge, self-efficacy, state of change, motivation, values. Instrumented from Aim 2 on, via provider guides and surveys built on IMB **and** CFIR. | Grant Table 2, folded into the CFIR "Individual characteristics" row | **No** |
+| **Implementation** | Feasibility, acceptability, appropriateness, relative advantage, readiness, absorptive capacity, fidelity | CFIR; grant Table 2 | **No** |
+| **Exposure / dose** | Duration and frequency of DECIDE use | Grant Table 2, from the web app | **Partial.** PostHog captures pageviews and one `chatbot_completed` event. There is no session identifier tying use to a client, and by design there cannot be one without an accounts model. |
+
+**[extension] Two instrument recommendations.**
+
+**Use the SURE test rather than the full DCS for in-app capture.** The Decisional Conflict Scale is 16 items and will cause dropout at the end of a web flow. The 4-item SURE test measures the same construct and is designed for exactly this. Keep the full DCS for the interviewer-administered arms.
+
+**Consider the Dyadic OPTION scale.** Observer OPTION requires recording ten encounters and a trained rater, which the grant budgets for on a subset. A **Dyadic OPTION** variant exists, measuring *perception* of shared decision making from both client and provider, and it can be administered as a survey to every dyad rather than a rater to ten. Given that DECIDE's novel claim is dyadic, measuring the dyad's perception at scale alongside observer-rated SDM on a subset is a stronger design than either alone.
+
+> **Everything in this table with "No" in the last column is blocked behind the same defect.** Section 15.1 records that `handleContinueToResults()` is never wired up and that `qualtricsService.submit` does not exist, so **no response has ever been recorded from either path**. That is not merely a bug. It is the critical path for the entire measurement model, and it should be the next commit.
+
+## T9. Where the built app sits against the specified intervention
+
+**This is the most important section in Part 0 for anyone inheriting the project.** The deployed application is the Phase 3 Initial Prototype. It is a partial realisation of the intervention the grant describes, and several theoretically central components do not exist.
+
+### T9.1 Built and theoretically justified
+
+| Component | Framework justification |
+|---|---|
+| Four-modality education and comparison | IMB Information, client side |
+| Eleven-question preference assessment | ODSF values clarification; IMB Motivation |
+| Deterministic ranked recommendation with congruence-filtered rationale | ODSF decision quality; choice-overload moderators (T2.2); dual-process bridge (T4.3) |
+| Generated provider questions | IMB behavioural skill: asking clarifying questions |
+| Generated conversation starters | IMB behavioural skill: self-efficacy. **The equity intervention** (T2.4) |
+| Dual-view Summary, patient and physician | Three-talk handoff (T4.2). **A precursor of the BPSR.** |
+| No account, no download, browser-only | C.4.7 user preference (most of 12 interviewees); NASSS technology simplicity; TAM effort expectancy |
+
+### T9.2 Specified in the grant, not built
+
+| Missing component | Framework it serves | Consequence of its absence |
+|---|---|---|
+| **The BPSR as a persistent, monthly, per-client report** | The IMB feedback loop, both sides (Figure 3). PSD self-monitoring. | **The single largest gap.** The physician-view Summary is a one-shot, in-session precursor. It is not monthly, not persisted, not carried between visits, and not shareable to a portal. Without it, the dyadic IMB model is aspirational rather than implemented. |
+| **Monthly re-contact by text with a link** | IMB reinforcement; PSD reminders; the grant's C.4.5 finding that 21% of disengaged patients wanted to be contacted by a coordinator | No mechanism to re-reach a client between visits, which is where the grant argues engagement is won or lost |
+| **Client identity and longitudinal state** | Prerequisite for both of the above, and for the "reduced burden" design where the client confirms whether anything changed since last month rather than re-answering | **This is an architectural fork, not a feature.** Anonymity is currently a privacy promise made on screen. Adding identity changes the tool's regulatory posture. See T9.6. |
+| **Sharing to the provider via the EMR portal** | Three-talk Decision Talk; sociotechnical workflow | The summary reaches the provider only if the client prints or emails it |
+| **Provider training module** | IMB provider side; CFIR individual characteristics | The provider half of Figure 3 has no intervention attached |
+| **Spanish** | Grant commitment; digital equity | Excludes part of the target population |
+| **Personalised cost and coverage information** | IMB Information, both sides. Cost was the **most common** discontinuation reason in the grant's own data (31%). | `prep_10` is collected, scored, and echoed back in the Summary, but **no cost or coverage content anywhere in the tool varies by the answer** |
+| **Risk-perception elicitation** | IMB Motivation, client. Decreased perceived risk was the **second** most common discontinuation reason (29%). | The assessment has no risk item at all |
+| **Distribution via AVAC PrEP Watch and BLUPrInt** | NASSS spread; PSD third-party endorsement | Planned, not present |
+
+### T9.3 Small, high-value changes with direct theoretical justification
+
+Each of these is hours of work and closes a named gap.
+
+1. **Show the provider how close the scores were.** `generateRecommendation` already computes and attaches `allScores`. Rendering it in the physician view implements the IMB provider behavioural skill *"assessing patient uncertainty among options"*, which is currently unimplemented.
+2. **Tailor the cost line to `prep_10`.** The answer is already collected. Cost is the leading discontinuation reason.
+3. **Add a risk-perception item.** One question, closing the largest IMB Motivation gap.
+4. **Add credibility markers to `About.jsx`.** Funding, institution, named clinical reviewer, last-reviewed date, evidence sources, development process. Closes four IPDAS criteria and the PSD credibility category at once.
+5. **Add the 4-item SURE test to the Summary screen.** The first outcome measure the tool would actually produce. Blocked behind Section 15.1.
+
+### T9.4 The Articulate Rise question
+
+The grant specifies the Aim 2 digital beta be built in **Articulate Rise**. This codebase is React and Vite. The tension is real and should be decided explicitly rather than by default:
+
+- Articulate Rise is authorable by non-developers, which fits the content-owned-by-clinicians model that Section 7.3 already implements through the JSON content boundary.
+- Articulate Rise **cannot host the deterministic recommendation engine, the dynamic question generation, or the chatbot.** Those are the parts of DECIDE that make it a decision aid rather than a course.
+
+**The likely correct answer is a hybrid**: Rise for the linear educational modules, this React app for the assessment, engine, and summary, presented as one flow. That should be decided before Aim 2 rather than discovered during it, because it determines what usability testing is testing.
+
+### T9.5 The content-decay problem, which nobody currently owns
+
+The NASSS audit (T6.1) identifies content decay as DECIDE's likeliest failure mode: a live tool giving stale advice in a field where the drug pipeline changes annually. The grant does not assign ownership. The minimum viable answer is three things, none of them expensive:
+
+1. A **`lastReviewed` date and a named reviewer** in `site.json`, rendered in the footer and on the About page. This is also an unmet IPDAS criterion and a PSD credibility marker, so it pays for itself three times.
+2. A **standing review cadence** (twice yearly is proportionate) against CDC and NYSDOH guidance, with the reviewer named in the changelog of this document.
+3. A **rule that the four `modality-*.json` files and `comparison.json` are reviewed together**, because `comparison.json` also generates the chatbot's factual grounding. An edit to one without the others produces a tool that contradicts itself.
+
+### T9.6 The identity fork, stated as a decision rather than a task
+
+The tool currently promises on screen: *"This tool does not collect or store any personal health information. Your answers are used only during this session to generate your personalized results and are not saved or shared."*
+
+The grant's intervention requires monthly per-client reports and portal sharing, which requires identity and persistence. **These are not compatible, and the resolution is a decision for the PIs and the IRB, not for a developer.** The options, with their consequences:
+
+| Option | Consequence |
+|---|---|
+| Keep the tool anonymous; the BPSR lives in REDCap or the EMR, populated separately | Preserves the current privacy posture and the NASSS technology simplicity. The web app stays a static bundle. Costs a second system and a linkage. |
+| Add study-scoped identity (a token issued at enrolment, no account) | Enables monthly re-contact and the BPSR within the study. Requires changing the on-screen privacy text, and changes the tool's regulatory posture. |
+| Full accounts | Contradicts the C.4.7 user finding directly, and TAM effort expectancy predicts resistance. Not recommended. |
+
+Whichever is chosen, **the on-screen privacy claim in `site.json` must change in the same commit as the code.** A tool that says it saves nothing while saving something is a consent failure, not a copy inconsistency.
+
+## T10. Evidence base and references
+
+### T10.1 The evidence DECIDE stands on
 
 The Cochrane review of patient decision aids (Stacey et al., 2024) covers **209 randomised trials, 107,698 participants, 71 decisions**. Compared with usual care, decision aids:
 
-- improve knowledge (mean difference **11.90/100**, high-certainty evidence, 107 studies, 25,492 participants)
+- improve knowledge (MD **11.90/100**, high-certainty, 107 studies, 25,492 participants)
 - improve accuracy of risk perception (RR **1.94**, high-certainty, 25 studies, 7,796 participants)
 - reduce feeling uninformed (MD **-10.02**) and indecision about personal values (MD **-7.86**)
 - probably increase congruence between informed values and care choice (RR **1.75**, moderate-certainty, 21 studies, 9,377 participants)
 - reduce passive decision-making (RR **0.72**)
 - produce **no difference in decision regret**
 
-This is the strongest argument for the tool's existence, and the specific numbers are worth having to hand for a funder conversation. The caveat that must accompany them: those effects are for decision aids as a class, evaluated in trials. **They are not evidence about DECIDE**, which has not been evaluated.
+These numbers are worth having to hand for a funder conversation, with the caveat that must accompany them: they are effects for decision aids as a class. **They are not evidence about DECIDE**, which has not been evaluated. That is what Aim 3 is for.
 
-The domain-specific literature is thinner and newer. Shared decision-making tools for PrEP regimen choice are an active area with published development and acceptability work, and the general finding is that people making PrEP decisions weigh adherence burden, privacy, and clinic access at least as heavily as efficacy, which is exactly the attribute set DECIDE elicits.
+The grant adds the domain-specific gap that justifies the project: *"Of the five interventions currently comprising the evidence base for PrEP practices recommended by the CDC, decision support is included in a single product, and none explicitly account for multiple products. To date, no SDM aid exists that offers providers and patients simultaneous support informed by the patient's experience in the context of multiple PrEP modalities."*
 
-### T6.2 A proportionate evaluation plan
+### T10.2 References
 
-Nothing here requires a trial. This is what would generate defensible evidence at pilot scale:
+**Behavioural framework**
 
-| Stage | Method | Instrument | Effort |
-|---|---|---|---|
-| 1. Content validity | Clinical review of all ten content JSON files against current CDC and NYSDOH guidance; record reviewer name and date in the About page | IPDAS evidence-source criteria | Days |
-| 2. Alpha testing | Cognitive interviews with 5-8 people considering PrEP and 3-5 providers | IPDAS field-testing criteria | Weeks |
-| 3. Decisional conflict | Add a 4-item SURE test at the end of the Summary screen, submitted with the assessment | SURE | One sprint, once Section 15.1 is fixed |
-| 4. Preparedness | Add the 10-item Preparation for Decision Making Scale | PDMS | One sprint |
-| 5. Path comparison | Randomise or naturally compare assessment path against chatbot path on SURE and knowledge | | Pilot |
-| 6. Values-congruence | Follow-up on whether the regimen actually started matches the stated top priority | | Requires linkage; hardest |
+Fisher JD, Fisher WA. Changing AIDS-risk behavior. *Psychological Bulletin* 1992;111(3):455-474.
 
-Stages 1 and 2 close four of the five IPDAS gaps in T3 and require no engineering. Stage 3 is the first that produces a number, and it is blocked on the Qualtrics defect in Section 15.1: **there is currently no working path by which any outcome measure could be recorded.** That reframes 15.1 from a bug to the critical path for the entire evaluation.
+Fisher WA, Fisher JD, Harman J. The Information-Motivation-Behavioral Skills model: a general social psychological approach to understanding and promoting health behavior. In: *Social Psychological Foundations of Health and Illness.* Blackwell, 2003. https://onlinelibrary.wiley.com/doi/10.1002/9780470753552.ch4
 
-### T6.3 References
+**Decision science**
 
-Bennett C, Graham ID, Kristjansson E, Kearing SA, Clay KF, O'Connor AM. Validation of a preparation for decision making scale. *Patient Education and Counseling* 2010;78(1):130-133.
+Chernev A, Böckenholt U, Goodman J. Choice overload: a conceptual review and meta-analysis. *Journal of Consumer Psychology* 2015;25(2):333-358.
 
-Elwyn G, O'Connor A, Stacey D, et al. Developing a quality criteria framework for patient decision aids: online international Delphi consensus process. *BMJ* 2006;333:417.
+Elwyn G, Edwards A, Wensing M, Hood K, Atwell C, Grol R. Shared decision making: developing the OPTION scale for measuring patient involvement. *Quality and Safety in Health Care* 2003;12(2):93-99. https://pubmed.ncbi.nlm.nih.gov/12679504/
+
+Elwyn G, Hutchings H, Edwards A, et al. The OPTION scale: measuring the extent that clinicians involve patients in decision-making tasks. *Health Expectations* 2005;8(1):34-42.
 
 Elwyn G, Durand MA, Song J, et al. A three-talk model for shared decision making: multistage consultation process. *BMJ* 2017;359:j4891. https://pubmed.ncbi.nlm.nih.gov/29109079/
 
 Hoefel L, O'Connor AM, Lewis KB, et al. 20th Anniversary Update of the Ottawa Decision Support Framework Part 1: a systematic review of the decisional needs of people making health or social decisions. *Medical Decision Making* 2020;40(5):555-581.
 
-Hoefel L, Lewis KB, O'Connor A, Stacey D. 20th Anniversary Update of the Ottawa Decision Support Framework Part 2: subanalysis of a systematic review of patient decision aids. *Medical Decision Making* 2020;40(4):522-539.
-
-Joseph-Williams N, Newcombe R, Politi M, et al. Toward minimum standards for certifying patient decision aids: a modified Delphi consensus process. *Medical Decision Making* 2014;34(6):699-710.
+Kahneman D. *Thinking, Fast and Slow.* Farrar, Straus and Giroux, 2011.
 
 O'Connor AM. Validation of a decisional conflict scale. *Medical Decision Making* 1995;15(1):25-30.
 
 Ottawa Hospital Research Institute. Ottawa Decision Support Framework. https://decisionaid.ohri.ca/odsf.html
+
+Scheibehenne B, Greifeneder R, Todd PM. Can there ever be too many options? A meta-analytic review of choice overload. *Journal of Consumer Research* 2010;37(3):409-425.
 
 Stacey D, Légaré F, Boland L, et al. 20th Anniversary Ottawa Decision Support Framework Part 3: overview of systematic reviews and updated framework. *Medical Decision Making* 2020;40(3):379-398. https://pubmed.ncbi.nlm.nih.gov/32428429/
 
 Stacey D, Lewis KB, Smith M, et al. Decision aids for people facing health treatment or screening decisions. *Cochrane Database of Systematic Reviews* 2024, Issue 1. CD001431.pub6. https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD001431.pub6/full
 
 Witteman HO, Ndjaboue R, Vaisson G, et al. Clarifying values: an updated and expanded systematic review and meta-analysis. *Medical Decision Making* 2021;41(7):801-820. https://pubmed.ncbi.nlm.nih.gov/34565196/
+
+**IPDAS: standards and development process**
+
+Coulter A, Stilwell D, Kryworuchko J, Mullen PD, Ng CJ, van der Weijden T. A systematic development process for patient decision aids. *BMC Medical Informatics and Decision Making* 2013;13(Suppl 2):S2. https://bmcmedinformdecismak.biomedcentral.com/articles/10.1186/1472-6947-13-S2-S2
+
+Elwyn G, O'Connor A, Stacey D, et al. Developing a quality criteria framework for patient decision aids: online international Delphi consensus process. *BMJ* 2006;333:417.
+
+Joseph-Williams N, Newcombe R, Politi M, et al. Toward minimum standards for certifying patient decision aids: a modified Delphi consensus process. *Medical Decision Making* 2014;34(6):699-710.
+
+Stacey D, Volk RJ, for the IPDAS Evidence Update Leads. The International Patient Decision Aid Standards (IPDAS) Collaboration: Evidence Update 2.0. *Medical Decision Making* 2021;41(7):729-733. https://journals.sagepub.com/doi/full/10.1177/0272989X211035681
+
+Witteman HO, Maki KG, Vaisson G, et al. Systematic development of patient decision aids: an update from the IPDAS Collaboration. *Medical Decision Making* 2021;41(7):736-754. https://journals.sagepub.com/doi/10.1177/0272989X211014163
+
+**Implementation and technology**
+
+Damschroder LJ, Reardon CM, Widerquist MAO, Lowery J. The updated Consolidated Framework for Implementation Research based on user feedback. *Implementation Science* 2022;17:75. https://link.springer.com/article/10.1186/s13012-022-01245-0
+
+Davis FD. Perceived usefulness, perceived ease of use, and user acceptance of information technology. *MIS Quarterly* 1989;13(3):319-340.
+
+Greenhalgh T, Wherton J, Papoutsi C, et al. Beyond adoption: a new framework for theorizing and evaluating nonadoption, abandonment, and challenges to the scale-up, spread, and sustainability of health and care technologies. *Journal of Medical Internet Research* 2017;19(11):e367. https://www.jmir.org/2017/11/e367/
+
+Nielsen J. Enhancing the explanatory power of usability heuristics. *Proceedings of CHI '94*, 152-158.
+
+Oinas-Kukkonen H, Harjumaa M. Persuasive systems design: key issues, process model, and system features. *Communications of the Association for Information Systems* 2009;24:28. https://aisel.aisnet.org/cais/vol24/iss1/28/
+
+Sittig DF, Singh H. A new sociotechnical model for studying health information technology in complex adaptive healthcare systems. *Quality and Safety in Health Care* 2010;19(Suppl 3):i68-i74.
+
+Venkatesh V, Morris MG, Davis GB, Davis FD. User acceptance of information technology: toward a unified view. *MIS Quarterly* 2003;27(3):425-478.
+
+**Project and clinical**
+
+Castor D, Zucker J, Meyers K, Sobieszczyk M. *DECIDE: DEcision-aid for PrEP Choice to Improve Duration of Engagement.* NIH R34 research strategy, Columbia University Irving Medical Center. **On file with the study team; the source of record for Part 0.**
 
 NYSDOH AIDS Institute Clinical Guidelines Program. PrEP to prevent HIV and promote sexual health. https://www.hivguidelines.org/guideline/hiv-prep/
 
@@ -261,9 +554,11 @@ NYSDOH AIDS Institute Clinical Guidelines Program. PrEP to prevent HIV and promo
 
 ### 1.1 What DECIDE is
 
-DECIDE is a patient-facing shared decision-making aid for HIV pre-exposure prophylaxis. It walks a person through four PrEP modalities, elicits their preferences, produces a ranked recommendation with a plain-language rationale, and generates a printable or emailable summary the person brings to a clinical visit.
+DECIDE is a shared decision-making aid for HIV pre-exposure prophylaxis. It walks a person through four PrEP modalities, elicits their preferences, produces a ranked recommendation with a plain-language rationale, and generates a printable or emailable summary the person brings to a clinical visit.
 
 The tool explicitly does **not** prescribe, diagnose, or replace clinical judgement. Every output is framed as a starting point for a conversation with a provider.
+
+**The intervention is designed to be dyadic**, supporting both the client and the provider, on the study team's finding that provider-only interventions did not move PrEP uptake and that over 80% of surveyed providers said more PrEP options would make them *less* likely to recommend one. The build realises the client side substantially and the provider side thinly. Section T3 is the framework; **Section T9 is the honest map of what exists.**
 
 ### 1.2 The four modalities covered
 
@@ -301,7 +596,9 @@ These four ids appear throughout the codebase as object keys, CSS class stems, a
 
 The tool states to the user: *"This tool does not collect or store any personal health information. Your answers are used only during this session to generate your personalized results and are not saved or shared."*
 
-This is accurate as deployed **with one nuance that must be preserved by anyone changing the code**: assessment responses are POSTed to Qualtrics when `VITE_QUALTRICS_MODE=live`, and chatbot transcripts are POSTed to the Anthropic API. Neither carries a name, an identifier, or contact information. The name and pronoun fields on the Summary screen are held in browser memory only and are never transmitted anywhere except into a `mailto:` body that the user themselves sends. Any change that begins persisting identified data invalidates the on-screen privacy claim and must be accompanied by a change to `src/content/site.json`.
+This is accurate as deployed **with one nuance that must be preserved by anyone changing the code**: assessment responses are intended to be POSTed to Qualtrics when `VITE_QUALTRICS_MODE=live` (they currently are not; Section 15.1), and chatbot transcripts are POSTed to the Anthropic API. Neither carries a name, an identifier, or contact information. The name and pronoun fields on the Summary screen are held in browser memory only and are never transmitted anywhere except into a `mailto:` body that the user themselves sends. Any change that begins persisting identified data invalidates the on-screen privacy claim and must be accompanied by a change to `src/content/site.json`.
+
+> **This claim and the study design are on a collision course.** The specified intervention requires monthly per-client reports and sharing to an EMR portal, which requires identity and persistence. **Section T9.6 sets out the fork and its consequences.** It is a decision for the PIs and the IRB, not for a developer, and whichever way it goes, the on-screen text and the code must change in the same commit.
 
 ---
 
@@ -1366,6 +1663,8 @@ Nine files. This is the strongest argument for the refactor in Section 15.4.
 
 Ordered by severity.
 
+> **This section covers defects and risks in the code as built.** It is not the same list as **Section T9**, which covers components the study specifies and the prototype does not yet contain (the BPSR, monthly re-contact, client identity, provider training, Spanish, personalised cost, risk-perception elicitation). Read both. A gap in T9 is unbuilt scope; a gap here is something wrong with what was built.
+
 ### 15.1 No assessment response has ever been recorded (critical, data loss)
 
 Two independent faults, both of which must be fixed.
@@ -1376,7 +1675,7 @@ Two independent faults, both of which must be fixed.
 
 **Consequence: no response has ever reached Qualtrics or, in mock mode, `localStorage`, from either path.**
 
-Fix, in one commit: pass `handleContinueToResults` into `Assessment` and invoke it on forward navigation; rename both call sites to `submitAssessment`. Then verify end to end in mock mode by reading `localStorage.decider_records` after completing the flow. **This is the critical path for the entire evaluation plan in Section T6.2 and should be the next commit.**
+Fix, in one commit: pass `handleContinueToResults` into `Assessment` and invoke it on forward navigation; rename both call sites to `submitAssessment`. Then verify end to end in mock mode by reading `localStorage.decider_records` after completing the flow. **This is the critical path for the entire measurement model in Section T8 and should be the next commit.**
 
 ### 15.2 Selected questions are stored by index (high)
 
@@ -1418,11 +1717,11 @@ The `PRICING` table in `prep-chat.js` switches `claude-sonnet-5` from (2, 10) to
 
 ### 15.10 IPDAS conformance gaps (medium, non-code)
 
-Four IPDAS criteria are unmet and three of them are pure content additions to `About.jsx`: funding source and conflict-of-interest disclosure; evidence sources with a "last reviewed" date and a named clinical reviewer; a description of the development process. The fourth, presenting "not starting PrEP" as an option, is a clinical design decision rather than an oversight and should be made deliberately. A fifth gap, presenting outcome probabilities as event rates on a common denominator rather than in prose, is the largest and requires design work. See Section T3 for the full audit.
+Four IPDAS criteria are unmet and three of them are pure content additions to `About.jsx`: funding source and conflict-of-interest disclosure; evidence sources with a "last reviewed" date and a named clinical reviewer; a description of the development process. The fourth, presenting "not starting PrEP" as an option, is a clinical design decision rather than an oversight and should be made deliberately. A fifth gap, presenting outcome probabilities as event rates on a common denominator rather than in prose, is the largest and requires design work. A sixth, Spanish, is a grant commitment and gets harder the longer the content files grow. See Section T5.3 for the full audit.
 
 ### 15.11 No decision-quality outcome is instrumented (medium)
 
-There is no SURE test, no Decisional Conflict Scale, and no Preparation for Decision Making Scale anywhere in the tool, so the framework's own outcome (informed, values-congruent choice) cannot currently be measured. This is blocked behind Section 15.1: even if an instrument were added, the submission path does not work. See Section T6.2.
+None of the instruments the study's own measurement model requires exist in the tool: no Decisional Conflict Scale or SURE test, no OPTION or Dyadic OPTION, no IMB construct items, no CFIR implementation measures. The frameworks' own outcome (informed, values-congruent choice) and the study's secondary outcomes cannot currently be captured. This is blocked behind Section 15.1: even if an instrument were added, the submission path does not work. See Section T8 for the complete measurement model.
 
 ### 15.12 No rate limiting on the chatbot function (low, cost)
 
@@ -1434,7 +1733,8 @@ There is no SURE test, no Decisional Conflict Scale, and no Preparation for Deci
 
 | Doc version | Date | Repo commit | Changes |
 |---|---|---|---|
-| 1.0 | 2026-08-19 | `ce46322` | Initial baseline. Full functional, technical, and architecture documentation. Twelve defects and gaps recorded in Section 15. Part 0 added: DECIDE mapped to the Ottawa Decision Support Framework, audited against IPDAS, and positioned against Elwyn's three-talk model, with a proportionate evaluation plan. |
+| 1.0 | 2026-08-19 | `ce46322` | Initial baseline. Full functional, technical, and architecture documentation. Twelve defects and gaps recorded in Section 15. Part 0: DECIDE mapped to the Ottawa Decision Support Framework, audited against IPDAS, positioned against Elwyn's three-talk model. |
+| **2.0** | 2026-08-19 | `ce46322` | **Part 0 rewritten against the project's own R34 research strategy, which is now the source of record.** Adds: the grant's primary framework, **dyadic IMB**, mapped construct-by-construct to code (T3); the problem theory of choice proliferation, choice overload with its four moderators, provider burden, and equity (T2); **IPDAS reframed as a five-phase development process**, with the specific aims identified as phases and this codebase identified as the Phase 3 prototype (T5); CFIR as the implementation lens (T7); the complete measurement model including DCS/SURE, OPTION and Dyadic OPTION, and VC4 (T8). New technology-theory section (T6) covering **NASSS**, **Persuasive Systems Design**, TAM/UTAUT, Nielsen heuristics, the sociotechnical model, and digital equity, including a NASSS complexity audit identifying **content decay as the likeliest failure mode**. New **Section T9**, a component-by-component map of built versus specified, the identity fork, and the Articulate Rise question. No code claims changed; Part I-IV unaltered except cross-references. Part 0 verified line by line against the research strategy and the source; nine attribution errors corrected before release. |
 
 ### Template for the weekly entry
 
