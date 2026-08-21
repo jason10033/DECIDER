@@ -371,46 +371,6 @@ export default function Summary({
         </div>
       )}
 
-      {/* My Next Step - implementation intention (patient view only) */}
-      {!isPhysician && (
-        <div className="summary-card my-plan-card">
-          <h2>My Next Step</h2>
-          <p className="my-plan-intro">
-            Turning a decision into a specific plan makes it far more likely to happen. Make one small,
-            concrete plan for your next step.
-          </p>
-          <div className="my-plan-fields no-print">
-            <label className="my-plan-label">
-              <span>When will you do it?</span>
-              <input
-                type="text"
-                className="identity-input"
-                placeholder="e.g., this Friday afternoon"
-                value={plan?.when || ''}
-                onChange={(e) => onPlanChange({ ...(plan || {}), when: e.target.value })}
-              />
-            </label>
-            <label className="my-plan-label">
-              <span>What will you do?</span>
-              <input
-                type="text"
-                className="identity-input"
-                placeholder="e.g., call the clinic to book a PrEP visit"
-                value={plan?.action || ''}
-                onChange={(e) => onPlanChange({ ...(plan || {}), action: e.target.value })}
-              />
-            </label>
-          </div>
-          <div className="my-plan-statement">
-            {plan?.when || plan?.action ? (
-              <p><strong>My plan:</strong> When {plan.when || '__________'}, I will {plan.action || '__________'}.</p>
-            ) : (
-              <p className="my-plan-placeholder">My plan: When __________, I will __________.</p>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* 2. Interested In */}
       {recommendation?.primary && (
         <div className="summary-card">
@@ -555,6 +515,45 @@ export default function Summary({
           )}
         </ul>
       </div>
+
+      {/* My Plan - implementation intention (patient view only) */}
+      {!isPhysician && (
+        <div className="summary-card my-plan-card">
+          <h2>My Plan</h2>
+          <p className="my-plan-intro">
+            A specific plan makes a next step far more likely to happen. Fill in one small, concrete step.
+          </p>
+          <div className="my-plan-fields no-print">
+            <label className="my-plan-label">
+              <span>When will you do it?</span>
+              <input
+                type="text"
+                className="identity-input"
+                placeholder="e.g., this Friday afternoon"
+                value={plan?.when || ''}
+                onChange={(e) => onPlanChange({ ...(plan || {}), when: e.target.value })}
+              />
+            </label>
+            <label className="my-plan-label">
+              <span>What will you do?</span>
+              <input
+                type="text"
+                className="identity-input"
+                placeholder="e.g., call the clinic to book a PrEP visit"
+                value={plan?.action || ''}
+                onChange={(e) => onPlanChange({ ...(plan || {}), action: e.target.value })}
+              />
+            </label>
+          </div>
+          <p className="my-plan-statement">
+            {plan?.when || plan?.action ? (
+              <><strong>My plan:</strong> When {plan.when || '__________'}, I will {plan.action || '__________'}.</>
+            ) : (
+              <span className="my-plan-placeholder">When __________, I will __________.</span>
+            )}
+          </p>
+        </div>
+      )}
 
       {/* 6. About Me / About Patient */}
       <div className="summary-card">
